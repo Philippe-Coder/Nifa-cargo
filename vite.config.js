@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+    outDir: 'dist', // Dossier de sortie attendu par Vercel
+  }
 });
