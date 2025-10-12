@@ -128,10 +128,10 @@ class PublicController extends Controller
             'togo' => [
                 'pays' => 'Togo',
                 'ville' => 'Lomé',
-                'adresse' => '123 Boulevard du 13 Janvier, Lomé',
+                'adresse' => 'Totsi à 100m non loin de l\'eglise catholique, Lomé',
                 'telephone' => '+228 22 61 00 00',
-                'mobile' => '+228 90 12 34 56',
-                'email' => 'lome@nifa.com',
+                'mobile' => '+228 99 25 25 31',
+                'email' => 'contact@nif-tg.com',
                 'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
             ],
             'benin' => [
@@ -140,7 +140,7 @@ class PublicController extends Controller
                 'adresse' => '456 Avenue Clozel, Cotonou',
                 'telephone' => '+229 21 30 00 00',
                 'mobile' => '+229 97 12 34 56',
-                'email' => 'cotonou@nifa.com',
+                'email' => 'contact@nif-tg.com',
                 'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
             ]
         ];

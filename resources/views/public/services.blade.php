@@ -4,8 +4,16 @@
 @section('description', 'Découvrez nos services de transport maritime, aérien, terrestre, dédouanement, entreposage et assurance en Afrique.')
 
 @section('content')
-<!-- Hero Section -->
-<section class="hero-bg-services relative overflow-hidden py-20">
+<!-- Hero Section avec Image -->
+<section class="hero-bg-services relative overflow-hidden py-20 lg:py-28">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
+             alt="Services de transport et logistique NIFA" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-slate-900/60"></div>
+    </div>
+
     <!-- Overlay animé -->
     <div class="hero-overlay"></div>
     
@@ -23,12 +31,24 @@
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h1 class="hero-title text-4xl lg:text-5xl font-bold mb-6">
+        <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/30">
+            <span class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+            <span class="text-sm font-medium text-white">Solutions complètes</span>
+        </div>
+
+        <h1 class="hero-title text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
             Nos Services de Transport
         </h1>
-        <p class="hero-subtitle text-xl max-w-3xl mx-auto">
+        <p class="hero-subtitle text-xl lg:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
             Solutions complètes de transport et logistique adaptées à tous vos besoins en Afrique et dans le monde
         </p>
+    </div>
+
+    <!-- Vague décorative -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" class="w-full h-16 lg:h-20">
+            <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,74.7C1120,75,1280,53,1360,42.7L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
     </div>
 </section>
 
@@ -41,18 +61,22 @@
                     <!-- Contenu -->
                     <div class="{{ $index % 2 == 1 ? 'lg:col-start-2' : '' }}">
                         <div class="flex items-center mb-6">
-                            <div class="text-5xl mr-4">{{ $service['icon'] }}</div>
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl flex items-center justify-center text-white text-2xl mr-4 shadow-lg">
+                                {!! $service['icon'] !!}
+                            </div>
                             <h2 class="text-3xl font-bold text-gray-900">{{ $service['titre'] }}</h2>
                         </div>
                         
-                        <p class="text-lg text-gray-600 mb-8">
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
                             {{ $service['description'] }}
                         </p>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                             @foreach($service['features'] as $feature)
                                 <div class="flex items-center">
-                                    <span class="text-green-500 mr-3">✓</span>
+                                    <span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-green-600 text-xs"></i>
+                                    </span>
                                     <span class="text-gray-700">{{ $feature }}</span>
                                 </div>
                             @endforeach
@@ -60,86 +84,102 @@
 
                         <div class="flex flex-col sm:flex-row gap-4">
                             <a href="{{ route('demande.create') }}" 
-                               class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors inline-flex items-center justify-center">
-                                📦 Demander un devis
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                                <i class="fas fa-box mr-2"></i> Demander un devis
                             </a>
                             <a href="{{ route('contact') }}" 
                                class="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors inline-flex items-center justify-center">
-                                📞 Plus d'infos
+                                <i class="fas fa-phone mr-2"></i> Plus d'infos
                             </a>
                         </div>
                     </div>
 
-                    <!-- Illustration -->
-                    <div class="{{ $index % 2 == 1 ? 'lg:col-start-1' : '' }}">
-                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 text-center">
-                            <div class="text-8xl mb-6">{{ $service['icon'] }}</div>
+                    <!-- Image et Illustration -->
+                    <div class="{{ $index % 2 == 1 ? 'lg:col-start-1' : '' }} relative">
+                        <!-- Image principale du service -->
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+                            <img src="{{ $service['image_url'] ?? $serviceImages[$service['titre']] ?? 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}" 
+                                 alt="{{ $service['titre'] }} - NIFA Transport"
+                                 class="w-full h-80 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             
-                            @if($service['titre'] == 'Transport Maritime')
-                                <div class="grid grid-cols-2 gap-4 text-sm">
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-blue-600">Conteneur 20'</div>
-                                        <div class="text-gray-600">33 m³</div>
+                            <!-- Badge overlay -->
+                            <div class="absolute top-4 left-4">
+                                <span class="bg-white/90 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
+                                    {{ $service['titre'] }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Stats overlay -->
+                        <div class="absolute -bottom-6 left-6 right-6">
+                            <div class="bg-white rounded-xl p-6 shadow-2xl border border-gray-100">
+                                @if($service['titre'] == 'Transport Maritime')
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                            <div class="font-semibold text-blue-700">Conteneur 20'</div>
+                                            <div class="text-gray-600 text-xs">33 m³</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                            <div class="font-semibold text-blue-700">Conteneur 40'</div>
+                                            <div class="text-gray-600 text-xs">67 m³</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-purple-50 rounded-lg">
+                                            <div class="font-semibold text-purple-700">Groupage LCL</div>
+                                            <div class="text-gray-600 text-xs">À partir de 1 m³</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                                            <div class="font-semibold text-green-700">Délai</div>
+                                            <div class="text-gray-600 text-xs">15-25 jours</div>
+                                        </div>
                                     </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-blue-600">Conteneur 40'</div>
-                                        <div class="text-gray-600">67 m³</div>
+                                @elseif($service['titre'] == 'Transport Aérien')
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div class="text-center p-3 bg-red-50 rounded-lg">
+                                            <div class="font-semibold text-red-700">Express</div>
+                                            <div class="text-gray-600 text-xs">24-48h</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-red-50 rounded-lg">
+                                            <div class="font-semibold text-red-700">Standard</div>
+                                            <div class="text-gray-600 text-xs">3-5 jours</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-orange-50 rounded-lg">
+                                            <div class="font-semibold text-orange-700">Poids max</div>
+                                            <div class="text-gray-600 text-xs">500 kg/colis</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                            <div class="font-semibold text-blue-700">Destinations</div>
+                                            <div class="text-gray-600 text-xs">Monde entier</div>
+                                        </div>
                                     </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-blue-600">Groupage LCL</div>
-                                        <div class="text-gray-600">À partir de 1 m³</div>
+                                @elseif($service['titre'] == 'Transport Terrestre')
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                                            <div class="font-semibold text-green-700">Camion 19T</div>
+                                            <div class="text-gray-600 text-xs">90 m³</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                                            <div class="font-semibold text-green-700">Semi-remorque</div>
+                                            <div class="text-gray-600 text-xs">100 m³</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-cyan-50 rounded-lg">
+                                            <div class="font-semibold text-cyan-700">Réfrigéré</div>
+                                            <div class="text-gray-600 text-xs">-18°C à +25°C</div>
+                                        </div>
+                                        <div class="text-center p-3 bg-emerald-50 rounded-lg">
+                                            <div class="font-semibold text-emerald-700">Zone</div>
+                                            <div class="text-gray-600 text-xs">Afrique Ouest</div>
+                                        </div>
                                     </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-blue-600">Délai</div>
-                                        <div class="text-gray-600">15-25 jours</div>
+                                @else
+                                    <div class="text-center p-4">
+                                        <h3 class="font-semibold text-gray-900 mb-2">Service professionnel</h3>
+                                        <p class="text-gray-600 text-sm">
+                                            Notre équipe d'experts vous accompagne à chaque étape
+                                        </p>
                                     </div>
-                                </div>
-                            @elseif($service['titre'] == 'Transport Aérien')
-                                <div class="grid grid-cols-2 gap-4 text-sm">
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-purple-600">Express</div>
-                                        <div class="text-gray-600">24-48h</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-purple-600">Standard</div>
-                                        <div class="text-gray-600">3-5 jours</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-purple-600">Poids max</div>
-                                        <div class="text-gray-600">500 kg/colis</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-purple-600">Destinations</div>
-                                        <div class="text-gray-600">Monde entier</div>
-                                    </div>
-                                </div>
-                            @elseif($service['titre'] == 'Transport Terrestre')
-                                <div class="grid grid-cols-2 gap-4 text-sm">
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-green-600">Camion 19T</div>
-                                        <div class="text-gray-600">90 m³</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-green-600">Semi-remorque</div>
-                                        <div class="text-gray-600">100 m³</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-green-600">Réfrigéré</div>
-                                        <div class="text-gray-600">-18°C à +25°C</div>
-                                    </div>
-                                    <div class="bg-white rounded-lg p-4">
-                                        <div class="font-semibold text-green-600">Zone</div>
-                                        <div class="text-gray-600">Afrique Ouest</div>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="bg-white rounded-lg p-6">
-                                    <h3 class="font-semibold text-gray-900 mb-4">Service professionnel</h3>
-                                    <p class="text-gray-600 text-sm">
-                                        Notre équipe d'experts vous accompagne à chaque étape pour garantir la réussite de vos opérations.
-                                    </p>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,8 +206,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Facteur 1 -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-4xl mb-4">📏</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl mx-auto mb-4">
+                    <i class="fas fa-ruler-combined"></i>
+                </div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Dimensions</h3>
                 <p class="text-gray-600 text-sm">
                     Volume et poids de vos marchandises
@@ -175,8 +217,10 @@
             </div>
 
             <!-- Facteur 2 -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-4xl mb-4">🌍</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-2xl mx-auto mb-4">
+                    <i class="fas fa-globe-africa"></i>
+                </div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Destination</h3>
                 <p class="text-gray-600 text-sm">
                     Distance et accessibilité du lieu de livraison
@@ -184,8 +228,10 @@
             </div>
 
             <!-- Facteur 3 -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-4xl mb-4">⚡</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-2xl mx-auto mb-4">
+                    <i class="fas fa-bolt"></i>
+                </div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Urgence</h3>
                 <p class="text-gray-600 text-sm">
                     Délai de livraison souhaité
@@ -193,8 +239,10 @@
             </div>
 
             <!-- Facteur 4 -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-4xl mb-4">📦</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mx-auto mb-4">
+                    <i class="fas fa-box"></i>
+                </div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Nature</h3>
                 <p class="text-gray-600 text-sm">
                     Type de marchandises et emballage requis
@@ -207,8 +255,8 @@
                 Obtenez un devis personnalisé gratuit en quelques minutes
             </p>
             <a href="{{ route('demande.create') }}" 
-               class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors inline-flex items-center">
-                💰 Calculer mon devis
+               class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors inline-flex items-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                <i class="fas fa-calculator mr-3"></i> Calculer mon devis
             </a>
         </div>
     </div>
@@ -228,43 +276,104 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Afrique de l'Ouest -->
-            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8">
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">🌍 Afrique de l'Ouest</h3>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 hover:shadow-xl transition-all duration-300">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-map-marker-alt text-green-600 mr-3"></i>
+                    Afrique de l'Ouest
+                </h3>
                 <div class="space-y-2 text-sm text-gray-700">
-                    <div>🇹🇬 Togo - Siège social</div>
-                    <div>🇧🇯 Bénin - Agence</div>
-                    <div>🇬🇭 Ghana - Partenaire</div>
-                    <div>🇳🇬 Nigeria - Partenaire</div>
-                    <div>🇨🇮 Côte d'Ivoire - Partenaire</div>
-                    <div>🇸🇳 Sénégal - Partenaire</div>
-                    <div>🇲🇱 Mali - Partenaire</div>
-                    <div>🇧🇫 Burkina Faso - Partenaire</div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇹🇬</span>
+                        <span>Togo - Siège social</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇧🇯</span>
+                        <span>Bénin - Agence</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇬🇭</span>
+                        <span>Ghana - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇳🇬</span>
+                        <span>Nigeria - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇮</span>
+                        <span>Côte d'Ivoire - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇸🇳</span>
+                        <span>Sénégal - Partenaire</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Afrique Centrale -->
-            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8">
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">🌍 Afrique Centrale</h3>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 hover:shadow-xl transition-all duration-300">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-map-marker-alt text-blue-600 mr-3"></i>
+                    Afrique Centrale
+                </h3>
                 <div class="space-y-2 text-sm text-gray-700">
-                    <div>🇨🇲 Cameroun - Partenaire</div>
-                    <div>🇬🇦 Gabon - Partenaire</div>
-                    <div>🇨🇬 Congo - Partenaire</div>
-                    <div>🇨🇩 RD Congo - Partenaire</div>
-                    <div>🇹🇩 Tchad - Partenaire</div>
-                    <div>🇨🇫 Centrafrique - Partenaire</div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇲</span>
+                        <span>Cameroun - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇬🇦</span>
+                        <span>Gabon - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇬</span>
+                        <span>Congo - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇩</span>
+                        <span>RD Congo - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇹🇩</span>
+                        <span>Tchad - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇫</span>
+                        <span>Centrafrique - Partenaire</span>
+                    </div>
                 </div>
             </div>
 
             <!-- International -->
-            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8">
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">🌍 International</h3>
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8 hover:shadow-xl transition-all duration-300">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-globe text-purple-600 mr-3"></i>
+                    International
+                </h3>
                 <div class="space-y-2 text-sm text-gray-700">
-                    <div>🇫🇷 France - Bureau</div>
-                    <div>🇧🇪 Belgique - Partenaire</div>
-                    <div>🇩🇪 Allemagne - Partenaire</div>
-                    <div>🇨🇳 Chine - Partenaire</div>
-                    <div>🇺🇸 États-Unis - Partenaire</div>
-                    <div>🇦🇪 Émirats - Partenaire</div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇫🇷</span>
+                        <span>France - Bureau</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇧🇪</span>
+                        <span>Belgique - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇩🇪</span>
+                        <span>Allemagne - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇨🇳</span>
+                        <span>Chine - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇺🇸</span>
+                        <span>États-Unis - Partenaire</span>
+                    </div>
+                    <div class="flex items-center p-2 hover:bg-white/50 rounded-lg transition-colors">
+                        <span class="text-lg mr-3">🇦🇪</span>
+                        <span>Émirats - Partenaire</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -284,8 +393,9 @@
         </div>
 
         <div class="space-y-6">
-            <div class="bg-white rounded-lg p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <i class="fas fa-question-circle text-blue-600 mr-3"></i>
                     Quels sont les délais de transport ?
                 </h3>
                 <p class="text-gray-600">
@@ -293,8 +403,9 @@
                 </p>
             </div>
 
-            <div class="bg-white rounded-lg p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <i class="fas fa-question-circle text-blue-600 mr-3"></i>
                     Comment suivre mon colis ?
                 </h3>
                 <p class="text-gray-600">
@@ -302,8 +413,9 @@
                 </p>
             </div>
 
-            <div class="bg-white rounded-lg p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <i class="fas fa-question-circle text-blue-600 mr-3"></i>
                     Quels documents sont nécessaires ?
                 </h3>
                 <p class="text-gray-600">
@@ -311,8 +423,9 @@
                 </p>
             </div>
 
-            <div class="bg-white rounded-lg p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <i class="fas fa-question-circle text-blue-600 mr-3"></i>
                     Comment sont calculés les tarifs ?
                 </h3>
                 <p class="text-gray-600">
@@ -334,14 +447,53 @@
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="{{ route('contact') }}" 
-               class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors inline-flex items-center justify-center">
-                📞 Contactez nos experts
+               class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors inline-flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                <i class="fas fa-phone mr-3"></i> Contactez nos experts
             </a>
             <a href="{{ route('demande.create') }}" 
                class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-gray-900 transition-colors inline-flex items-center justify-center">
-                📦 Faire une demande
+                <i class="fas fa-box mr-3"></i> Faire une demande
             </a>
         </div>
     </div>
 </section>
 @endsection
+
+@push('styles')
+<style>
+.hero-particles .particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Animation delays for particles */
+.hero-particles .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+.hero-particles .particle:nth-child(2) { left: 20%; animation-delay: 1s; }
+.hero-particles .particle:nth-child(3) { left: 30%; animation-delay: 2s; }
+.hero-particles .particle:nth-child(4) { left: 40%; animation-delay: 3s; }
+.hero-particles .particle:nth-child(5) { left: 50%; animation-delay: 4s; }
+.hero-particles .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+.hero-particles .particle:nth-child(7) { left: 70%; animation-delay: 1.5s; }
+.hero-particles .particle:nth-child(8) { left: 80%; animation-delay: 2.5s; }
+.hero-particles .particle:nth-child(9) { left: 90%; animation-delay: 3.5s; }
+</style>
+@endpush
+
+@php
+// Définition des images par service (à mettre dans votre contrôleur idéalement)
+$serviceImages = [
+    'Transport Maritime' => 'https://images.unsplash.com/photo-1589001015195-3cfc13e81f8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Transport Aérien' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Transport Terrestre' => 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Dédouanement' => 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Entreposage' => 'https://images.unsplash.com/photo-1553413071-42a9d49057c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Assurance' => 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+];
+@endphp

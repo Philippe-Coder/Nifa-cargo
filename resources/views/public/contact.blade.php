@@ -96,7 +96,7 @@
                         </label>
                         <input type="tel" id="telephone" name="telephone"
                                value="{{ old('telephone') }}"
-                               placeholder="+228 90 12 34 56"
+                               placeholder="+228 99 25 25 31"
                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('telephone') border-red-500 @enderror">
                         @error('telephone')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -110,15 +110,15 @@
                         <select id="sujet" name="sujet" required
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('sujet') border-red-500 @enderror">
                             <option value="">Sélectionnez un sujet</option>
-                            <option value="Demande de devis" {{ old('sujet') == 'Demande de devis' ? 'selected' : '' }}>📦 Demande de devis</option>
-                            <option value="Transport maritime" {{ old('sujet') == 'Transport maritime' ? 'selected' : '' }}>🚢 Transport maritime</option>
-                            <option value="Transport aérien" {{ old('sujet') == 'Transport aérien' ? 'selected' : '' }}>✈️ Transport aérien</option>
-                            <option value="Transport terrestre" {{ old('sujet') == 'Transport terrestre' ? 'selected' : '' }}>🚛 Transport terrestre</option>
-                            <option value="Dédouanement" {{ old('sujet') == 'Dédouanement' ? 'selected' : '' }}>📋 Dédouanement</option>
-                            <option value="Suivi de colis" {{ old('sujet') == 'Suivi de colis' ? 'selected' : '' }}>📦 Suivi de colis</option>
-                            <option value="Réclamation" {{ old('sujet') == 'Réclamation' ? 'selected' : '' }}>⚠️ Réclamation</option>
-                            <option value="Partenariat" {{ old('sujet') == 'Partenariat' ? 'selected' : '' }}>🤝 Partenariat</option>
-                            <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>💬 Autre</option>
+                            <option value="Demande de devis" {{ old('sujet') == 'Demande de devis' ? 'selected' : '' }}>Demande de devis</option>
+                            <option value="Transport maritime" {{ old('sujet') == 'Transport maritime' ? 'selected' : '' }}>Transport maritime</option>
+                            <option value="Transport aérien" {{ old('sujet') == 'Transport aérien' ? 'selected' : '' }}>Transport aérien</option>
+                            <option value="Transport terrestre" {{ old('sujet') == 'Transport terrestre' ? 'selected' : '' }}>Transport terrestre</option>
+                            <option value="Dédouanement" {{ old('sujet') == 'Dédouanement' ? 'selected' : '' }}>Dédouanement</option>
+                            <option value="Suivi de colis" {{ old('sujet') == 'Suivi de colis' ? 'selected' : '' }}>Suivi de colis</option>
+                            <option value="Réclamation" {{ old('sujet') == 'Réclamation' ? 'selected' : '' }}>Réclamation</option>
+                            <option value="Partenariat" {{ old('sujet') == 'Partenariat' ? 'selected' : '' }}> Partenariat</option>
+                            <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre</option>
                         </select>
                         @error('sujet')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -147,7 +147,7 @@
                     
                     <button type="submit" 
                             class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                        📤 Envoyer le message
+                         Envoyer le message
                     </button>
                 </form>
             </div>
@@ -155,7 +155,7 @@
             <!-- Informations de contact -->
             <div>
                 <h2 class="text-3xl font-bold text-gray-900 mb-8">
-                    📞 Nos coordonnées
+                    Nos coordonnées
                 </h2>
                 
                 <div class="space-y-8">
@@ -207,15 +207,15 @@
                 <!-- Contact d'urgence -->
                 <div class="mt-8 bg-red-50 border border-red-200 rounded-xl p-6">
                     <h3 class="text-lg font-semibold text-red-900 mb-4">
-                        🚨 Contact d'urgence
+                         Contact d'urgence
                     </h3>
                     <p class="text-red-700 text-sm mb-3">
                         Pour les urgences en dehors des heures d'ouverture
                     </p>
                     <div class="flex items-center">
                         <span class="text-lg mr-3">📱</span>
-                        <a href="tel:+22890000000" class="text-red-600 font-medium hover:underline">
-                            +228 90 00 00 00
+                        <a href="tel:+22899252531" class="text-red-600 font-medium hover:underline">
+                            +229 99 25 25 31
                         </a>
                     </div>
                 </div>
@@ -244,7 +244,7 @@
                 <p class="text-gray-600 text-sm mb-4">
                     Chat direct avec nos conseillers
                 </p>
-                <a href="https://wa.me/22890123456" target="_blank"
+                <a href="https://wa.me/22899252531" target="_blank"
                    class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
                     Ouvrir WhatsApp
                 </a>
@@ -253,13 +253,13 @@
             <!-- Telegram -->
             <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
                 <div class="text-4xl mb-4">📱</div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Telegram</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">TikTok</h3>
                 <p class="text-gray-600 text-sm mb-4">
-                    Support technique rapide
+                    Suivez nos actualités
                 </p>
-                <a href="https://t.me/nifasupport" target="_blank"
+                 <a href="https://www.tiktok.com/@nifgroupcargo" target="_blank"
                    class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                    Ouvrir Telegram
+                    Ouvrir TikTok
                 </a>
             </div>
             
@@ -270,7 +270,7 @@
                 <p class="text-gray-600 text-sm mb-4">
                     Suivez nos actualités
                 </p>
-                <a href="https://facebook.com/nifatransport" target="_blank"
+                <a href="https://www.facebook.com/Espoir.amewuho55" target="_blank"
                    class="bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors">
                     Voir la page
                 </a>
@@ -409,8 +409,8 @@
                         <div class="border-t pt-2 mt-3">
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Urgences 24h/7j</span>
-                                <a href="tel:+22890000000" class="font-medium text-red-600 hover:underline">
-                                    +228 90 00 00 00
+                                <a href="tel:+22899252531" class="font-medium text-red-600 hover:underline">
+                                    +228 99 25 25 31
                                 </a>
                             </div>
                         </div>
@@ -423,7 +423,7 @@
                         🧭 Itinéraires rapides
                     </h3>
                     <div class="space-y-3">
-                        <a href="https://maps.google.com/directions/?api=1&destination=6.1319,1.2228" 
+                        <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" 
                            target="_blank" 
                            class="block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 transition-colors">
                             <div class="flex items-center">
@@ -505,7 +505,7 @@
 
 @push('scripts')
 <!-- Google Maps API -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+<script async defer src="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7"></script>
 
 <script>
 let map;
@@ -523,7 +523,7 @@ const locations = {
                 <p class="text-sm text-gray-600 mb-2">123 Avenue de la Logistique<br>Quartier Administratif, Lomé</p>
                 <div class="space-y-1 text-xs text-gray-500">
                     <div>📞 +228 22 61 00 00</div>
-                    <div>📱 +228 90 12 34 56</div>
+                    <div>📱 +228 99 25 25 31</div>
                     <div>✉️ contact@nifa.tg</div>
                     <div>🕒 Lun-Ven: 8h-18h, Sam: 8h-12h</div>
                 </div>
@@ -547,12 +547,12 @@ const locations = {
                 <p class="text-sm text-gray-600 mb-2">Port de Cotonou<br>Zone Industrielle, Bénin</p>
                 <div class="space-y-1 text-xs text-gray-500">
                     <div>📞 +229 21 12 34 56</div>
-                    <div>📱 +229 96 12 34 56</div>
+                    <div>📱 +228 99 25 25 31</div>
                     <div>✉️ benin@nifa.tg</div>
                     <div>🕒 Lun-Ven: 8h-18h, Sam: 8h-12h</div>
                 </div>
                 <div class="mt-3">
-                    <a href="https://maps.google.com/directions/?api=1&destination=6.3703,2.3912" 
+                    <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" 
                        target="_blank" 
                        class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
                         📍 Itinéraire
@@ -687,11 +687,11 @@ window.addEventListener('load', function() {
                             La carte interactive n'a pas pu se charger. Utilisez les liens ci-dessous pour nous localiser.
                         </p>
                         <div class="space-y-2">
-                            <a href="https://maps.google.com/?q=6.1319,1.2228" target="_blank" 
+                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank" 
                                class="block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                                 📍 Siège Togo sur Google Maps
                             </a>
-                            <a href="https://maps.google.com/?q=6.3703,2.3912" target="_blank" 
+                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank" 
                                class="block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
                                 📍 Agence Bénin sur Google Maps
                             </a>

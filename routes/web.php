@@ -18,7 +18,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 
 
-
+// Routes de la galerie
+Route::get('/galerie', [GalerieController::class, 'index'])->name('galerie.index');
+Route::get('/galerie/{galerie}', [GalerieController::class, 'show'])->name('galerie.show');
 // Routes publiques (vitrine)
 Route::get('/', [PublicController::class, 'accueil'])->name('accueil');
 Route::get('/services', [PublicController::class, 'services'])->name('services');
@@ -27,6 +29,8 @@ Route::post('/contact', [PublicController::class, 'envoyerContact'])->name('cont
 Route::get('/a-propos', [PublicController::class, 'apropos'])->name('apropos');
 Route::get('/suivi', [PublicController::class, 'suiviPublic'])->name('suivi.public');
 Route::post('/suivi', [PublicController::class, 'rechercherDemande'])->name('suivi.rechercher');
+
+
 
 // Routes publiques pour les paiements (callbacks)
 Route::get('/paiement/success', [PaiementController::class, 'success'])->name('paiement.success');
