@@ -41,6 +41,7 @@ class DemandeController extends Controller
         $demande = DemandeTransport::create([
             'user_id' => Auth::id(),
             'reference' => $reference,
+            'type' => 'import', // Valeur par défaut, à adapter selon le type de transport
             'type_transport' => $validated['type_transport'],
             'marchandise' => $validated['marchandise'],
             'poids' => $validated['poids'] ?? null,
@@ -82,3 +83,5 @@ class DemandeController extends Controller
 
         return redirect()->route('mes-demandes.show', $demande)
             ->with('success', 'Votre demande a été soumise avec succès !');
+    }
+}

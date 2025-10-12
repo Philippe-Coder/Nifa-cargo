@@ -114,11 +114,11 @@ class DemandeTransport extends Model
     }
 
     /**
-     * Relation avec les notifications
+     * Relation avec les notifications (relation polymorphe)
      */
     public function notifications()
     {
-        return $this->hasMany(Notification::class);
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
     /**
@@ -164,5 +164,13 @@ class DemandeTransport extends Model
         $etapesTerminees = $this->etapes()->where('statut', 'terminee')->count();
         
         return $totalEtapes > 0 ? round(($etapesTerminees / $totalEtapes) * 100) : 0;
+    }
+
+    /**
+     * URL de la notification pour ce modèle
+     */
+    public function notificationUrl(): string
+    {
+        return route('mes-demandes.show', $this->id);
     }
 }

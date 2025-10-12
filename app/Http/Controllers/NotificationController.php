@@ -37,7 +37,11 @@ class NotificationController extends Controller
      */
     public function markAllAsRead()
     {
-        Auth::user()->unreadNotifications->markAsRead();
+        $unreadNotifications = Auth::user()->unreadNotifications;
+        
+        foreach ($unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
         
         return back()->with('success', 'Toutes les notifications ont été marquées comme lues.');
     }

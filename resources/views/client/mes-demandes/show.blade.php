@@ -9,7 +9,7 @@
     <ol class="flex items-center space-x-2 text-sm text-gray-600">
         <li><a href="{{ route('dashboard') }}" class="hover:text-blue-600">Dashboard</a></li>
         <li><i class="fas fa-chevron-right mx-2"></i></li>
-        <li><a href="{{ route('mes-demandes') }}" class="hover:text-blue-600">Mes Demandes</a></li>
+        <li><a href="{{ route('mes-demandes.index') }}" class="hover:text-blue-600">Mes Demandes</a></li>
         <li><i class="fas fa-chevron-right mx-2"></i></li>
         <li class="text-gray-900 font-medium">{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</li>
     </ol>

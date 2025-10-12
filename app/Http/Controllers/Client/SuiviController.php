@@ -31,7 +31,9 @@ class SuiviController extends Controller
             'etapes.agent',
             'documents.uploadedBy',
             'notifications' => function($query) {
-                $query->where('user_id', Auth::id())->latest();
+                $query->where('notifiable_type', DemandeTransport::class)
+                      ->where('user_id', Auth::id())
+                      ->latest();
             }
         ])
         ->where('user_id', Auth::id())
