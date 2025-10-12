@@ -6,10 +6,11 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class NotificationController extends Controller
 {
     /**
-     * Afficher toutes les notifications de l'utilisateur
+     * Afficher la liste des notifications
      */
     public function index()
     {
@@ -18,6 +19,11 @@ class NotificationController extends Controller
             ->paginate(15);
 
         return view('notifications.index', compact('notifications'));
+    });
+
+        return Inertia::render('Notifications/Index', [
+            'notifications' => $notifications
+        ]);
     }
 
     /**
@@ -37,13 +43,25 @@ class NotificationController extends Controller
      */
     public function markAllAsRead()
     {
-        $unreadNotifications = Auth::user()->unreadNotifications;
+        Auth::user()->unreadNotifications->markAsRead();
         
-        foreach ($unreadNotifications as $notification) {
-            $notification->markAsRead();
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true]);
         }
         
         return back()->with('success', 'Toutes les notifications ont été marquées comme lues.');
+    }
+
+    /**
+     * Récupérer le nombre de notifications non lues
+     */
+    public function unreadCount()
+    {
+        $count = Auth::user()->unreadNotifications()->count();
+        
+        return response()->json([
+            'count' => $count
+        ]);
     }
 
     /**
@@ -55,7 +73,25 @@ class NotificationController extends Controller
         
         $notification->delete();
         
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+        
         return back()->with('success', 'Notification supprimée avec succès.');
+    }
+
+    /**
+     * Vider toutes les notifications
+     */
+    public function clearAll()
+    {
+        Auth::user()->notifications()->delete();
+        
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+        
+        return back()->with('success', 'Toutes les notifications ont été supprimées.');
     }
 
     /**
