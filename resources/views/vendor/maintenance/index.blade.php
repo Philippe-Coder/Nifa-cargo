@@ -66,13 +66,13 @@
 </head>
 <body>
     <div class="container">
-        <img src="{{ asset('images/logo.png') }}" alt="NIFA Logo" class="logo">
+        <img src="{{ asset('img/logo.png') }}" alt="NIFA Logo" class="logo">
         <div class="spinner"></div>
         <h1>Maintenance en cours</h1>
         <div class="status">Mise à jour du système</div>
         <p>Notre site est actuellement en cours de maintenance pour une mise à jour. Nous faisons de notre mieux pour revenir au plus vite.</p>
         <p>Merci de votre compréhension et de votre patience.</p>
-        <p><small>L'équipe NIFA</small></p>
+        <p><small>L'équipe NIFA CARGO</small></p>
     </div>
 </body>
 </html>

@@ -33,7 +33,7 @@
                 <div class="flex items-center">
                     <!-- Logo -->
                     <a href="{{ route('accueil') }}" class="flex items-center">
-                        <span class="text-2xl font-bold text-blue-600">🚢 NIFA</span>
+                        <img src="{{ asset('img/logo.png') }}" alt="NIFA CARGO" class="h-10 w-auto">
                         <span class="ml-2 text-sm text-gray-600 hidden sm:block">Transport & Logistique</span>
                     </a>
                 </div>

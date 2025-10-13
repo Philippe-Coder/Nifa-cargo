@@ -332,11 +332,11 @@
             <!-- Logo -->
             <div class="flex items-center justify-between p-4 border-b border-white border-opacity-20 relative">
                 <div class="flex items-center transition-all duration-300 default-menu-content">
-                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
-                        <span class="text-white font-bold text-lg">N</span>
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                        <img src="{{ asset('img/logo.png') }}" alt="NIFA CARGO" class="w-10 h-10 object-contain">
                     </div>
                     <div class="transition-all duration-300 logo-text">
-                        <h1 class="text-xl font-bold">NIFA</h1>
+                        <h1 class="text-xl font-bold">NIFA CARGO</h1>
                         <p class="text-xs text-blue-200">
                             @if(Auth::user()->isAdmin())
                                 Administration
@@ -349,8 +349,8 @@
                 
                 <!-- Logo réduit -->
                 <div class="collapsed-menu-icon">
-                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">N</span>
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                        <img src="{{ asset('img/logo.png') }}" alt="NIFA CARGO" class="w-10 h-10 object-contain">
                     </div>
                 </div>
                 
@@ -376,9 +376,9 @@
                         <p class="text-xs text-blue-200 truncate">{{ Auth::user()->email }}</p>
                         <span class="inline-block mt-1 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">
                             @if(Auth::user()->isAdmin())
-                                👨‍💼 Admin
+                                Admin
                             @else
-                                👤 Client
+                                Client
                             @endif
                         </span>
                     </div>
