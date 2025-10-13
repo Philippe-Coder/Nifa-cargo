@@ -47,7 +47,7 @@ class DemandeTransport extends Model
      */
     public static function generateReference(): string
     {
-        $prefix = 'NIFA-' . date('Ym') . '-';
+        $prefix = 'NIF-' . date('Ym') . '-';
         $lastDemand = static::where('reference', 'like', $prefix . '%')
             ->orderBy('reference', 'desc')
             ->first();

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Dashboard Client - NIFA')
+@section('title', 'Dashboard Client - NIF CARGO')
 @section('page-title', 'Mon Espace Client')
 
 @section('content')
@@ -191,7 +191,7 @@
                     <h3 class="font-semibold text-gray-900 text-lg">{{ Auth::user()->name }}</h3>
                     <p class="text-gray-600 text-sm">{{ Auth::user()->email }}</p>
                     <span class="inline-block mt-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
-                        Client NIFA
+                        Client NIF Cargo
                     </span>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Détails Demande - NIFA')
+@section('title', 'Détails Demande - NIF Cargo')
 @section('page-title', 'Détails de la Demande')
 
 @section('content')
@@ -405,7 +405,7 @@
                 <div class="flex items-center p-3 bg-green-50 rounded-lg">
                     <i class="fas fa-envelope mr-3 text-green-600"></i>
                     <div>
-                        <div class="font-medium text-gray-900">support@nifa.tg</div>
+                        <div class="font-medium text-gray-900">contact@nif-tg.com</div>
                         <div class="text-gray-600 text-xs">Email de support</div>
                     </div>
                 </div>

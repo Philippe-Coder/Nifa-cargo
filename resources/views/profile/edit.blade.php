@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Mon Profil - NIFA')
+@section('title', 'Mon Profil - NIF Cargo')
 @section('page-title', 'Mon Profil')
 
 @section('content')

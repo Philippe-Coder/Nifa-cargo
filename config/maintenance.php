@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'secret' => env('MAINTENANCE_SECRET', 'nifa-maintenance-2023'),
+    'secret' => env('MAINTENANCE_SECRET', 'nif-maintenance-2023'),
 
     /*
     |--------------------------------------------------------------------------

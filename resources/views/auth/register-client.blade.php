@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Créer un compte client - NIFA')
-@section('description', 'Rejoignez des milliers de clients qui font confiance à NIFA pour leurs besoins de transport en Afrique.')
+@section('title', 'Créer un compte client - NIF Cargo')
+@section('description', 'Rejoignez des milliers de clients qui font confiance à NIF Cargo pour leurs besoins de transport en Afrique.')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -10,7 +10,7 @@
     <div class="mb-6 text-center">
         <div class="flex items-center justify-center mb-4">
             <span class="text-4xl mr-2">🚢</span>
-            <h1 class="text-2xl font-bold text-gray-900">NIFA</h1>
+            <h1 class="text-2xl font-bold text-gray-900">NIF Cargo</h1>
         </div>
         <h2 class="text-lg text-gray-600">Créer un compte client</h2>
         <p class="text-sm text-gray-500 mt-2">Rejoignez des milliers de clients qui nous font confiance</p>
@@ -77,7 +77,7 @@
                 <input type="checkbox" required class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 mt-1">
                 <span class="ml-2 text-sm text-gray-600">
                     J'accepte les <a href="#" class="text-blue-600 hover:underline">conditions générales d'utilisation</a> 
-                    et la <a href="#" class="text-blue-600 hover:underline">politique de confidentialité</a> de NIFA.
+                    et la <a href="#" class="text-blue-600 hover:underline">politique de confidentialité</a> de NIF Cargo.
                 </span>
             </label>
         </div>
@@ -87,7 +87,7 @@
             <label class="flex items-start">
                 <input type="checkbox" name="newsletter" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 mt-1">
                 <span class="ml-2 text-sm text-gray-600">
-                    Je souhaite recevoir les actualités et offres spéciales de NIFA par email.
+                    Je souhaite recevoir les actualités et offres spéciales de NIF Cargo par email.
                 </span>
             </label>
         </div>

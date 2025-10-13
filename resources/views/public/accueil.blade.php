@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'NIFA - Transport et Logistique en Afrique')
+@section('title', 'NIF Cargo - Transport et Logistique en Afrique')
 
 @section('content')
 <!-- Hero Section avec Slider Synchronisé -->

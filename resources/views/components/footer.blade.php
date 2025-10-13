@@ -71,7 +71,7 @@
                         <li>
                             <a href="{{ route('apropos') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-chevron-right mr-2 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                                <span class="text-sm">À propos de NIFA</span>
+                                <span class="text-sm">À propos de NIF Cargo</span>
                             </a>
                         </li>
                         <li>
@@ -150,11 +150,11 @@
                                 <ul class="space-y-2 text-gray-400 text-sm">
                                     <li class="flex items-center">
                                         <i class="fas fa-envelope mr-2 text-blue-400 text-xs"></i>
-                                        <a href="mailto:contact@nifa.tg" class="hover:text-white transition-colors">contact@nifa.tg</a>
+                                        <a href="mailto:contact@nif-tg.com" class="hover:text-white transition-colors">contact@nif-tg.com</a>
                                     </li>
                                     <li class="flex items-center">
                                         <i class="fas fa-headset mr-2 text-red-400 text-xs"></i>
-                                        <a href="mailto:support@nifa.tg" class="hover:text-white transition-colors">support@nifa.tg</a>
+                                        <a href="mailto:contact@nif-tg.com" class="hover:text-white transition-colors">contact@nif-tg.com</a>
                                     </li>
                                 </ul>
                             </div>
@@ -219,7 +219,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <div class="mb-4 md:mb-0">
                     <p class="text-gray-400 text-sm">
-                        &copy; {{ date('Y') }} NIFA - OGOUBI KOMIVI Philippe. Tous droits réservés.
+                        &copy; {{ date('Y') }} NIF Cargo - OGOUBI KOMIVI Philippe. Tous droits réservés.
                     </p>
                 </div>
                 

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Suivi de Colis - NIFA CARGO')
+@section('title', 'Suivi de Colis - NIF CARGO')
 
 @section('content')
 <!-- Hero Section -->
@@ -60,7 +60,7 @@
                     <div class="flex-1">
                         <input type="text" 
                                name="reference" 
-                               placeholder="Ex: NIFACARGO-2025-001" 
+                               placeholder="Ex: NIFCARGO-2025-001" 
                                required
                                value="{{ old('reference') }}"
                                class="w-full px-6 py-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('reference') border-red-500 @enderror">

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Dashboard Admin - NIFA')
-@section('page-title', 'Administration NIFA')
+@section('title', 'Dashboard Admin - NIF Cargo')
+@section('page-title', 'Administration NIF Cargo')
 
 @section('content')
 <!-- Hero Section -->
@@ -22,7 +22,7 @@
                     Bonjour, {{ Auth::user()->name }} !
                 </h1>
                 <p class="text-blue-100 text-lg max-w-2xl">
-                    Gérez l'ensemble des activités de NIFA et supervisez les opérations en temps réel
+                    Gérez l'ensemble des activités de NIF Cargo et supervisez les opérations en temps réel
                 </p>
             </div>
             <div class="hidden lg:block">

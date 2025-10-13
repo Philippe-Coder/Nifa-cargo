@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Contact - NIFA Transport & Logistique')
-@section('description', 'Contactez NIFA pour vos besoins de transport. Bureaux au Togo et Bénin. Devis gratuit et conseil personnalisé.')
+@section('title', 'Contact - NIF CARGO')
+@section('description', 'Contactez NIF CARGO pour vos besoins de transport. Bureaux au Togo et Bénin. Devis gratuit et conseil personnalisé.')
 
 @section('content')
 <!-- Hero Section Élégante -->
@@ -9,7 +9,7 @@
     <!-- Image de fond avec overlay -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-             alt="Contact NIFA Transport" 
+             alt="Contact NIF CARGO" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-blue-900/60"></div>
     </div>
@@ -161,7 +161,7 @@
                             <input type="checkbox" id="newsletter" name="newsletter" value="1"
                                    class="h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-1">
                             <label for="newsletter" class="text-sm text-slate-600 leading-relaxed">
-                                Je souhaite recevoir les actualités NIFA et des conseils logistiques par email
+                                Je souhaite recevoir les actualités NIF CARGO et des conseils logistiques par email
                             </label>
                         </div>
                         
@@ -231,8 +231,8 @@
                             </div>
                             <div>
                                 <p class="text-slate-700 font-medium">Email</p>
-                                <a href="mailto:contact@nifa.tg" class="text-slate-600 text-sm hover:text-blue-600 transition-colors">
-                                    contact@nifa.tg
+                                <a href="mailto:contact@nif-tg.com" class="text-slate-600 text-sm hover:text-blue-600 transition-colors">
+                                    contact@nif-tg.com
                                 </a>
                             </div>
                         </div>
@@ -296,8 +296,8 @@
                             </div>
                             <div>
                                 <p class="text-slate-700 font-medium">Email</p>
-                                <a href="mailto:benin@nifa.tg" class="text-slate-600 text-sm hover:text-red-600 transition-colors">
-                                    benin@nifa.tg
+                                <a href="mailto:contact@nif-tg.com" class="text-slate-600 text-sm hover:text-red-600 transition-colors">
+                                    contact@nif-tg.com
                                 </a>
                             </div>
                         </div>

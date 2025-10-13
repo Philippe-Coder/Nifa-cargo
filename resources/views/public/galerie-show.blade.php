@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $galerie->titre . ' - Galerie NIFA')
+@section('title', $galerie->titre . ' - Galerie NIF CARGO')
 
 @push('styles')
 <style>

@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="@yield('description', 'NIFA, leader du transport et de la logistique en Afrique. Services de transport maritime, aérien et terrestre avec suivi en temps réel.')">
+    <meta name="description" content="@yield('description', 'NIF Cargo, leader du transport et de la logistique en Afrique. Services de transport maritime, aérien et terrestre avec suivi en temps réel.')">
 
-    <title>{{ config('app.name', 'NIFA') }} - @yield('title', 'Transport et Logistique')</title>
+    <title>{{ config('app.name', 'NIF Cargo') }} - @yield('title', 'Transport et Logistique')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Nos Services - NIFA Transport & Logistique')
+@section('title', 'Nos Services - NIF CARGO')
 @section('description', 'Découvrez nos services de transport maritime, aérien, terrestre, dédouanement, entreposage et assurance en Afrique.')
 
 @section('content')
@@ -9,7 +9,7 @@
     <!-- Background Image -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
-             alt="Services de transport et logistique NIFA" 
+             alt="Services de transport et logistique NIF CARGO" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-slate-900/60"></div>
     </div>
@@ -99,7 +99,7 @@
                         <!-- Image principale du service -->
                         <div class="relative rounded-2xl overflow-hidden shadow-2xl">
                             <img src="{{ $service['image_url'] ?? $serviceImages[$service['titre']] ?? 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}" 
-                                 alt="{{ $service['titre'] }} - NIFA Transport"
+                                 alt="{{ $service['titre'] }} - NIF CARGO"
                                  class="w-full h-80 object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             

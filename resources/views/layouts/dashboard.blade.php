@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard - NIF CARGO')</title>
-    <meta name="description" content="@yield('description', 'Espace client NIFA - Gérez vos demandes de transport et suivez vos envois.')">
+    <meta name="description" content="@yield('description', 'Espace client NIF CARGO - Gérez vos demandes de transport et suivez vos envois.')">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -333,10 +333,10 @@
             <div class="flex items-center justify-between p-4 border-b border-white border-opacity-20 relative">
                 <div class="flex items-center transition-all duration-300 default-menu-content">
                     <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3">
-                        <img src="{{ asset('images/logo.png') }}" alt="NIFA CARGO" class="w-10 h-12 object-contain">
+                        <img src="{{ asset('images/logo.png') }}" alt="NIF CARGO" class="w-10 h-12 object-contain">
                     </div>
                     <div class="transition-all duration-300 logo-text">
-                        <h1 class="text-xl font-bold">NIFA CARGO</h1>
+                        <h1 class="text-xl font-bold">NIF CARGO</h1>
                         <p class="text-xs text-blue-200">
                             @if(Auth::user()->isAdmin())
                                 Administration

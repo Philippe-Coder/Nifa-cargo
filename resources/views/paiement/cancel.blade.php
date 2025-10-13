@@ -49,12 +49,12 @@
                 Si vous rencontrez des difficultés, contactez notre support client.
             </p>
             <div class="mt-2">
-                <a href="mailto:support@nifa.com" class="text-blue-600 hover:underline text-sm">
-                    📧 support@nifa.com
+                <a href="mailto:contact@nif-tg.com" class="text-blue-600 hover:underline text-sm">
+                    📧 contact@nif-tg.com
                 </a>
                 <span class="mx-2 text-gray-400">|</span>
-                <a href="tel:+22890123456" class="text-blue-600 hover:underline text-sm">
-                    📞 +228 90 12 34 56
+                <a href="tel:+22899252531" class="text-blue-600 hover:underline text-sm">
+                    📞 +228 99 25 25 31
                 </a>
             </div>
         </div>

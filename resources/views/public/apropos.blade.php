@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'À Propos - NIFA Transport & Logistique')
-@section('description', 'Découvrez NIFA, leader du transport et de la logistique en Afrique depuis plus de 10 ans. Notre histoire, nos valeurs et notre engagement.')
+@section('title', 'À Propos - NIF Cargo')
+@section('description', 'Découvrez NIF Cargo, leader du transport et de la logistique en Afrique depuis plus de 10 ans. Notre histoire, nos valeurs et notre engagement.')
 
 @section('content')
 <!-- Hero Section avec Image -->
@@ -9,7 +9,7 @@
     <!-- Background Image -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80" 
-             alt="Équipe NIFA Transport & Logistique" 
+             alt="Équipe NIF Cargo" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-red-700/60"></div>
     </div>
@@ -31,7 +31,7 @@
         </div>
 
         <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
-            À propos de <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-red-300">NIFA</span>
+            À propos de <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-red-300">NIF Cargo</span>
         </h1>
         <p class="text-xl lg:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
             Votre partenaire de confiance pour le transport et la logistique en Afrique depuis plus de 10 ans
@@ -51,7 +51,7 @@
     <!-- Image de fond -->
     <div class="absolute inset-0 opacity-10">
         <img src="https://images.unsplash.com/photo-1565689228866-1f6a7ae89ab1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-             alt="Histoire NIFA" 
+             alt="Histoire NIF Cargo" 
              class="w-full h-full object-cover">
     </div>
 
@@ -70,13 +70,13 @@
                 
                 <div class="space-y-4 text-slate-700 leading-relaxed">
                     <p>
-                        Fondée en 2014 à Lomé, <strong class="text-blue-600">NIFA</strong> (Network International Freight Africa) est née de la vision de faciliter les échanges commerciaux entre l'Afrique et le reste du monde. Nos fondateurs, forts de leur expérience dans le transport international, ont identifié le besoin crucial d'un service de transport fiable et professionnel en Afrique de l'Ouest.
+                        Fondée en 2014 à Lomé, <strong class="text-blue-600">NIF Cargo</strong> (Network International Freight Africa) est née de la vision de faciliter les échanges commerciaux entre l'Afrique et le reste du monde. Nos fondateurs, forts de leur expérience dans le transport international, ont identifié le besoin crucial d'un service de transport fiable et professionnel en Afrique de l'Ouest.
                     </p>
                     <p>
                         Depuis notre création, nous avons accompagné des milliers d'entreprises et de particuliers dans leurs projets d'importation et d'exportation. Notre croissance constante témoigne de la confiance que nous accordent nos clients et de notre engagement à fournir des services de qualité.
                     </p>
                     <p>
-                        Aujourd'hui, NIFA est reconnue comme l'un des leaders du transport et de la logistique en Afrique de l'Ouest, avec des bureaux au Togo et au Bénin, et un réseau de partenaires dans plus de 15 pays.
+                        Aujourd'hui, NIF Cargo est reconnue comme l'un des leaders du transport et de la logistique en Afrique de l'Ouest, avec des bureaux au Togo et au Bénin, et un réseau de partenaires dans plus de 15 pays.
                     </p>
                 </div>
             </div>
@@ -85,7 +85,7 @@
             <div class="bg-gradient-to-br from-blue-600 to-red-600 rounded-2xl p-8 text-white shadow-2xl">
                 <div class="text-center mb-8">
                     <i class="fas fa-chart-line text-4xl mb-4 text-white"></i>
-                    <h3 class="text-2xl font-bold mb-2">NIFA en chiffres</h3>
+                    <h3 class="text-2xl font-bold mb-2">NIF Cargo en chiffres</h3>
                     <p class="text-blue-100">Une croissance continue depuis 2014</p>
                 </div>
                 
@@ -473,7 +473,7 @@
             Rejoignez nos clients satisfaits
         </h2>
         <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Faites confiance à NIFA pour tous vos besoins de transport et logistique en Afrique
+            Faites confiance à NIF Cargo pour tous vos besoins de transport et logistique en Afrique
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="{{ route('demande.create') }}" 

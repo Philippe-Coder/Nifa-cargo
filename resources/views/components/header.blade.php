@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIFA - Header Moderne</title>
+    <title>NIF Cargo - Header Moderne</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -119,7 +119,7 @@
                 <div class="flex items-center flex-shrink-0">
                     <a href="{{ route('accueil') }}" class="flex items-center group">
                         <!-- Remplacement du logo texte par votre image -->
-                        <img src="/images/logo.png" alt="NIFA Logo" class="h-12 w-auto transition-all duration-300 group-hover:scale-105">
+                        <img src="/images/logo.png" alt="NIF Cargo Logo" class="h-12 w-auto transition-all duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 
@@ -140,6 +140,10 @@
                     <a href="{{ route('contact') }}" 
                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('contact') ? 'active text-gray-900' : '' }}">
                         Contact
+                    </a>
+                    <a href="{{ route('blog.index') }}" 
+                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('blog.*') ? 'active text-gray-900' : '' }}">
+                            Actualités
                     </a>
                 </nav>
                 
@@ -278,6 +282,11 @@
                         <i class="fas fa-envelope mr-3 w-5 text-center text-gray-500"></i>
                         Contact
                     </a>
+                    <a href="{{ route('blog.index') }}" 
+   class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('blog.*') ? 'text-gray-900 bg-gray-50' : '' }}">
+    <i class="fas fa-newspaper mr-3 w-5 text-center text-gray-500"></i>
+    Actualités
+</a>
                     <a href="{{ route('suivi.public') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                         <i class="fas fa-search mr-3 w-5 text-center text-gray-500"></i>

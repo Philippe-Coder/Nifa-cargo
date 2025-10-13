@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Gestion des Demandes - NIFA Admin')
+@section('title', 'Gestion des Demandes - NIF Cargo Admin')
 @section('page-title', 'Gestion des Demandes')
 
 @section('content')

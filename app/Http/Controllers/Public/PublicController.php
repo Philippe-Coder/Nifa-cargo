@@ -182,7 +182,7 @@ class PublicController extends Controller
         // Pour l'exemple, on simule l'envoi
         
         try {
-            // Mail::to('contact@nifa.com')->send(new ContactMail($request->all()));
+            // Mail::to('contact@nif.com')->send(new ContactMail($request->all()));
             
             return back()->with('success', 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.');
         } catch (\Exception $e) {
@@ -203,14 +203,10 @@ class PublicController extends Controller
      */
     public function blog()
     {
-        // Récupérer les annonces actives, triées par date de publication décroissante
-        $annonces = Annonce::where('est_actif', true)
-            ->where('date_publication', '<=', now())
-            ->where(function($query) {
-                $query->whereNull('date_expiration')
-                      ->orWhere('date_expiration', '>=', now());
-            })
-            ->orderBy('date_publication', 'desc')
+        // Récupérer les annonces actives et valides, triées par ordre d'affichage
+        $annonces = Annonce::active()
+            ->valide()
+            ->ordered()
             ->paginate(9);
 
         return view('public.blog.index', compact('annonces'));
@@ -219,27 +215,19 @@ class PublicController extends Controller
     /**
      * Afficher un article du blog
      */
-    public function showArticle($slug)
+    public function showArticle($id)
     {
-        $article = Annonce::where('slug', $slug)
-            ->where('est_actif', true)
-            ->where('date_publication', '<=', now())
-            ->where(function($query) {
-                $query->whereNull('date_expiration')
-                      ->orWhere('date_expiration', '>=', now());
-            })
+        $article = Annonce::where('id', $id)
+            ->active()
+            ->valide()
             ->firstOrFail();
 
-        // Articles similaires (même catégorie, limité à 3)
+        // Articles similaires (même type, limité à 3)
         $articlesSimilaires = Annonce::where('id', '!=', $article->id)
-            ->where('categorie', $article->categorie)
-            ->where('est_actif', true)
-            ->where('date_publication', '<=', now())
-            ->where(function($query) {
-                $query->whereNull('date_expiration')
-                      ->orWhere('date_expiration', '>=', now());
-            })
-            ->orderBy('date_publication', 'desc')
+            ->where('type', $article->type)
+            ->active()
+            ->valide()
+            ->ordered()
             ->take(3)
             ->get();
 

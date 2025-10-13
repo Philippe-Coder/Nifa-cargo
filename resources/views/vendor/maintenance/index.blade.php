@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance en cours - NIFA</title>
+    <title>Maintenance en cours - NIF Cargo</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -66,13 +66,13 @@
 </head>
 <body>
     <div class="container">
-        <img src="{{ asset('img/logo.png') }}" alt="NIFA Logo" class="logo">
+        <img src="{{ asset('img/logo.png') }}" alt="NIF Cargo Logo" class="logo">
         <div class="spinner"></div>
         <h1>Maintenance en cours</h1>
         <div class="status">Mise à jour du système</div>
         <p>Notre site est actuellement en cours de maintenance pour une mise à jour. Nous faisons de notre mieux pour revenir au plus vite.</p>
         <p>Merci de votre compréhension et de votre patience.</p>
-        <p><small>L'équipe NIFA CARGO</small></p>
+        <p><small>L'équipe NIF CARGO</small></p>
     </div>
 </body>
 </html>

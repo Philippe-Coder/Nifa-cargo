@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Connexion - NIFA')
-@section('description', 'Connectez-vous à votre espace NIFA pour gérer vos demandes de transport et suivre vos envois.')
+@section('title', 'Connexion - NIF Cargo')
+@section('description', 'Connectez-vous à votre espace NIF Cargo pour gérer vos demandes de transport et suivre vos envois.')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -10,7 +10,7 @@
     <div class="mb-6 text-center">
         <div class="flex items-center justify-center mb-4">
             <span class="text-4xl mr-2">🚢</span>
-            <h1 class="text-2xl font-bold text-gray-900">NIFA</h1>
+            <h1 class="text-2xl font-bold text-gray-900">NIF Cargo</h1>
         </div>
         <h2 class="text-lg text-gray-600">Connexion à votre espace</h2>
     </div>
@@ -85,8 +85,8 @@
         <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
             <h3 class="text-sm font-medium text-yellow-800 mb-2">🛠️ Comptes de test (dev uniquement)</h3>
             <div class="text-xs text-yellow-700 space-y-1">
-                <div><strong>Admin:</strong> admin@nifa.com / admin123</div>
-                <div><strong>Client:</strong> client@nifa.com / client123</div>
+                <div><strong>Admin:</strong> admin@nif.com / admin123</div>
+                <div><strong>Client:</strong> client@nif.com / client123</div>
             </div>
         </div>
     @endif

@@ -67,7 +67,7 @@
                     
                     <span class="px-3 py-1 rounded-full text-xs font-bold {{ $annonce->active ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
                         <i class="fas fa-{{ $annonce->active ? 'eye' : 'eye-slash' }} mr-1"></i>
-                        {{ $annonce->active ? 'Actif' : 'Inactif' }}
+                        {{ $annonce->active ? 'Active' : 'Inactive' }}
                     </span>
                 </div>
             </div>
@@ -170,7 +170,7 @@
                         <label class="text-sm font-semibold text-gray-700">Statut</label>
                         <div class="flex items-center space-x-4">
                             <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium {{ $annonce->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $annonce->active ? 'Actif' : 'Inactif' }}
+                                {{ $annonce->active ? 'Active' : 'Inactive' }}
                             </span>
                             
                             @if($annonce->epingle)

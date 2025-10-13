@@ -16,10 +16,10 @@ class AdminUserSeeder extends Seeder
     {
         // Créer un utilisateur admin par défaut
         User::firstOrCreate(
-            ['email' => 'admin@nifa.com'],
+            ['email' => 'admin@nif.com'],
             [
-                'name' => 'Administrateur NIFA',
-                'email' => 'admin@nifa.com',
+                'name' => 'Administrateur NIF CARGO',
+                'email' => 'admin@nif.com',
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
                 'email_verified_at' => now(),
@@ -28,10 +28,10 @@ class AdminUserSeeder extends Seeder
 
         // Créer un utilisateur client de test
         User::firstOrCreate(
-            ['email' => 'client@nifa.com'],
+            ['email' => 'client@nif.com'],
             [
                 'name' => 'Client Test',
-                'email' => 'client@nifa.com',
+                'email' => 'client@nif.com',
                 'password' => Hash::make('client123'),
                 'role' => 'client',
                 'email_verified_at' => now(),

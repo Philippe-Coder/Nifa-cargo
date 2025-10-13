@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'NIFA - Transport et Logistique en Afrique')</title>
-    <meta name="description" content="@yield('description', 'NIFA, votre partenaire de confiance pour le transport et la logistique en Afrique. Services de transport maritime, aérien et terrestre.')">
+    <title>@yield('title', 'NIF Cargo - Transport et Logistique en Afrique')</title>
+    <meta name="description" content="@yield('description', 'NIF Cargo, votre partenaire de confiance pour le transport et la logistique en Afrique. Services de transport maritime, aérien et terrestre.')">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -33,7 +33,7 @@
                 <div class="flex items-center">
                     <!-- Logo -->
                     <a href="{{ route('accueil') }}" class="flex items-center">
-                        <img src="{{ asset('img/logo.png') }}" alt="NIFA CARGO" class="h-10 w-auto">
+                        <img src="{{ asset('img/logo.png') }}" alt="NIF CARGO" class="h-10 w-auto">
                         <span class="ml-2 text-sm text-gray-600 hidden sm:block">Transport & Logistique</span>
                     </a>
                 </div>
@@ -115,7 +115,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- À propos -->
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">🚢 NIFA</h3>
+                    <h3 class="text-lg font-semibold mb-4">🚢 NIF CARGO</h3>
                     <p class="text-gray-300 text-sm mb-4">
                         Votre partenaire de confiance pour le transport et la logistique en Afrique depuis plus de 10 ans.
                     </p>
@@ -165,8 +165,8 @@
                     <div class="space-y-2 text-sm text-gray-300">
                         <p>Totsi à 100m non loin de l’\église catholique Lomé</p>
                         <p>+228 22 61 00 00</p>
-                        <p>+228 90 12 34 56</p>
-                        <p>contact@nifa.com</p>
+                        <p>+228 99 25 25 31</p>
+                        <p>contact@nif-tg.com</p>
                     </div>
                 </div>
             </div>

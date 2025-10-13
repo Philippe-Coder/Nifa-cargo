@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Créer un compte administrateur - NIFA')
-@section('description', 'Accès réservé aux administrateurs autorisés NIFA.')
+@section('title', 'Créer un compte administrateur - NIF Cargo')
+@section('description', 'Accès réservé aux administrateurs autorisés NIF Cargo.')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -10,7 +10,7 @@
     <div class="mb-6 text-center">
         <div class="flex items-center justify-center mb-4">
             <span class="text-4xl mr-2">👨‍💼</span>
-            <h1 class="text-2xl font-bold text-gray-900">NIFA Admin</h1>
+            <h1 class="text-2xl font-bold text-gray-900">NIF Cargo Admin</h1>
         </div>
         <h2 class="text-lg text-gray-600">Créer un compte administrateur</h2>
         <div class="mt-2 p-2 bg-red-50 border border-red-200 rounded">
@@ -24,10 +24,10 @@
         <!-- Admin Key -->
         <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
             <x-input-label for="admin_key" value="Clé d'autorisation administrateur *" />
-            <x-text-input id="admin_key" class="block mt-1 w-full" type="password" name="admin_key" required autofocus placeholder="Clé secrète fournie par NIFA" />
+            <x-text-input id="admin_key" class="block mt-1 w-full" type="password" name="admin_key" required autofocus placeholder="Clé secrète fournie par NIF Cargo" />
             <x-input-error :messages="$errors->get('admin_key')" class="mt-2" />
             <p class="text-xs text-yellow-700 mt-1">
-                🔐 Cette clé vous a été fournie par l'équipe NIFA. Contactez le support si vous ne l'avez pas.
+                🔐 Cette clé vous a été fournie par l'équipe NIF Cargo. Contactez le support si vous ne l'avez pas.
             </p>
         </div>
 
@@ -41,15 +41,15 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" value="Adresse email professionnelle *" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="Ex: admin@nifa.com" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="Ex: admin@nif.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            <p class="text-xs text-gray-500 mt-1">Utilisez votre email professionnel NIFA</p>
+            <p class="text-xs text-gray-500 mt-1">Utilisez votre email professionnel NIF Cargo</p>
         </div>
 
         <!-- Telephone -->
         <div class="mt-4">
             <x-input-label for="telephone" value="Téléphone professionnel" />
-            <x-text-input id="telephone" class="block mt-1 w-full" type="tel" name="telephone" :value="old('telephone')" autocomplete="tel" placeholder="Ex: +228 22 61 00 00" />
+            <x-text-input id="telephone" class="block mt-1 w-full" type="tel" name="telephone" :value="old('telephone')" autocomplete="tel" placeholder="Ex: +228 99 25 25 31" />
             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
         </div>
 
@@ -78,7 +78,7 @@
             <label class="flex items-start">
                 <input type="checkbox" required class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 mt-1">
                 <span class="ml-2 text-sm text-gray-600">
-                    Je certifie être autorisé(e) à créer un compte administrateur NIFA et j'accepte les 
+                    Je certifie être autorisé(e) à créer un compte administrateur NIF Cargo et j'accepte les 
                     <a href="#" class="text-blue-600 hover:underline">conditions d'utilisation administrateur</a>.
                 </span>
             </label>
@@ -89,7 +89,7 @@
             <label class="flex items-start">
                 <input type="checkbox" required class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 mt-1">
                 <span class="ml-2 text-sm text-gray-600">
-                    Je m'engage à respecter la confidentialité des données clients et les procédures de sécurité NIFA.
+                    Je m'engage à respecter la confidentialité des données clients et les procédures de sécurité NIF Cargo.
                 </span>
             </label>
         </div>
@@ -120,8 +120,8 @@
     <div class="mt-4 text-center">
         <p class="text-xs text-gray-500">
             Besoin d'aide ? Contactez le support : 
-            <a href="mailto:support@nifa.com" class="text-blue-600 hover:underline">support@nifa.com</a> | 
-            <a href="tel:+22890123456" class="text-blue-600 hover:underline">+228 90 12 34 56</a>
+            <a href="mailto:contact@nif-tg.com" class="text-blue-600 hover:underline">contact@nif-tg.com</a> | 
+            <a href="tel:+22899252531" class="text-blue-600 hover:underline">+228 99 25 25 31</a>
         </p>
     </div>
         </div>

@@ -64,7 +64,7 @@ class CustomRegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Compte client créé avec succès ! Bienvenue chez NIFA.');
+        return redirect()->route('dashboard')->with('success', 'Compte client créé avec succès ! Bienvenue chez NIF CARGO.');
     }
 
     /**
@@ -89,7 +89,7 @@ class CustomRegisterController extends Controller
         ]);
 
         // Vérifier la clé secrète admin (vous pouvez la changer)
-        if ($request->admin_key !== 'NIFA_ADMIN_2024') {
+        if ($request->admin_key !== 'NIF_ADMIN_2024') {
             return back()->withErrors(['admin_key' => 'Clé administrateur invalide.']);
         }
 

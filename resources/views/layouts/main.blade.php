@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'NIFA - Transport et Logistique en Afrique')</title>
-    <meta name="description" content="@yield('description', 'NIFA, leader du transport et de la logistique en Afrique. Services de transport maritime, aérien et terrestre avec suivi en temps réel.')">
+    <title>@yield('title', 'NIF Cargo - Transport et Logistique en Afrique')</title>
+    <meta name="description" content="@yield('description', 'NIF Cargo, leader du transport et de la logistique en Afrique. Services de transport maritime, aérien et terrestre avec suivi en temps réel.')">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">

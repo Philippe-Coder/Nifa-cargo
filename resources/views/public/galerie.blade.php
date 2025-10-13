@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Galerie Photos - NIFA')
+@section('title', 'Galerie Photos - NIF CARGO')
 
 @section('content')
 <!-- Hero Section -->

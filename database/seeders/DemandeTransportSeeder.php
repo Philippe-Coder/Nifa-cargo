@@ -15,7 +15,7 @@ class DemandeTransportSeeder extends Seeder
     public function run(): void
     {
         // Récupérer l'utilisateur client de test
-        $client = User::where('email', 'client@nifa.com')->first();
+        $client = User::where('email', 'client@nif.com')->first();
         
         if ($client) {
             // Créer quelques demandes de test
@@ -31,7 +31,7 @@ class DemandeTransportSeeder extends Seeder
                 'ville_destination' => 'Cotonou',
                 'description' => 'Importation de matériel électronique',
                 'statut' => 'en attente',
-                'reference' => 'NIFA-' . date('Y') . '-001',
+                'reference' => 'NIF-' . date('Y') . '-001',
                 'date_souhaitee' => now()->addDays(30),
                 'dimensions' => '120x80x60 cm',
                 'valeur' => 15000.00,
@@ -51,7 +51,7 @@ class DemandeTransportSeeder extends Seeder
                 'ville_destination' => 'Marseille',
                 'description' => 'Export de produits agricoles locaux',
                 'statut' => 'validée',
-                'reference' => 'NIFA-' . date('Y') . '-002',
+                'reference' => 'NIF-' . date('Y') . '-002',
                 'date_souhaitee' => now()->addDays(15),
                 'dimensions' => '200x150x100 cm',
                 'valeur' => 8000.00,
@@ -71,7 +71,7 @@ class DemandeTransportSeeder extends Seeder
                 'ville_destination' => 'Cotonou',
                 'description' => 'Importation de véhicules d\'occasion',
                 'statut' => 'livrée',
-                'reference' => 'NIFA-' . date('Y') . '-003',
+                'reference' => 'NIF-' . date('Y') . '-003',
                 'date_souhaitee' => now()->subDays(5),
                 'dimensions' => '450x180x150 cm',
                 'valeur' => 25000.00,

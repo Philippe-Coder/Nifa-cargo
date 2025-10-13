@@ -35,7 +35,7 @@ class DemandeController extends Controller
         ]);
 
         // Générer une référence unique
-        $reference = 'NIFA-' . date('Y') . '-' . str_pad(DemandeTransport::count() + 1, 3, '0', STR_PAD_LEFT);
+        $reference = 'NIF-' . date('Y') . '-' . str_pad(DemandeTransport::count() + 1, 3, '0', STR_PAD_LEFT);
 
         // Créer la demande avec toutes les données nécessaires
         $demande = DemandeTransport::create([

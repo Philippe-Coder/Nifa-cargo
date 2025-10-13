@@ -32,7 +32,7 @@ Route::post('/suivi', [PublicController::class, 'rechercherDemande'])->name('sui
 
 // Routes pour le blog/actualités
 Route::get('/blog', [PublicController::class, 'blog'])->name('blog.index');
-Route::get('/blog/{slug}', [PublicController::class, 'showArticle'])->name('blog.show');
+Route::get('/blog/{id}', [PublicController::class, 'showArticle'])->name('blog.show');
 
 
 
