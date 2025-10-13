@@ -4,703 +4,582 @@
 @section('description', 'Contactez NIFA pour vos besoins de transport. Bureaux au Togo et Bénin. Devis gratuit et conseil personnalisé.')
 
 @section('content')
-<!-- Hero Section -->
-<section class="hero-bg-contact relative overflow-hidden py-20">
-    <!-- Overlay animé -->
-    <div class="hero-overlay"></div>
-    
-    <!-- Particules flottantes -->
-    <div class="hero-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+<!-- Hero Section Élégante -->
+<section class="relative py-24 overflow-hidden">
+    <!-- Image de fond avec overlay -->
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+             alt="Contact NIFA Transport" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-blue-900/60"></div>
     </div>
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h1 class="hero-title text-4xl lg:text-5xl font-bold mb-6">
-            Contactez-nous
+    <!-- Pattern subtil -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"80\" height=\"80\" viewBox=\"0 0 80 80\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"40\" cy=\"40\" r=\"2\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white rounded-full px-6 py-3 mb-8 border border-white/30">
+            <span class="w-2 h-2 bg-white rounded-full mr-3"></span>
+            <span class="text-lg font-medium">Contactez notre équipe</span>
+        </div>
+        
+        <h1 class="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Parlons de votre 
+            <span class="text-blue-300">projet</span>
         </h1>
-        <p class="hero-subtitle text-xl max-w-3xl mx-auto">
-            Notre équipe d'experts est à votre disposition pour répondre à toutes vos questions et vous accompagner dans vos projets de transport
+        <p class="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+            Notre équipe d'experts logistiques est à votre écoute pour concrétiser vos ambitions de transport
         </p>
     </div>
 </section>
 
 <!-- Messages de feedback -->
 @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mx-4 mt-4" role="alert">
-        <div class="flex">
-            <span class="text-xl mr-3">✅</span>
-            <span>{{ session('success') }}</span>
+    <div class="bg-green-50 border-l-4 border-green-500 p-4 mx-4 mt-8">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-green-700">{{ session('success') }}</p>
+            </div>
         </div>
     </div>
 @endif
 
 @if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-4 mt-4" role="alert">
-        <div class="flex">
-            <span class="text-xl mr-3">❌</span>
-            <span>{{ session('error') }}</span>
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 mx-4 mt-8">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-500 text-lg"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-red-700">{{ session('error') }}</p>
+            </div>
         </div>
     </div>
 @endif
 
-<!-- Formulaire de contact et informations -->
+<!-- Formulaire et Informations -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <!-- Formulaire de contact -->
-            <div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-8">
-                    📝 Envoyez-nous un message
-                </h2>
+            <!-- Formulaire Élégant -->
+            <div class="relative">
+                <div class="absolute -top-4 -left-4 w-24 h-24 bg-blue-100 rounded-full opacity-50"></div>
+                <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-50 rounded-full opacity-30"></div>
                 
-                <form action="{{ route('contact.envoyer') }}" method="POST" class="space-y-6">
-                    @csrf
+                <div class="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-100">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">
+                        Envoyez-nous un message
+                    </h2>
+                    <p class="text-slate-600 mb-8">
+                        Remplissez ce formulaire et nous vous recontacterons sous 2 heures
+                    </p>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <form action="{{ route('contact.envoyer') }}" method="POST" class="space-y-6">
+                        @csrf
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="nom" class="block text-sm font-medium text-slate-700 mb-3">
+                                    Nom complet *
+                                </label>
+                                <input type="text" id="nom" name="nom" required
+                                       value="{{ old('nom') }}"
+                                       class="w-full border border-slate-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('nom') border-red-500 @enderror"
+                                       placeholder="Votre nom complet">
+                                @error('nom')
+                                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-700 mb-3">
+                                    Email *
+                                </label>
+                                <input type="email" id="email" name="email" required
+                                       value="{{ old('email') }}"
+                                       class="w-full border border-slate-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('email') border-red-500 @enderror"
+                                       placeholder="votre@email.com">
+                                @error('email')
+                                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        
                         <div>
-                            <label for="nom" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nom complet *
+                            <label for="telephone" class="block text-sm font-medium text-slate-700 mb-3">
+                                Téléphone
                             </label>
-                            <input type="text" id="nom" name="nom" required
-                                   value="{{ old('nom') }}"
-                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nom') border-red-500 @enderror">
-                            @error('nom')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <input type="tel" id="telephone" name="telephone"
+                                   value="{{ old('telephone') }}"
+                                   placeholder="+228 99 25 25 31"
+                                   class="w-full border border-slate-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('telephone') border-red-500 @enderror">
+                            @error('telephone')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                             @enderror
                         </div>
                         
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                Email *
+                            <label for="sujet" class="block text-sm font-medium text-slate-700 mb-3">
+                                Sujet *
                             </label>
-                            <input type="email" id="email" name="email" required
-                                   value="{{ old('email') }}"
-                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-red-500 @enderror">
-                            @error('email')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <select id="sujet" name="sujet" required
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 @error('sujet') border-red-500 @enderror">
+                                <option value="">Sélectionnez un sujet</option>
+                                <option value="Demande de devis" {{ old('sujet') == 'Demande de devis' ? 'selected' : '' }}>Demande de devis</option>
+                                <option value="Transport maritime" {{ old('sujet') == 'Transport maritime' ? 'selected' : '' }}>Transport maritime</option>
+                                <option value="Transport aérien" {{ old('sujet') == 'Transport aérien' ? 'selected' : '' }}>Transport aérien</option>
+                                <option value="Transport terrestre" {{ old('sujet') == 'Transport terrestre' ? 'selected' : '' }}>Transport terrestre</option>
+                                <option value="Dédouanement" {{ old('sujet') == 'Dédouanement' ? 'selected' : '' }}>Dédouanement</option>
+                                <option value="Suivi de colis" {{ old('sujet') == 'Suivi de colis' ? 'selected' : '' }}>Suivi de colis</option>
+                                <option value="Réclamation" {{ old('sujet') == 'Réclamation' ? 'selected' : '' }}>Réclamation</option>
+                                <option value="Partenariat" {{ old('sujet') == 'Partenariat' ? 'selected' : '' }}>Partenariat</option>
+                                <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre</option>
+                            </select>
+                            @error('sujet')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                             @enderror
                         </div>
-                    </div>
-                    
-                    <div>
-                        <label for="telephone" class="block text-sm font-medium text-gray-700 mb-2">
-                            Téléphone
-                        </label>
-                        <input type="tel" id="telephone" name="telephone"
-                               value="{{ old('telephone') }}"
-                               placeholder="+228 99 25 25 31"
-                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('telephone') border-red-500 @enderror">
-                        @error('telephone')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div>
-                        <label for="sujet" class="block text-sm font-medium text-gray-700 mb-2">
-                            Sujet *
-                        </label>
-                        <select id="sujet" name="sujet" required
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('sujet') border-red-500 @enderror">
-                            <option value="">Sélectionnez un sujet</option>
-                            <option value="Demande de devis" {{ old('sujet') == 'Demande de devis' ? 'selected' : '' }}>Demande de devis</option>
-                            <option value="Transport maritime" {{ old('sujet') == 'Transport maritime' ? 'selected' : '' }}>Transport maritime</option>
-                            <option value="Transport aérien" {{ old('sujet') == 'Transport aérien' ? 'selected' : '' }}>Transport aérien</option>
-                            <option value="Transport terrestre" {{ old('sujet') == 'Transport terrestre' ? 'selected' : '' }}>Transport terrestre</option>
-                            <option value="Dédouanement" {{ old('sujet') == 'Dédouanement' ? 'selected' : '' }}>Dédouanement</option>
-                            <option value="Suivi de colis" {{ old('sujet') == 'Suivi de colis' ? 'selected' : '' }}>Suivi de colis</option>
-                            <option value="Réclamation" {{ old('sujet') == 'Réclamation' ? 'selected' : '' }}>Réclamation</option>
-                            <option value="Partenariat" {{ old('sujet') == 'Partenariat' ? 'selected' : '' }}> Partenariat</option>
-                            <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre</option>
-                        </select>
-                        @error('sujet')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
-                            Message *
-                        </label>
-                        <textarea id="message" name="message" rows="6" required
-                                  placeholder="Décrivez votre demande en détail..."
-                                  class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
-                        @error('message')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div class="flex items-center">
-                        <input type="checkbox" id="newsletter" name="newsletter" value="1"
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="newsletter" class="ml-2 block text-sm text-gray-700">
-                            Je souhaite recevoir la newsletter NIFA avec les actualités du transport
-                        </label>
-                    </div>
-                    
-                    <button type="submit" 
-                            class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                         Envoyer le message
-                    </button>
-                </form>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-700 mb-3">
+                                Message *
+                            </label>
+                            <textarea id="message" name="message" rows="6" required
+                                      placeholder="Décrivez votre projet ou votre demande en détail..."
+                                      class="w-full border border-slate-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
+                            @error('message')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <input type="checkbox" id="newsletter" name="newsletter" value="1"
+                                   class="h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-1">
+                            <label for="newsletter" class="text-sm text-slate-600 leading-relaxed">
+                                Je souhaite recevoir les actualités NIFA et des conseils logistiques par email
+                            </label>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl">
+                            Envoyer mon message
+                        </button>
+                    </form>
+                </div>
             </div>
             
-            <!-- Informations de contact -->
-            <div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-8">
-                    Nos coordonnées
-                </h2>
-                
-                <div class="space-y-8">
-                    @foreach($contacts as $contact)
-                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6">
-                            <div class="flex items-center mb-4">
-                                <span class="text-2xl mr-3">🏢</span>
-                                <h3 class="text-xl font-semibold text-gray-900">
-                                    {{ $contact['pays'] }} - {{ $contact['ville'] }}
-                                </h3>
-                            </div>
-                            
-                            <div class="space-y-3 text-gray-700">
-                                <div class="flex items-start">
-                                    <span class="text-lg mr-3">📍</span>
-                                    <span>{{ $contact['adresse'] }}</span>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <span class="text-lg mr-3">📞</span>
-                                    <a href="tel:{{ $contact['telephone'] }}" class="hover:text-blue-600">
-                                        {{ $contact['telephone'] }}
-                                    </a>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <span class="text-lg mr-3">📱</span>
-                                    <a href="tel:{{ $contact['mobile'] }}" class="hover:text-blue-600">
-                                        {{ $contact['mobile'] }}
-                                    </a>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <span class="text-lg mr-3">✉️</span>
-                                    <a href="mailto:{{ $contact['email'] }}" class="hover:text-blue-600">
-                                        {{ $contact['email'] }}
-                                    </a>
-                                </div>
-                                
-                                <div class="flex items-start">
-                                    <span class="text-lg mr-3">🕒</span>
-                                    <span>{{ $contact['horaires'] }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                
-                <!-- Contact d'urgence -->
-                <div class="mt-8 bg-red-50 border border-red-200 rounded-xl p-6">
-                    <h3 class="text-lg font-semibold text-red-900 mb-4">
-                         Contact d'urgence
-                    </h3>
-                    <p class="text-red-700 text-sm mb-3">
-                        Pour les urgences en dehors des heures d'ouverture
+            <!-- Informations de Contact Élégantes -->
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">
+                        Nos coordonnées
+                    </h2>
+                    <p class="text-slate-600">
+                        Plusieurs moyens pour échanger avec notre équipe
                     </p>
-                    <div class="flex items-center">
-                        <span class="text-lg mr-3">📱</span>
-                        <a href="tel:+22899252531" class="text-red-600 font-medium hover:underline">
-                            +229 99 25 25 31
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Autres moyens de contact -->
-<section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                Autres moyens de nous contacter
-            </h2>
-            <p class="text-xl text-gray-600">
-                Choisissez le canal qui vous convient le mieux
-            </p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- WhatsApp -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div class="text-4xl mb-4">💬</div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">WhatsApp</h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Chat direct avec nos conseillers
-                </p>
-                <a href="https://wa.me/22899252531" target="_blank"
-                   class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                    Ouvrir WhatsApp
-                </a>
-            </div>
-            
-            <!-- Telegram -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div class="text-4xl mb-4">📱</div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">TikTok</h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Suivez nos actualités
-                </p>
-                 <a href="https://www.tiktok.com/@nifgroupcargo" target="_blank"
-                   class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                    Ouvrir TikTok
-                </a>
-            </div>
-            
-            <!-- Facebook -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div class="text-4xl mb-4">📘</div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Facebook</h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Suivez nos actualités
-                </p>
-                <a href="https://www.facebook.com/Espoir.amewuho55" target="_blank"
-                   class="bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors">
-                    Voir la page
-                </a>
-            </div>
-            
-            <!-- LinkedIn -->
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div class="text-4xl mb-4">💼</div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">LinkedIn</h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Réseau professionnel
-                </p>
-                <a href="https://linkedin.com/company/nifa" target="_blank"
-                   class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors">
-                    Nous suivre
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Section Carte Interactive -->
-<section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                🗺️ Nos Localisations
-            </h2>
-            <p class="text-xl text-gray-600">
-                Trouvez-nous facilement grâce à notre carte interactive
-            </p>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <!-- Carte interactive -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div class="p-6 bg-gradient-to-r from-blue-600 to-red-600 text-white">
-                    <h3 class="text-xl font-semibold mb-2">
-                        <i class="fas fa-map-marker-alt mr-2"></i> Carte Interactive
-                    </h3>
-                    <p class="text-blue-100">Cliquez sur les marqueurs pour plus d'informations</p>
                 </div>
                 
-                <!-- Carte Google Maps -->
-                <div id="map" class="h-96 w-full"></div>
-                
-                <!-- Boutons de navigation -->
-                <div class="p-4 bg-gray-50 flex flex-wrap gap-2">
-                    <button onclick="focusLocation('togo')" 
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        🇹🇬 Siège Togo
-                    </button>
-                    <button onclick="focusLocation('benin')" 
-                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        🇧🇯 Agence Bénin
-                    </button>
-                    <button onclick="focusLocation('all')" 
-                            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        🌍 Vue d'ensemble
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Informations de transport -->
-            <div class="space-y-6">
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                        🚗 Comment nous rejoindre ?
-                    </h3>
-                    
-                    <!-- Togo -->
-                    <div class="mb-6">
-                        <h4 class="font-semibold text-blue-600 mb-3 flex items-center">
-                            🇹🇬 Siège Social - Lomé, Togo
-                        </h4>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <div class="flex items-start">
-                                <i class="fas fa-map-marker-alt text-blue-500 mr-2 mt-1"></i>
-                                <span>123 Avenue de la Logistique, Quartier Administratif, Lomé</span>
+                <!-- Siège Togo -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                                Siège Social
+                            </h3>
+                            <div class="flex items-center text-blue-600">
+                                <span class="text-lg mr-2">🇹🇬</span>
+                                <span class="font-medium">Lomé, Togo</span>
                             </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-car text-blue-500 mr-2"></i>
-                                <span>Parking gratuit disponible</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-bus text-blue-500 mr-2"></i>
-                                <span>Arrêt de bus : "Ministères" (ligne 12, 15)</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-taxi text-blue-500 mr-2"></i>
-                                <span>Taxi/Uber : "NIFA Transport, Avenue de la Logistique"</span>
-                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <span class="text-blue-600 font-bold text-lg">TS</span>
                         </div>
                     </div>
                     
-                    <!-- Bénin -->
-                    <div>
-                        <h4 class="font-semibold text-red-600 mb-3 flex items-center">
-                            🇧🇯 Agence - Cotonou, Bénin
-                        </h4>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <div class="flex items-start">
-                                <i class="fas fa-map-marker-alt text-red-500 mr-2 mt-1"></i>
-                                <span>Port de Cotonou, Zone Industrielle, Bénin</span>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-blue-600 text-sm">📍</span>
                             </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-car text-red-500 mr-2"></i>
-                                <span>Accès direct depuis l'autoroute</span>
+                            <div>
+                                <p class="text-slate-700 font-medium">Adresse</p>
+                                <p class="text-slate-600 text-sm">123 Avenue de la Logistique<br>Quartier Administratif, Lomé</p>
                             </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-ship text-red-500 mr-2"></i>
-                                <span>Proximité immédiate du port</span>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-blue-600 text-sm">📞</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Téléphones</p>
+                                <div class="text-slate-600 text-sm">
+                                    <a href="tel:+22822610000" class="hover:text-blue-600 transition-colors">+228 22 61 00 00</a><br>
+                                    <a href="tel:+22890123456" class="hover:text-blue-600 transition-colors">+228 90 12 34 56</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-blue-600 text-sm">✉️</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Email</p>
+                                <a href="mailto:contact@nifa.tg" class="text-slate-600 text-sm hover:text-blue-600 transition-colors">
+                                    contact@nifa.tg
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-blue-600 text-sm">🕒</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Horaires</p>
+                                <p class="text-slate-600 text-sm">Lun - Ven : 8h00 - 18h00<br>Samedi : 8h00 - 12h00</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Horaires d'ouverture -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                        🕰️ Horaires d'ouverture
-                    </h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Lundi - Vendredi</span>
-                            <span class="font-medium text-green-600">8h00 - 18h00</span>
+                <!-- Agence Bénin -->
+                <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-8 border border-red-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                                Agence Régionale
+                            </h3>
+                            <div class="flex items-center text-red-600">
+                                <span class="text-lg mr-2">🇧🇯</span>
+                                <span class="font-medium">Cotonou, Bénin</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Samedi</span>
-                            <span class="font-medium text-blue-600">8h00 - 12h00</span>
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                            <span class="text-red-600 font-bold text-lg">AB</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Dimanche</span>
-                            <span class="font-medium text-red-600">Fermé</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-red-600 text-sm">📍</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Adresse</p>
+                                <p class="text-slate-600 text-sm">Port de Cotonou<br>Zone Industrielle, Bénin</p>
+                            </div>
                         </div>
-                        <div class="border-t pt-2 mt-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Urgences 24h/7j</span>
-                                <a href="tel:+22899252531" class="font-medium text-red-600 hover:underline">
-                                    +228 99 25 25 31
+                        
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-red-600 text-sm">📞</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Téléphones</p>
+                                <div class="text-slate-600 text-sm">
+                                    <a href="tel:+22921123456" class="hover:text-red-600 transition-colors">+229 21 12 34 56</a><br>
+                                    <a href="tel:+22996123456" class="hover:text-red-600 transition-colors">+229 96 12 34 56</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4 shadow-sm">
+                                <span class="text-red-600 text-sm">✉️</span>
+                            </div>
+                            <div>
+                                <p class="text-slate-700 font-medium">Email</p>
+                                <a href="mailto:benin@nifa.tg" class="text-slate-600 text-sm hover:text-red-600 transition-colors">
+                                    benin@nifa.tg
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Directions rapides -->
-                <div class="bg-gradient-to-r from-blue-600 to-red-600 rounded-2xl p-6 text-white">
-                    <h3 class="text-lg font-semibold mb-4">
-                        🧭 Itinéraires rapides
-                    </h3>
-                    <div class="space-y-3">
-                        <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" 
-                           target="_blank" 
-                           class="block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fab fa-google text-xl mr-3"></i>
-                                <span>Google Maps - Siège Togo</span>
-                            </div>
-                        </a>
-                        <a href="https://waze.com/ul?ll=6.1319,1.2228" 
-                           target="_blank" 
-                           class="block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fab fa-waze text-xl mr-3"></i>
-                                <span>Waze - Navigation GPS</span>
-                            </div>
-                        </a>
+                <!-- Contact Urgence -->
+                <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <span class="text-orange-600 text-lg">🚨</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Assistance Urgence</h3>
+                            <p class="text-slate-600 text-sm">Support 24h/7j pour les situations critiques</p>
+                        </div>
                     </div>
+                    <a href="tel:+22899252531" 
+                       class="block text-center bg-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
+                       +228 99 25 25 31
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FAQ Contact -->
-<section class="py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Canaux de Communication -->
+<section class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                Questions sur le contact
+            <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                Canaux de communication
             </h2>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                Choisissez le mode d'échange qui vous convient le mieux
+            </p>
         </div>
         
-        <div class="space-y-6">
-            <div class="bg-gray-50 rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                    Dans quel délai recevrai-je une réponse ?
-                </h3>
-                <p class="text-gray-600">
-                    Nous nous engageons à répondre à tous les messages dans un délai de 2 heures ouvrables maximum. Pour les demandes urgentes, contactez-nous directement par téléphone.
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- WhatsApp -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                <div class="w-20 h-20 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 text-3xl mx-auto mb-6">
+                    <span>💬</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-3">Messagerie Instantanée</h3>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    Échangez en temps réel avec nos conseillers pour des réponses rapides
                 </p>
+                <a href="https://wa.me/22899252531" target="_blank"
+                   class="inline-block bg-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl">
+                    Démarrer la conversation
+                </a>
             </div>
             
-            <div class="bg-gray-50 rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                    Comment obtenir un devis rapidement ?
-                </h3>
-                <p class="text-gray-600">
-                    Utilisez notre formulaire de demande en ligne ou contactez-nous avec les détails de votre envoi (origine, destination, poids, dimensions). Vous recevrez un devis détaillé sous 24h.
+            <!-- Réseaux Sociaux -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                <div class="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-3xl mx-auto mb-6">
+                    <span>🌐</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-3">Réseaux Sociaux</h3>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    Suivez notre actualité et échangez avec notre communauté
                 </p>
+                <div class="space-y-3">
+                    <a href="https://www.tiktok.com/@nifgroupcargo" target="_blank"
+                       class="block bg-slate-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-900 transition-colors">
+                        TikTok
+                    </a>
+                    <a href="https://www.facebook.com/Espoir.amewuho55" target="_blank"
+                       class="block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                        Facebook
+                    </a>
+                </div>
             </div>
             
-            <div class="bg-gray-50 rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                    Puis-je visiter vos bureaux ?
-                </h3>
-                <p class="text-gray-600">
-                    Bien sûr ! Nos bureaux sont ouverts du lundi au vendredi de 8h à 18h et le samedi de 8h à 12h. Nous recommandons de prendre rendez-vous pour un conseil personnalisé.
+            <!-- Visite -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                <div class="w-20 h-20 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 text-3xl mx-auto mb-6">
+                    <span>🏢</span>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-3">Rencontre Physique</h3>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    Planifiez une visite dans nos bureaux pour un conseil personnalisé
                 </p>
+                <a href="#localisation"
+                   class="inline-block bg-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-purple-700 transition-colors shadow-lg hover:shadow-xl">
+                    Prendre rendez-vous
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="py-20 gradient-bg hero-pattern">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
-            Prêt à expédier ?
-        </h2>
-        <p class="text-xl text-blue-100 mb-8">
-            Commencez dès maintenant votre demande de transport
-        </p>
-        <a href="{{ route('demande.create') }}" 
-           class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors inline-flex items-center">
-            📦 Faire une demande maintenant
-        </a>
-    </div>
-</section>
-@endsection
-
-@push('scripts')
-<!-- Google Maps API -->
-<script async defer src="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7"></script>
-
-<script>
-let map;
-let markers = [];
-
-// Coordonnées des bureaux NIFA
-const locations = {
-    togo: {
-        lat: 6.1319,
-        lng: 1.2228,
-        title: "NIFA Siège Social - Lomé, Togo",
-        info: `
-            <div class="p-4 max-w-sm">
-                <h3 class="font-bold text-lg text-blue-600 mb-2">🇹🇬 Siège Social NIFA</h3>
-                <p class="text-sm text-gray-600 mb-2">123 Avenue de la Logistique<br>Quartier Administratif, Lomé</p>
-                <div class="space-y-1 text-xs text-gray-500">
-                    <div>📞 +228 22 61 00 00</div>
-                    <div>📱 +228 99 25 25 31</div>
-                    <div>✉️ contact@nifa.tg</div>
-                    <div>🕒 Lun-Ven: 8h-18h, Sam: 8h-12h</div>
-                </div>
-                <div class="mt-3">
-                    <a href="https://maps.google.com/directions/?api=1&destination=6.1319,1.2228" 
-                       target="_blank" 
-                       class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700">
-                        📍 Itinéraire
-                    </a>
-                </div>
-            </div>
-        `
-    },
-    benin: {
-        lat: 6.3703,
-        lng: 2.3912,
-        title: "NIFA Agence - Cotonou, Bénin",
-        info: `
-            <div class="p-4 max-w-sm">
-                <h3 class="font-bold text-lg text-red-600 mb-2">🇧🇯 Agence NIFA</h3>
-                <p class="text-sm text-gray-600 mb-2">Port de Cotonou<br>Zone Industrielle, Bénin</p>
-                <div class="space-y-1 text-xs text-gray-500">
-                    <div>📞 +229 21 12 34 56</div>
-                    <div>📱 +228 99 25 25 31</div>
-                    <div>✉️ benin@nifa.tg</div>
-                    <div>🕒 Lun-Ven: 8h-18h, Sam: 8h-12h</div>
-                </div>
-                <div class="mt-3">
-                    <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" 
-                       target="_blank" 
-                       class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
-                        📍 Itinéraire
-                    </a>
-                </div>
-            </div>
-        `
-    }
-};
-
-function initMap() {
-    // Centre de la carte (entre Togo et Bénin)
-    const center = { lat: 6.25, lng: 1.8 };
-    
-    // Initialiser la carte
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 8,
-        center: center,
-        styles: [
-            {
-                "featureType": "water",
-                "elementType": "geometry",
-                "stylers": [{"color": "#e9e9e9"}, {"lightness": 17}]
-            },
-            {
-                "featureType": "landscape",
-                "elementType": "geometry",
-                "stylers": [{"color": "#f5f5f5"}, {"lightness": 20}]
-            },
-            {
-                "featureType": "road.highway",
-                "elementType": "geometry.fill",
-                "stylers": [{"color": "#ffffff"}, {"lightness": 17}]
-            },
-            {
-                "featureType": "road.highway",
-                "elementType": "geometry.stroke",
-                "stylers": [{"color": "#ffffff"}, {"lightness": 29}, {"weight": 0.2}]
-            },
-            {
-                "featureType": "road.arterial",
-                "elementType": "geometry",
-                "stylers": [{"color": "#ffffff"}, {"lightness": 18}]
-            },
-            {
-                "featureType": "road.local",
-                "elementType": "geometry",
-                "stylers": [{"color": "#ffffff"}, {"lightness": 16}]
-            },
-            {
-                "featureType": "poi",
-                "elementType": "geometry",
-                "stylers": [{"color": "#f5f5f5"}, {"lightness": 21}]
-            }
-        ]
-    });
-    
-    // Créer les marqueurs
-    Object.keys(locations).forEach(key => {
-        const location = locations[key];
-        const marker = new google.maps.Marker({
-            position: { lat: location.lat, lng: location.lng },
-            map: map,
-            title: location.title,
-            icon: {
-                url: key === 'togo' ? 
-                    'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="18" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
-                            <text x="20" y="26" text-anchor="middle" fill="white" font-size="16" font-weight="bold">N</text>
-                        </svg>
-                    `) :
-                    'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="18" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-                            <text x="20" y="26" text-anchor="middle" fill="white" font-size="16" font-weight="bold">N</text>
-                        </svg>
-                    `),
-                scaledSize: new google.maps.Size(40, 40)
-            }
-        });
+<!-- Section Localisation -->
+<section id="localisation" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                Nous localiser
+            </h2>
+            <p class="text-xl text-slate-600">
+                Accédez facilement à nos implantations
+            </p>
+        </div>
         
-        const infoWindow = new google.maps.InfoWindow({
-            content: location.info
-        });
-        
-        marker.addListener('click', () => {
-            // Fermer toutes les autres info windows
-            markers.forEach(m => m.infoWindow.close());
-            infoWindow.open(map, marker);
-        });
-        
-        markers.push({ marker, infoWindow });
-    });
-}
-
-// Fonctions de navigation
-function focusLocation(location) {
-    if (location === 'all') {
-        // Vue d'ensemble
-        const bounds = new google.maps.LatLngBounds();
-        Object.values(locations).forEach(loc => {
-            bounds.extend(new google.maps.LatLng(loc.lat, loc.lng));
-        });
-        map.fitBounds(bounds);
-        map.setZoom(Math.min(map.getZoom(), 8));
-    } else if (locations[location]) {
-        // Focus sur une location spécifique
-        const loc = locations[location];
-        map.setCenter({ lat: loc.lat, lng: loc.lng });
-        map.setZoom(15);
-        
-        // Ouvrir l'info window correspondante
-        const markerIndex = Object.keys(locations).indexOf(location);
-        if (markers[markerIndex]) {
-            markers.forEach(m => m.infoWindow.close());
-            markers[markerIndex].infoWindow.open(map, markers[markerIndex].marker);
-        }
-    }
-}
-
-// Fallback si Google Maps ne charge pas
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        if (typeof google === 'undefined') {
-            document.getElementById('map').innerHTML = `
-                <div class="flex items-center justify-center h-full bg-gray-100">
-                    <div class="text-center p-8">
-                        <div class="text-4xl mb-4">🗺️</div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Carte non disponible</h3>
-                        <p class="text-gray-600 text-sm mb-4">
-                            La carte interactive n'a pas pu se charger. Utilisez les liens ci-dessous pour nous localiser.
-                        </p>
-                        <div class="space-y-2">
-                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank" 
-                               class="block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                📍 Siège Togo sur Google Maps
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Carte Simplifiée -->
+            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6">Accès et directions</h3>
+                
+                <div class="space-y-8">
+                    <!-- Togo -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-blue-600 mb-4">Siège Social - Lomé</h4>
+                        <div class="space-y-3 text-slate-600">
+                            <div class="flex items-start">
+                                <span class="text-blue-500 mr-3">📍</span>
+                                <span>123 Avenue de la Logistique, Quartier Administratif</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-blue-500 mr-3">🚗</span>
+                                <span>Parking visiteurs disponible</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-blue-500 mr-3">🚌</span>
+                                <span>Arrêt de bus à 200m</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank"
+                               class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                                <span class="mr-2">🗺️</span>
+                                Voir sur Google Maps
                             </a>
-                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank" 
-                               class="block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                                📍 Agence Bénin sur Google Maps
+                        </div>
+                    </div>
+                    
+                    <!-- Bénin -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-red-600 mb-4">Agence - Cotonou</h4>
+                        <div class="space-y-3 text-slate-600">
+                            <div class="flex items-start">
+                                <span class="text-red-500 mr-3">📍</span>
+                                <span>Port de Cotonou, Zone Industrielle</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-red-500 mr-3">🚢</span>
+                                <span>Accès direct au port</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-red-500 mr-3">🛣️</span>
+                                <span>Proche autoroute Cotonou-Porto Novo</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="https://maps.app.goo.gl/WQNuHkZNAp7N3p7U7" target="_blank"
+                               class="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                                <span class="mr-2">🗺️</span>
+                                Voir sur Google Maps
                             </a>
                         </div>
                     </div>
                 </div>
-            `;
-        }
-    }, 5000);
-});
-</script>
-@endpush
+            </div>
+            
+            <!-- Horaires et Infos -->
+            <div class="space-y-8">
+                <!-- Horaires -->
+                <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8 border border-slate-200">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6">Horaires d'ouverture</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-slate-200">
+                            <span class="text-slate-700 font-medium">Lundi - Vendredi</span>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">8h00 - 18h00</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-slate-200">
+                            <span class="text-slate-700 font-medium">Samedi</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">8h00 - 12h00</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-slate-700 font-medium">Dimanche</span>
+                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Fermé</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                        <div class="flex items-center">
+                            <span class="text-amber-600 mr-3">⚠️</span>
+                            <div>
+                                <p class="text-amber-800 font-medium text-sm">Service d'urgence disponible 24h/24</p>
+                                <a href="tel:+22899252531" class="text-amber-700 text-sm hover:underline">+228 99 25 25 31</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rendez-vous -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-100">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Visite sur rendez-vous</h3>
+                    <p class="text-slate-600 mb-6">
+                        Pour un conseil personnalisé et une attention optimale, nous recommandons de planifier votre visite.
+                    </p>
+                    <a href="tel:+22822610000"
+                       class="inline-flex items-center bg-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-purple-700 transition-colors shadow-lg hover:shadow-xl">
+                        <span class="mr-3">📅</span>
+                        Planifier un rendez-vous
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Élégante -->
+<section class="py-20 bg-slate-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4">
+                Questions courantes
+            </h2>
+            <p class="text-xl text-slate-300">
+                Réponses rapides à vos interrogations
+            </p>
+        </div>
+        
+        <div class="space-y-6">
+            <div class="bg-slate-800 rounded-2xl p-8 hover:bg-slate-750 transition-colors">
+                <h3 class="text-xl font-semibold mb-4 text-blue-300">
+                    Quel est le délai de réponse moyen ?
+                </h3>
+                <p class="text-slate-300 leading-relaxed">
+                    Nous nous engageons à répondre à tous les messages dans un délai maximum de 2 heures ouvrables. 
+                    Pour les demandes urgentes, notre ligne dédiée assure une réponse immédiate.
+                </p>
+            </div>
+            
+            <div class="bg-slate-800 rounded-2xl p-8 hover:bg-slate-750 transition-colors">
+                <h3 class="text-xl font-semibold mb-4 text-green-300">
+                    Comment obtenir un devis personnalisé ?
+                </h3>
+                <p class="text-slate-300 leading-relaxed">
+                    Utilisez notre formulaire en ligne avec les détails de votre envoi, ou contactez-nous directement. 
+                    Vous recevrez un devis détaillé et transparent sous 24 heures.
+                </p>
+            </div>
+            
+            <div class="bg-slate-800 rounded-2xl p-8 hover:bg-slate-750 transition-colors">
+                <h3 class="text-xl font-semibold mb-4 text-purple-300">
+                    Puis-je visiter vos installations ?
+                </h3>
+                <p class="text-slate-300 leading-relaxed">
+                    Absolument. Nos bureaux sont accessibles aux horaires d'ouverture. 
+                    Pour une visite guidée de nos installations logistiques, nous recommandons de prendre rendez-vous.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Final -->
+<section class="py-20 bg-gradient-to-br from-blue-600 to-blue-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
+            Prêt à concrétiser votre projet ?
+        </h2>
+        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Notre équipe d'experts vous accompagne de la planification à la livraison finale
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ route('demande.create') }}" 
+               class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-colors inline-flex items-center justify-center shadow-lg hover:shadow-xl">
+                <span class="mr-3">📦</span>
+                Démarrer mon projet
+            </a>
+            <a href="tel:+22822610000" 
+               class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center">
+                <span class="mr-3">📞</span>
+                Nous appeler
+            </a>
+        </div>
+    </div>
+</section>
+@endsection

@@ -6,11 +6,13 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <!-- Logo et description -->
                 <div class="lg:col-span-3">
-                    <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3">
-                        <img src="{{ asset('img/logo.png') }}" alt="NIFA CARGO" class="w-10 h-10 object-contain">
-                    </div>
-                    </div>
+
+                <div class="flex items-center flex-shrink-0">
+                    <a href="{{ route('accueil') }}" class="flex items-center group">
+                        <!-- Remplacement du logo texte par votre image -->
+                        <img src="/images/logo.png" alt="NIF Logo" class="h-13 w-auto transition-all duration-300 group-hover:scale-105">
+                    </a>
+                </div>
                     <p class="text-gray-400 mb-6 text-sm leading-relaxed">
                         Leader du transport et de la logistique en Afrique depuis plus de 10 ans. 
                         Votre partenaire de confiance pour tous vos besoins de transport.

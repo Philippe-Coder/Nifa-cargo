@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Http\Controllers\Public;
+
+use App\Http\Controllers\Controller;
+use App\Models\Comment;
+use App\Models\Annonce;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+class CommentController extends Controller
+{
+    /**
+     * Store a newly created comment in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'content' => 'required|string|min:3|max:1000',
+            'annonce_id' => 'required|exists:annonces,id',
+            'parent_id' => 'nullable|exists:comments,id',
+        ]);
+
+        $comment = new Comment();
+        $comment->content = $validated['content'];
+        $comment->user_id = Auth::id();
+        $comment->annonce_id = $validated['annonce_id'];
+        $comment->parent_id = $validated['parent_id'] ?? null;
+        $comment->is_approved = !config('comments.approval_required');
+        $comment->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Commentaire ajouté avec succès' . (config('comments.approval_required') ? ' (en attente de modération)' : ''),
+            'comment' => $comment->load('user')
+        ]);
+    }
+
+    /**
+     * Update the specified comment in storage.
+     */
+    public function update(Request $request, Comment $comment)
+    {
+        $this->authorize('update', $comment);
+
+        $validated = $request->validate([
+            'content' => 'required|string|min:3|max:1000',
+        ]);
+
+        $comment->update([
+            'content' => $validated['content'],
+            'is_approved' => $comment->is_approved
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Commentaire mis à jour avec succès',
+            'comment' => $comment->fresh()
+        ]);
+    }
+
+    /**
+     * Remove the specified comment from storage.
+     */
+    public function destroy(Comment $comment)
+    {
+        $this->authorize('delete', $comment);
+        
+        // Supprimer les réponses si elles existent
+        if ($comment->replies->count() > 0) {
+            $comment->replies()->delete();
+        }
+        
+        $comment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Commentaire supprimé avec succès'
+        ]);
+    }
+
+    /**
+     * Like or unlike a comment
+     */
+    public function like(Comment $comment)
+    {
+        $user = Auth::user();
+        
+        if ($comment->likes()->where('user_id', $user->id)->exists()) {
+            $comment->likes()->where('user_id', $user->id)->delete();
+            $isLiked = false;
+        } else {
+            $comment->likes()->create(['user_id' => $user->id]);
+            $isLiked = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'is_liked' => $isLiked,
+            'likes_count' => $comment->likes()->count()
+        ]);
+    }
+
+    /**
+     * Get comments for an annonce
+     */
+    public function getComments(Annonce $annonce)
+    {
+        $comments = $annonce->comments()
+            ->with(['user', 'replies.user', 'replies.likes', 'likes'])
+            ->whereNull('parent_id')
+            ->withCount('replies', 'likes')
+            ->latest()
+            ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'comments' => $comments
+        ]);
+    }
+}

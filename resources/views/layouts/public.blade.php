@@ -151,11 +151,11 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Liens Utiles</h3>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="{{ route('suivi.public') }}" class="hover:text-white">📦 Suivre un colis</a></li>
-                        <li><a href="{{ route('demande.create') }}" class="hover:text-white">📝 Faire une demande</a></li>
-                        <li><a href="{{ route('apropos') }}" class="hover:text-white">ℹ️ À propos</a></li>
-                        <li><a href="#" class="hover:text-white">📄 Conditions générales</a></li>
-                        <li><a href="#" class="hover:text-white">🔒 Politique de confidentialité</a></li>
+                        <li><a href="{{ route('suivi.public') }}" class="hover:text-white">Suivre un colis</a></li>
+                        <li><a href="{{ route('demande.create') }}" class="hover:text-white">Faire une demande</a></li>
+                        <li><a href="{{ route('apropos') }}" class="hover:text-white">ℹÀ propos</a></li>
+                        <li><a href="#" class="hover:text-white">Conditions générales</a></li>
+                        <li><a href="#" class="hover:text-white">Politique de confidentialité</a></li>
                     </ul>
                 </div>
 
@@ -163,16 +163,16 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact</h3>
                     <div class="space-y-2 text-sm text-gray-300">
-                        <p>📍 123 Boulevard du 13 Janvier, Lomé</p>
-                        <p>📞 +228 22 61 00 00</p>
-                        <p>📱 +228 90 12 34 56</p>
-                        <p>✉️ contact@nifa.com</p>
+                        <p>Totsi à 100m non loin de l’\église catholique Lomé</p>
+                        <p>+228 22 61 00 00</p>
+                        <p>+228 90 12 34 56</p>
+                        <p>contact@nifa.com</p>
                     </div>
                 </div>
             </div>
 
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p>&copy; {{ date('Y') }} NIFA Transport & Logistique. Tous droits réservés.</p>
+                <p>&copy; {{ date('Y') }} OGOUBI Komivi Philippe. Tous droits réservés.</p>
             </div>
         </div>
     </footer>

@@ -30,6 +30,10 @@ Route::get('/a-propos', [PublicController::class, 'apropos'])->name('apropos');
 Route::get('/suivi', [PublicController::class, 'suiviPublic'])->name('suivi.public');
 Route::post('/suivi', [PublicController::class, 'rechercherDemande'])->name('suivi.rechercher');
 
+// Routes pour le blog/actualités
+Route::get('/blog', [PublicController::class, 'blog'])->name('blog.index');
+Route::get('/blog/{slug}', [PublicController::class, 'showArticle'])->name('blog.show');
+
 
 
 // Routes publiques pour les paiements (callbacks)

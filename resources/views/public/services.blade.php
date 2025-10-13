@@ -490,10 +490,10 @@
 // Définition des images par service (à mettre dans votre contrôleur idéalement)
 $serviceImages = [
     'Transport Maritime' => 'https://images.unsplash.com/photo-1589001015195-3cfc13e81f8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-    'Transport Aérien' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Transport Aérien' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
     'Transport Terrestre' => 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
     'Dédouanement' => 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-    'Entreposage' => 'https://images.unsplash.com/photo-1553413071-42a9d49057c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    'Entreposage' => 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
     'Assurance' => 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
 ];
 @endphp

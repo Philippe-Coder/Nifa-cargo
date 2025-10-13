@@ -1,0 +1,645 @@
+/* Style de base pour les commentaires */
+.comment {
+    border-left: 3px solid #e9ecef;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.comment:hover {
+    border-left-color: #0d6efd;
+}
+
+.comment-replies {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+    border-left: 2px dashed #e9ecef;
+}
+
+/* Style pour les actions de commentaire */
+.comment-actions {
+    font-size: 0.875rem;
+}
+
+.comment-actions .btn-link {
+    color: #6c757d;
+    padding: 0.25rem 0.5rem;
+    text-decoration: none;
+}
+
+.comment-actions .btn-link:hover {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.comment-actions .btn-link.liked {
+    color: #0d6efd;
+}
+
+.comment-actions .btn-link i {
+    margin-right: 0.25rem;
+}
+
+/* Style pour le formulaire de commentaire */
+.comment-form .form-control {
+    border-radius: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+}
+
+.comment-form .btn {
+    border-radius: 0 1.5rem 1.5rem 0;
+    padding: 0.5rem 1.25rem;
+}
+
+/* Style pour le formulaire de réponse */
+.reply-form {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+/* Style pour les avatars */
+.rounded-circle {
+    object-fit: cover;
+}
+
+/* Style pour les commentaires des utilisateurs connectés */
+.comment.current-user {
+    border-left-color: #0d6efd;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* Style pour les mentions @ dans les commentaires */
+.comment-mention {
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+/* Style pour les badges de modération */
+.comment-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Animation pour les nouveaux commentaires */
+@keyframes highlight {
+    from { background-color: rgba(13, 110, 253, 0.1); }
+    to { background-color: transparent; }
+}
+
+.comment.highlight {
+    animation: highlight 2s ease-out;
+}
+
+/* Style pour les commentaires en attente de modération */
+.comment.pending {
+    opacity: 0.7;
+    border-left-style: dashed;
+}
+
+.comment.pending .comment-actions {
+    opacity: 0.7;
+}
+
+/* Style pour les commentaires signalés */
+.comment.reported {
+    border-left-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+/* Style pour les commentaires des modérateurs */
+.comment.moderator {
+    border-left-color: #198754;
+}
+
+.comment.moderator .comment-author {
+    color: #198754;
+    font-weight: bold;
+}
+
+/* Style pour les commentaires épinglés */
+.comment.pinned {
+    background-color: #fff8e1;
+    border-left-color: #ffc107;
+}
+
+.comment.pinned::before {
+    content: '\f08d';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #ffc107;
+    margin-right: 0.5rem;
+}
+
+/* Style pour les citations dans les commentaires */
+.comment-quote {
+    border-left: 3px solid #6c757d;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Style pour les liens dans les commentaires */
+.comment-content a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.comment-content a:hover {
+    text-decoration: underline;
+}
+
+/* Style pour les images dans les commentaires */
+.comment-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    margin: 0.5rem 0;
+}
+
+/* Style pour les vidéos dans les commentaires */
+.comment-content iframe {
+    max-width: 100%;
+    border: none;
+    border-radius: 0.25rem;
+    margin: 0.5rem 0;
+}
+
+/* Style pour les listes dans les commentaires */
+.comment-content ul,
+.comment-content ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+/* Style pour le texte en gras et en italique */
+.comment-content strong {
+    font-weight: 600;
+}
+
+.comment-content em {
+    font-style: italic;
+}
+
+/* Style pour le code dans les commentaires */
+.comment-content pre {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+}
+
+.comment-content code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875em;
+    background-color: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+}
+
+/* Style pour les citations Twitter intégrées */
+.comment-content .twitter-tweet {
+    margin: 1rem auto !important;
+}
+
+/* Style pour les commentaires vides (chargement) */
+.comment.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Style pour les commentaires marqués comme spam */
+.comment.spam {
+    opacity: 0.5;
+    border-left-color: #dc3545;
+}
+
+.comment.spam .comment-content {
+    text-decoration: line-through;
+}
+
+/* Style pour les commentaires des utilisateurs bannis */
+.comment.banned {
+    opacity: 0.5;
+    border-left-color: #6c757d;
+}
+
+.comment.banned .comment-author {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+/* Style pour les commentaires des administrateurs */
+.comment.admin .comment-author {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.comment.admin {
+    border-left-color: #dc3545;
+}
+
+/* Style pour les commentaires des utilisateurs vérifiés */
+.comment.verified .comment-author::after {
+    content: '\f058';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #0d6efd;
+    margin-left: 0.25rem;
+    font-size: 0.8em;
+}
+
+/* Style pour les commentaires avec pièces jointes */
+.comment-attachments {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.comment-attachment {
+    max-width: 150px;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+}
+
+.comment-attachment img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Style pour les réactions aux commentaires */
+.comment-reactions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.reaction-button {
+    background: none;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reaction-button:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.reaction-button.active {
+    background-color: #e7f1ff;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+/* Style pour les mentions dans les commentaires */
+.comment-mention {
+    background-color: #e7f1ff;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+/* Style pour les commentaires marqués comme favoris */
+.comment.favorite {
+    background-color: #fff8e1;
+    border-left-color: #ffc107;
+}
+
+/* Style pour les commentaires avec spoilers */
+.comment-spoiler {
+    background-color: #212529;
+    color: #212529;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    margin: 0.2rem 0;
+}
+
+.comment-spoiler:hover {
+    color: #f8f9fa;
+}
+
+/* Style pour les commentaires avec des balises */
+.comment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.comment-tag {
+    background-color: #e9ecef;
+    color: #495057;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+}
+
+/* Style pour les commentaires avec des notes */
+.comment-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    color: #ffc107;
+}
+
+/* Style pour les commentaires avec des sondages */
+.comment-poll {
+    margin-top: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.poll-question {
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    font-weight: 500;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.poll-options {
+    padding: 0.5rem 0;
+}
+
+.poll-option {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.poll-option:hover {
+    background-color: #f8f9fa;
+}
+
+.poll-option-votes {
+    height: 4px;
+    background-color: #e9ecef;
+    margin-top: 0.25rem;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.poll-option-votes-bar {
+    height: 100%;
+    background-color: #0d6efd;
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+.poll-info {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+}
+
+/* Style pour les commentaires avec des cartes de prévisualisation */
+.comment-preview-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+    overflow: hidden;
+}
+
+.preview-card-image {
+    width: 100%;
+    height: 120px;
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center;
+}
+
+.preview-card-content {
+    padding: 0.75rem;
+}
+
+.preview-card-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.preview-card-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.preview-card-domain {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+/* Style pour les commentaires avec des fichiers audio */
+.comment-audio {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+/* Style pour les commentaires avec des fichiers vidéo */
+.comment-video {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+/* Style pour les commentaires avec des documents */
+.comment-document {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    margin: 0.5rem 0;
+    text-decoration: none;
+    color: #212529;
+}
+
+.comment-document-icon {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+    color: #6c757d;
+}
+
+.comment-document-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-document-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-document-meta {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+/* Style pour les commentaires avec des cartes de produit */
+.comment-product-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 0.5rem 0;
+    display: flex;
+}
+
+.product-card-image {
+    width: 100px;
+    height: 100px;
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.product-card-content {
+    padding: 0.75rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.product-card-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card-price {
+    font-weight: bold;
+    color: #198754;
+    margin-bottom: 0.5rem;
+}
+
+.product-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Style pour les commentaires avec des cartes d'événement */
+.comment-event-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.event-card-header {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 500;
+}
+
+.event-card-date {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.event-card-date-icon {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-right: 0.75rem;
+}
+
+.event-card-date-text {
+    font-size: 0.875rem;
+}
+
+.event-card-location {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.event-card-location-icon {
+    margin-right: 0.75rem;
+    color: #6c757d;
+}
+
+.event-card-actions {
+    padding: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Style pour les commentaires avec des cartes de recette */
+.comment-recipe-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.recipe-card-image {
+    width: 100%;
+    height: 120px;
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center;
+}
+
+.recipe-card-content {
+    padding: 0.75rem;
+}
+
+.recipe-card-title {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.recipe-card-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.recipe-card-rating {
+    display: flex;
+    align-items: center;
+    color: #ffc107;
+}
+
+.recipe-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Annonce;
 use App\Models\Galerie;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class PublicController extends Controller
 {
@@ -52,6 +53,7 @@ class PublicController extends Controller
                 'titre' => 'Transport Maritime',
                 'description' => 'Transport de marchandises par voie maritime vers l\'Afrique et l\'Europe',
                 'icon' => '🚢',
+                'image_url' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Conteneurs 20 et 40 pieds',
                     'Groupage et dédouanement',
@@ -63,6 +65,7 @@ class PublicController extends Controller
                 'titre' => 'Transport Aérien',
                 'description' => 'Transport rapide par voie aérienne pour vos marchandises urgentes',
                 'icon' => '✈️',
+                'image_url' => 'https://images.unsplash.com/photo-1436491865333-7b9af8f9b6b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Livraison express',
                     'Marchandises fragiles',
@@ -74,6 +77,7 @@ class PublicController extends Controller
                 'titre' => 'Transport Terrestre',
                 'description' => 'Transport routier en Afrique de l\'Ouest avec notre flotte moderne',
                 'icon' => '🚛',
+                'image_url' => 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Camions réfrigérés',
                     'Transport de véhicules',
@@ -85,6 +89,7 @@ class PublicController extends Controller
                 'titre' => 'Dédouanement',
                 'description' => 'Service complet de dédouanement et formalités administratives',
                 'icon' => '📋',
+                'image_url' => 'https://images.unsplash.com/photo-1454165804606-c3da57b4f6e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Déclaration en douane',
                     'Certificats d\'origine',
@@ -96,6 +101,7 @@ class PublicController extends Controller
                 'titre' => 'Entreposage',
                 'description' => 'Solutions d\'entreposage sécurisé dans nos entrepôts modernes',
                 'icon' => '🏭',
+                'image_url' => 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Entrepôts sécurisés',
                     'Gestion des stocks',
@@ -107,6 +113,7 @@ class PublicController extends Controller
                 'titre' => 'Assurance',
                 'description' => 'Protection complète de vos marchandises pendant le transport',
                 'icon' => '🛡️',
+                'image_url' => 'https://images.unsplash.com/photo-1554224155-3a58922a22c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Couverture tous risques',
                     'Indemnisation rapide',
@@ -116,7 +123,17 @@ class PublicController extends Controller
             ]
         ];
         
-        return view('public.services', compact('services'));
+        // Images par défaut pour chaque type de service
+        $serviceImages = [
+            'Transport Maritime' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            'Transport Aérien' => 'https://images.unsplash.com/photo-1436491865333-7b9af8f9b6b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            'Transport Terrestre' => 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            'Dédouanement' => 'https://images.unsplash.com/photo-1454165804606-c3da57b4f6e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            'Entreposage' => 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            'Assurance' => 'https://images.unsplash.com/photo-1554224155-3a58922a22c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+        ];
+        
+        return view('public.services', compact('services', 'serviceImages'));
     }
 
     /**
@@ -179,6 +196,54 @@ class PublicController extends Controller
     public function apropos()
     {
         return view('public.apropos');
+    }
+
+    /**
+     * Page du blog/actualités
+     */
+    public function blog()
+    {
+        // Récupérer les annonces actives, triées par date de publication décroissante
+        $annonces = Annonce::where('est_actif', true)
+            ->where('date_publication', '<=', now())
+            ->where(function($query) {
+                $query->whereNull('date_expiration')
+                      ->orWhere('date_expiration', '>=', now());
+            })
+            ->orderBy('date_publication', 'desc')
+            ->paginate(9);
+
+        return view('public.blog.index', compact('annonces'));
+    }
+
+    /**
+     * Afficher un article du blog
+     */
+    public function showArticle($slug)
+    {
+        $article = Annonce::where('slug', $slug)
+            ->where('est_actif', true)
+            ->where('date_publication', '<=', now())
+            ->where(function($query) {
+                $query->whereNull('date_expiration')
+                      ->orWhere('date_expiration', '>=', now());
+            })
+            ->firstOrFail();
+
+        // Articles similaires (même catégorie, limité à 3)
+        $articlesSimilaires = Annonce::where('id', '!=', $article->id)
+            ->where('categorie', $article->categorie)
+            ->where('est_actif', true)
+            ->where('date_publication', '<=', now())
+            ->where(function($query) {
+                $query->whereNull('date_expiration')
+                      ->orWhere('date_expiration', '>=', now());
+            })
+            ->orderBy('date_publication', 'desc')
+            ->take(3)
+            ->get();
+
+        return view('public.blog.show', compact('article', 'articlesSimilaires'));
     }
 
     /**
