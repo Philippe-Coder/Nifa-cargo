@@ -22,20 +22,31 @@
             --accent-red: #dc2626;
             --light-blue: #eff6ff;
             --sidebar-width: 280px;
+            --sidebar-collapsed-width: 70px;
         }
         
         body {
             font-family: 'Inter', sans-serif;
             background: #f8fafc;
+            font-size: 14px;
         }
         
         /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
             transform: translateX(0);
-            transition: transform 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
             background: linear-gradient(135deg, var(--primary-blue) 0%, #1e40af 50%, var(--secondary-blue) 100%);
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+        }
+        
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
         }
         
         .sidebar.hidden {
@@ -65,11 +76,27 @@
             margin-left: 0;
         }
         
+        .main-content.collapsed {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+        
         /* Menu item styles */
         .menu-item {
             transition: all 0.3s ease;
             border-radius: 0.5rem;
             margin: 0.25rem 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .sidebar.collapsed .menu-item span,
+        .sidebar.collapsed .menu-item .menu-text,
+        .sidebar.collapsed .nav-section p,
+        .sidebar.collapsed .user-info-text,
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
         }
         
         .menu-item:hover {
@@ -108,129 +135,21 @@
             box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
         }
         
-        /* Gradient backgrounds */
-        .gradient-bg-dashboard {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(220, 38, 38, 0.9) 100%);
+        /* Navigation responsive - SUPPRESSION DU SCROLL */
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            overflow: visible;
         }
         
-        /* Bannières avec images de fond pour dashboard */
-        .hero-bg-contact {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        .hero-bg-services {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        .hero-bg-tracking {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        .hero-bg-about {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        .hero-bg-home {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        .hero-bg-transport {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(220, 38, 38, 0.8) 100%),
-                        url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            position: relative;
-        }
-        
-        /* Overlay animé */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, 
-                rgba(30, 58, 138, 0.3) 0%, 
-                rgba(220, 38, 38, 0.2) 25%, 
-                rgba(59, 130, 246, 0.3) 50%, 
-                rgba(220, 38, 38, 0.2) 75%, 
-                rgba(30, 58, 138, 0.3) 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease-in-out infinite;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Particules flottantes */
-        .hero-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { left: 20%; animation-delay: 1s; }
-        .particle:nth-child(3) { left: 30%; animation-delay: 2s; }
-        .particle:nth-child(4) { left: 40%; animation-delay: 3s; }
-        .particle:nth-child(5) { left: 50%; animation-delay: 4s; }
-        .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
-        .particle:nth-child(7) { left: 70%; animation-delay: 0.5s; }
-        .particle:nth-child(8) { left: 80%; animation-delay: 1.5s; }
-        .particle:nth-child(9) { left: 90%; animation-delay: 2.5s; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-        
-        /* Texte hero avec effet */
-        .hero-title {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-subtitle {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        .nav-section {
+            margin-bottom: 1.5rem;
         }
         
         /* Responsive breakpoints */
         @media (max-width: 1024px) {
             .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                z-index: 50;
                 transform: translateX(-100%);
             }
             
@@ -240,6 +159,45 @@
             
             .main-content {
                 margin-left: 0;
+            }
+            
+            .sidebar.collapsed {
+                width: var(--sidebar-width);
+            }
+            
+            .sidebar.collapsed .menu-item span,
+            .sidebar.collapsed .menu-item .menu-text,
+            .sidebar.collapsed .nav-section p,
+            .sidebar.collapsed .user-info-text,
+            .sidebar.collapsed .logo-text {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                font-size: 13px;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .menu-item {
+                margin: 0.2rem 0.5rem;
+                padding: 0.75rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                font-size: 12px;
+            }
+            
+            .menu-item {
+                margin: 0.15rem 0.25rem;
+                padding: 0.6rem 0.8rem;
             }
         }
         
@@ -305,6 +263,61 @@
                 transform: translateX(0);
             }
         }
+        
+        /* Toggle sidebar button */
+        .toggle-sidebar {
+            position: absolute;
+            right: -12px;
+            top: 20px;
+            background: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .toggle-sidebar i {
+            font-size: 12px;
+            color: var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+        
+        /* Styles pour le menu réduit */
+        .collapsed-menu-icon {
+            display: none;
+        }
+        
+        .sidebar.collapsed .collapsed-menu-icon {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .sidebar.collapsed .default-menu-content {
+            display: none;
+        }
+        
+        /* Menu burger pour état réduit */
+        .menu-burger-reduced {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-burger-reduced {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            cursor: pointer;
+        }
+        
+        .menu-burger-reduced i {
+            color: white;
+            font-size: 1.5rem;
+        }
     </style>
     
     @stack('styles')
@@ -314,15 +327,15 @@
     <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 z-40 lg:hidden"></div>
     
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full z-50 lg:z-30">
+    <aside id="sidebar" class="sidebar">
         <div class="flex flex-col h-full text-white">
             <!-- Logo -->
-            <div class="flex items-center justify-between p-6 border-b border-white border-opacity-20">
-                <div class="flex items-center">
+            <div class="flex items-center justify-between p-4 border-b border-white border-opacity-20 relative">
+                <div class="flex items-center transition-all duration-300 default-menu-content">
                     <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
                         <span class="text-white font-bold text-lg">N</span>
                     </div>
-                    <div>
+                    <div class="transition-all duration-300 logo-text">
                         <h1 class="text-xl font-bold">NIFA</h1>
                         <p class="text-xs text-blue-200">
                             @if(Auth::user()->isAdmin())
@@ -334,120 +347,150 @@
                     </div>
                 </div>
                 
+                <!-- Logo réduit -->
+                <div class="collapsed-menu-icon">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">N</span>
+                    </div>
+                </div>
+                
+                <!-- Toggle sidebar button (Desktop) -->
+                <button id="toggle-sidebar" class="toggle-sidebar hidden lg:flex">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
                 <!-- Close button (Mobile) -->
-                <button id="sidebar-close" class="lg:hidden text-white hover:text-gray-300">
+                <button id="sidebar-close" class="lg:hidden text-white hover:text-gray-300 default-menu-content">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
             
             <!-- User Info -->
-            <div class="p-6 border-b border-white border-opacity-20">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
-                        <i class="fas fa-user text-white text-lg"></i>
+            <div class="p-4 border-b border-white border-opacity-20">
+                <div class="flex items-center default-menu-content">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-white text-base"></i>
                     </div>
-                    <div>
-                        <p class="font-semibold">{{ Auth::user()->name }}</p>
-                        <p class="text-sm text-blue-200">{{ Auth::user()->email }}</p>
+                    <div class="transition-all duration-300 user-info-text">
+                        <p class="font-semibold text-sm">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-blue-200 truncate">{{ Auth::user()->email }}</p>
                         <span class="inline-block mt-1 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">
                             @if(Auth::user()->isAdmin())
-                                👨‍💼 Administrateur
+                                👨‍💼 Admin
                             @else
                                 👤 Client
                             @endif
                         </span>
                     </div>
                 </div>
+                
+                <!-- Burger menu pour état réduit -->
+                <div class="menu-burger-reduced" id="expand-sidebar">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
             
-            <!-- Navigation Menu -->
-            <nav class="flex-1 py-6 overflow-y-auto">
-                @if(Auth::user()->isAdmin())
-                    <!-- Menu Admin -->
-                    <div class="px-3">
-                        <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-3 px-3">
-                            Administration
+            <!-- Navigation Menu - SUPPRESSION DU SCROLL -->
+            <div class="nav-container">
+                <nav class="flex-1 py-4">
+                    @if(Auth::user()->isAdmin())
+                        <!-- Menu Admin -->
+                        <div class="nav-section default-menu-content">
+                            <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2 px-4">
+                                Administration
+                            </p>
+                            <a href="{{ route('admin.dashboard') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <i class="fas fa-tachometer-alt mr-3 text-base"></i>
+                                <span class="menu-text">Dashboard</span>
+                            </a>
+                            <a href="{{ route('admin.demandes.index') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.demandes.*') ? 'active' : '' }}">
+                                <i class="fas fa-boxes mr-3 text-base"></i>
+                                <span class="menu-text">Demandes</span>
+                                @if(isset($pending_count) && $pending_count > 0)
+                                    <span class="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                                        {{ $pending_count }}
+                                    </span>
+                                @endif
+                            </a>
+                            <a href="{{ route('admin.clients.index') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+                                <i class="fas fa-users mr-3 text-base"></i>
+                                <span class="menu-text">Clients</span>
+                            </a>
+                        </div>
+                    @else
+                        <!-- Menu Client -->
+                        <div class="nav-section default-menu-content">
+                            <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2 px-4">
+                                Mon Espace
+                            </p>
+                            <a href="{{ route('dashboard') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                <i class="fas fa-home mr-3 text-base"></i>
+                                <span class="menu-text">Accueil</span>
+                            </a>
+                            <a href="{{ route('demande.create') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('demande.create') ? 'active' : '' }}">
+                                <i class="fas fa-plus-circle mr-3 text-base"></i>
+                                <span class="menu-text">Nouvelle Demande</span>
+                            </a>
+                            <a href="{{ route('mes-demandes.index') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('mes-demandes*') ? 'active' : '' }}">
+                                <i class="fas fa-list mr-3 text-base"></i>
+                                <span class="menu-text">Mes Demandes</span>
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <!-- Menu commun -->
+                    <div class="nav-section default-menu-content">
+                        <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2 px-4">
+                            Général
                         </p>
-                        <a href="{{ route('admin.dashboard') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                            <i class="fas fa-tachometer-alt mr-3 text-lg"></i>
-                            <span>Dashboard</span>
+                        <a href="{{ route('accueil') }}" 
+                           class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg">
+                            <i class="fas fa-globe mr-3 text-base"></i>
+                            <span class="menu-text">Site Public</span>
+                            <i class="fas fa-external-link-alt ml-auto text-xs"></i>
                         </a>
-                        <a href="{{ route('admin.demandes.index') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.demandes.*') ? 'active' : '' }}">
-                            <i class="fas fa-boxes mr-3 text-lg"></i>
-                            <span>Demandes</span>
-                            @if(isset($pending_count) && $pending_count > 0)
-                                <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                                    {{ $pending_count }}
-                                </span>
-                            @endif
-                        </a>
-                        <a href="{{ route('admin.clients.index') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
-                            <i class="fas fa-users mr-3 text-lg"></i>
-                            <span>Clients</span>
+                        <a href="{{ route('suivi.public') }}" 
+                           class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg">
+                            <i class="fas fa-search mr-3 text-base"></i>
+                            <span class="menu-text">Suivi Public</span>
                         </a>
                     </div>
-                @else
-                    <!-- Menu Client -->
-                    <div class="px-3">
-                        <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-3 px-3">
-                            Mon Espace
-                        </p>
-                        <a href="{{ route('dashboard') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <i class="fas fa-home mr-3 text-lg"></i>
-                            <span>Accueil</span>
-                        </a>
-                        <a href="{{ route('demande.create') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('demande.create') ? 'active' : '' }}">
-                            <i class="fas fa-plus-circle mr-3 text-lg"></i>
-                            <span>Nouvelle Demande</span>
-                        </a>
-                        <a href="{{ route('mes-demandes.index') }}" 
-                           class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('mes-demandes*') ? 'active' : '' }}">
-                            <i class="fas fa-list mr-3 text-lg"></i>
-                            <span>Mes Demandes</span>
-                        </a>
-                    </div>
-                @endif
-                
-                <!-- Menu commun -->
-                <div class="px-3 mt-8">
-                    <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-3 px-3">
-                        Général
-                    </p>
-                    <a href="{{ route('accueil') }}" 
-                       class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg">
-                        <i class="fas fa-globe mr-3 text-lg"></i>
-                        <span>Site Public</span>
-                        <i class="fas fa-external-link-alt ml-auto text-sm"></i>
-                    </a>
-                    <a href="{{ route('suivi.public') }}" 
-                       class="menu-item flex items-center px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg">
-                        <i class="fas fa-search mr-3 text-lg"></i>
-                        <span>Suivi Public</span>
-                    </a>
-                </div>
-            </nav>
+                </nav>
+            </div>
             
             <!-- Footer -->
-            <div class="p-6 border-t border-white border-opacity-20">
+            <div class="p-4 border-t border-white border-opacity-20 mt-auto default-menu-content">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" 
-                            class="w-full flex items-center px-4 py-3 text-white hover:bg-red-600 hover:bg-opacity-20 rounded-lg transition-colors">
-                        <i class="fas fa-sign-out-alt mr-3 text-lg"></i>
-                        <span>Déconnexion</span>
+                            class="w-full flex items-center px-4 py-2 text-white hover:bg-red-600 hover:bg-opacity-20 rounded-lg transition-colors">
+                        <i class="fas fa-sign-out-alt mr-3 text-base"></i>
+                        <span class="menu-text">Déconnexion</span>
                     </button>
                 </form>
                 
-                <div class="mt-4 text-center">
+                <div class="mt-3 text-center">
                     <p class="text-xs text-blue-200">
                         © {{ date('Y') }} NIFA
                     </p>
                 </div>
+            </div>
+            
+            <!-- Footer réduit -->
+            <div class="p-4 border-t border-white border-opacity-20 mt-auto collapsed-menu-icon">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" 
+                            class="w-full flex items-center justify-center text-white hover:bg-red-600 hover:bg-opacity-20 rounded-lg transition-colors py-2">
+                        <i class="fas fa-sign-out-alt text-base"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
@@ -456,57 +499,57 @@
     <div id="main-content" class="main-content">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
-            <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center justify-between px-4 py-3">
                 <!-- Burger Menu -->
-                <button id="burger-btn" class="burger-btn lg:hidden w-10 h-10 rounded-lg text-white flex items-center justify-center">
+                <button id="burger-btn" class="burger-btn lg:hidden w-9 h-9 rounded-lg text-white flex items-center justify-center">
                     <i class="fas fa-bars"></i>
                 </button>
                 
                 <!-- Page Title -->
                 <div class="flex items-center">
-                    <h1 class="text-xl font-semibold text-gray-900">
+                    <h1 class="text-lg font-semibold text-gray-900">
                         @yield('page-title', 'Dashboard')
                     </h1>
                 </div>
                 
                 <!-- Header Actions -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3">
                     @livewire('notification-bell')
                     
                     <!-- User Menu -->
                     <div class="relative">
-                        <button id="user-menu-btn" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">
+                        <button id="user-menu-btn" class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-semibold">
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 </span>
                             </div>
-                            <i class="fas fa-chevron-down text-gray-400 text-sm"></i>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                         </button>
                         
                         <!-- Dropdown -->
-                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden">
-                            <div class="p-3 border-b border-gray-100">
-                                <p class="font-semibold text-gray-900">{{ Auth::user()->name }}</p>
-                                <p class="text-sm text-gray-500">{{ Auth::user()->email }}</p>
+                        <div id="user-menu" class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-200 hidden">
+                            <div class="p-2 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 text-sm">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</p>
                             </div>
-                            <div class="py-2">
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <div class="py-1">
+                                <a href="{{ route('profile.edit') }}" class="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-user mr-2"></i> Profil
                                 </a>
-                                <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="{{ route('notifications.index') }}" class="flex items-center px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-bell mr-2"></i> Notifications
-                                    <span id="unread-count" class="ml-auto inline-flex items-center justify-center h-5 w-5 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                    <span id="unread-count" class="ml-auto inline-flex items-center justify-center h-4 w-4 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                         {{ auth()->user()->unreadNotifications->count() }}
                                     </span>
                                 </a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="#" class="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-cog mr-2"></i> Paramètres
                                 </a>
-                                <div class="border-t border-gray-100 mt-2 pt-2">
+                                <div class="border-t border-gray-100 mt-1 pt-1">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <button type="submit" class="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-gray-100">
                                             <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
                                         </button>
                                     </form>
@@ -523,7 +566,7 @@
             <div class="notification bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg" role="alert">
                 <div class="flex">
                     <span class="text-xl mr-3">✅</span>
-                    <span>{{ session('success') }}</span>
+                    <span class="text-sm">{{ session('success') }}</span>
                     <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-green-700 hover:text-green-900">
                         <i class="fas fa-times"></i>
                     </button>
@@ -535,7 +578,7 @@
             <div class="notification bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg" role="alert">
                 <div class="flex">
                     <span class="text-xl mr-3">❌</span>
-                    <span>{{ session('error') }}</span>
+                    <span class="text-sm">{{ session('error') }}</span>
                     <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-red-700 hover:text-red-900">
                         <i class="fas fa-times"></i>
                     </button>
@@ -544,7 +587,7 @@
         @endif
         
         <!-- Page Content -->
-        <main class="p-6">
+        <main class="p-4">
             @yield('content')
         </main>
     </div>
@@ -557,17 +600,65 @@
             const mainContent = document.getElementById('main-content');
             const burgerBtn = document.getElementById('burger-btn');
             const sidebarClose = document.getElementById('sidebar-close');
+            const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+            const expandSidebarBtn = document.getElementById('expand-sidebar');
             const userMenuBtn = document.getElementById('user-menu-btn');
             const userMenu = document.getElementById('user-menu');
+            
+            // Check if sidebar should be collapsed by default on small screens
+            function checkSidebarState() {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.add('hidden');
+                    mainContent.classList.remove('collapsed');
+                } else {
+                    // On desktop, check localStorage for collapsed state
+                    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                    if (isCollapsed) {
+                        sidebar.classList.add('collapsed');
+                        mainContent.classList.add('collapsed');
+                        toggleSidebarBtn.querySelector('i').classList.remove('fa-chevron-left');
+                        toggleSidebarBtn.querySelector('i').classList.add('fa-chevron-right');
+                    } else {
+                        sidebar.classList.remove('collapsed');
+                        mainContent.classList.remove('collapsed');
+                        toggleSidebarBtn.querySelector('i').classList.remove('fa-chevron-right');
+                        toggleSidebarBtn.querySelector('i').classList.add('fa-chevron-left');
+                    }
+                }
+            }
             
             // Toggle sidebar on mobile
             function toggleSidebar() {
                 if (window.innerWidth <= 1024) {
                     sidebar.classList.toggle('active');
                     sidebarOverlay.classList.toggle('active');
-                } else {
-                    sidebar.classList.toggle('hidden');
-                    mainContent.classList.toggle('expanded');
+                }
+            }
+            
+            // Toggle sidebar collapsed state on desktop
+            function toggleSidebarCollapsed() {
+                if (window.innerWidth > 1024) {
+                    sidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('collapsed');
+                    
+                    // Update toggle button icon
+                    const icon = toggleSidebarBtn.querySelector('i');
+                    if (sidebar.classList.contains('collapsed')) {
+                        icon.classList.remove('fa-chevron-left');
+                        icon.classList.add('fa-chevron-right');
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    } else {
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-left');
+                        localStorage.setItem('sidebarCollapsed', 'false');
+                    }
+                }
+            }
+            
+            // Expand sidebar from collapsed state
+            function expandSidebar() {
+                if (window.innerWidth > 1024 && sidebar.classList.contains('collapsed')) {
+                    toggleSidebarCollapsed();
                 }
             }
             
@@ -584,6 +675,14 @@
             
             if (sidebarClose) {
                 sidebarClose.addEventListener('click', closeSidebar);
+            }
+            
+            if (toggleSidebarBtn) {
+                toggleSidebarBtn.addEventListener('click', toggleSidebarCollapsed);
+            }
+            
+            if (expandSidebarBtn) {
+                expandSidebarBtn.addEventListener('click', expandSidebar);
             }
             
             if (sidebarOverlay) {
@@ -605,12 +704,15 @@
             
             // Handle window resize
             window.addEventListener('resize', function() {
+                checkSidebarState();
+                
                 if (window.innerWidth > 1024) {
                     closeSidebar();
-                    sidebar.classList.remove('hidden');
-                    mainContent.classList.remove('expanded');
                 }
             });
+            
+            // Initialize sidebar state
+            checkSidebarState();
             
             // Animation au défilement
             const fadeElements = document.querySelectorAll('.fade-in');

@@ -5,44 +5,62 @@
 
 @section('content')
 <!-- Breadcrumb -->
-<nav class="mb-6 fade-in">
+<nav class="mb-6">
     <ol class="flex items-center space-x-2 text-sm text-gray-600">
-        <li><a href="{{ route('dashboard') }}" class="hover:text-blue-600">Dashboard</a></li>
-        <li><i class="fas fa-chevron-right mx-2"></i></li>
-        <li><a href="{{ route('mes-demandes.index') }}" class="hover:text-blue-600">Mes Demandes</a></li>
-        <li><i class="fas fa-chevron-right mx-2"></i></li>
+        <li><a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Dashboard</a></li>
+        <li><i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i></li>
+        <li><a href="{{ route('mes-demandes.index') }}" class="hover:text-blue-600 transition-colors">Mes Demandes</a></li>
+        <li><i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i></li>
         <li class="text-gray-900 font-medium">{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</li>
     </ol>
 </nav>
 
 <!-- Header avec actions -->
-<div class="dashboard-card p-6 mb-8 fade-in">
+<div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 mb-2">
-                {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
-            </h1>
-            <div class="flex items-center gap-4 text-sm text-gray-600">
-                <span class="flex items-center">
-                    <i class="fas fa-calendar mr-2"></i>
-                    Créée le {{ $demande->created_at->format('d/m/Y à H:i') }}
-                </span>
-                <span class="flex items-center">
-                    <i class="fas fa-clock mr-2"></i>
-                    {{ $demande->created_at->diffForHumans() }}
-                </span>
+            <div class="flex items-center mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-file-invoice text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                        {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
+                    </h1>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                        <span class="flex items-center">
+                            <i class="fas fa-calendar mr-2 text-blue-500"></i>
+                            Créée le {{ $demande->created_at->format('d/m/Y à H:i') }}
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-clock mr-2 text-green-500"></i>
+                            {{ $demande->created_at->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="flex flex-wrap gap-2">
-            <span class="status-badge status-{{ str_replace(' ', '-', strtolower($demande->statut)) }}">
-                {{ $demande->statut }}
+        <div class="flex flex-wrap gap-3">
+            @php
+                $statusColors = [
+                    'en attente' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                    'en cours' => 'bg-blue-100 text-blue-800 border-blue-200',
+                    'en transit' => 'bg-purple-100 text-purple-800 border-purple-200',
+                    'livrée' => 'bg-green-100 text-green-800 border-green-200',
+                    'annulée' => 'bg-red-100 text-red-800 border-red-200',
+                ];
+                $statusClass = $statusColors[$demande->statut] ?? 'bg-gray-100 text-gray-800 border-gray-200';
+            @endphp
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border {{ $statusClass }}">
+                <i class="fas fa-circle mr-2 text-xs"></i>
+                {{ ucfirst($demande->statut) }}
             </span>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                <i class="fas fa-download mr-2"></i> Télécharger PDF
+            <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm">
+                <i class="fas fa-file-pdf mr-3"></i> Télécharger PDF
             </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                <i class="fas fa-share mr-2"></i> Partager
+            <button class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition-colors">
+                <i class="fas fa-share-alt mr-3"></i> Partager
             </button>
         </div>
     </div>
@@ -52,118 +70,173 @@
     <!-- Colonne principale -->
     <div class="lg:col-span-2 space-y-8">
         <!-- Informations de la demande -->
-        <div class="dashboard-card p-6 fade-in">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-info-circle mr-2 text-blue-500"></i> Informations de la Demande
-            </h2>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-info-circle text-blue-600 text-lg"></i>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900">Informations de la Demande</h2>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h3 class="font-semibold text-gray-900 mb-3">Détails du Transport</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Type :</span>
-                            <span class="font-medium">{{ ucfirst($demande->type) }}</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Détails du Transport -->
+                <div class="space-y-6">
+                    <h3 class="font-semibold text-gray-900 text-lg border-b border-gray-200 pb-2">Détails du Transport</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-truck text-blue-500 mr-3"></i>
+                                <span class="text-gray-600">Type de transport</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ ucfirst($demande->type) }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Départ :</span>
-                            <span class="font-medium">{{ $demande->ville_depart }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-red-500 mr-3"></i>
+                                <span class="text-gray-600">Ville de départ</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->ville_depart }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Destination :</span>
-                            <span class="font-medium">{{ $demande->ville_destination }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-flag text-green-500 mr-3"></i>
+                                <span class="text-gray-600">Ville de destination</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->ville_destination }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Date souhaitée :</span>
-                            <span class="font-medium">{{ $demande->date_souhaitee ? \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') : 'Non spécifiée' }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-day text-purple-500 mr-3"></i>
+                                <span class="text-gray-600">Date souhaitée</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->date_souhaitee ? \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') : 'Non spécifiée' }}</span>
                         </div>
                     </div>
                 </div>
                 
-                <div>
-                    <h3 class="font-semibold text-gray-900 mb-3">Informations Colis</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Poids :</span>
-                            <span class="font-medium">{{ $demande->poids ?? 'Non spécifié' }} kg</span>
+                <!-- Informations Colis -->
+                <div class="space-y-6">
+                    <h3 class="font-semibold text-gray-900 text-lg border-b border-gray-200 pb-2">Informations Colis</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-weight text-orange-500 mr-3"></i>
+                                <span class="text-gray-600">Poids estimé</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->poids ?? 'Non spécifié' }} kg</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Dimensions :</span>
-                            <span class="font-medium">{{ $demande->dimensions ?? 'Non spécifiées' }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler-combined text-indigo-500 mr-3"></i>
+                                <span class="text-gray-600">Dimensions</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->dimensions ?? 'Non spécifiées' }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Valeur :</span>
-                            <span class="font-medium">{{ $demande->valeur ? number_format($demande->valeur) . ' F CFA' : 'Non spécifiée' }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-tag text-green-500 mr-3"></i>
+                                <span class="text-gray-600">Valeur déclarée</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->valeur ? number_format($demande->valeur) . ' FCFA' : 'Non spécifiée' }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Fragile :</span>
-                            <span class="font-medium">{{ $demande->fragile ? 'Oui' : 'Non' }}</span>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-3"></i>
+                                <span class="text-gray-600">Marchandise fragile</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->fragile ? 'Oui' : 'Non' }}</span>
                         </div>
                     </div>
                 </div>
             </div>
             
             @if($demande->description)
-                <div class="mt-6 pt-6 border-t border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-3">Description</h3>
-                    <p class="text-gray-700 leading-relaxed">{{ $demande->description }}</p>
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-file-alt text-blue-500 mr-3"></i>
+                        Description additionnelle
+                    </h3>
+                    <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                        <p class="text-gray-700 leading-relaxed">{{ $demande->description }}</p>
+                    </div>
                 </div>
             @endif
         </div>
         
         <!-- Suivi des étapes -->
-        <div class="dashboard-card p-6 fade-in">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">
-                <i class="fas fa-route mr-2 text-green-500"></i> Suivi du Transport
-            </h2>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-route text-green-600 text-lg"></i>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900">Suivi du Transport</h2>
+            </div>
             
             @if($demande->etapes && $demande->etapes->count() > 0)
                 <div class="relative">
                     @foreach($demande->etapes as $index => $etape)
-                        <div class="flex items-start mb-8 last:mb-0">
+                        <div class="flex items-start mb-8 last:mb-0 group">
                             <!-- Timeline -->
-                            <div class="flex flex-col items-center mr-4">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center
-                                    @if($etape->statut === 'terminée') bg-green-500 text-white
-                                    @elseif($etape->statut === 'en_cours') bg-blue-500 text-white
-                                    @else bg-gray-300 text-gray-600 @endif">
+                            <div class="flex flex-col items-center mr-6">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center border-2 shadow-sm
+                                    @if($etape->statut === 'terminée') bg-green-500 border-green-600 text-white
+                                    @elseif($etape->statut === 'en_cours') bg-blue-500 border-blue-600 text-white
+                                    @else bg-white border-gray-300 text-gray-400 @endif
+                                    group-hover:scale-110 transition-transform duration-300">
                                     @if($etape->statut === 'terminée')
-                                        <i class="fas fa-check"></i>
+                                        <i class="fas fa-check text-sm"></i>
                                     @elseif($etape->statut === 'en_cours')
-                                        <i class="fas fa-clock"></i>
+                                        <i class="fas fa-sync-alt text-sm"></i>
                                     @else
-                                        <i class="fas fa-circle"></i>
+                                        <i class="fas fa-clock text-sm"></i>
                                     @endif
                                 </div>
                                 @if(!$loop->last)
-                                    <div class="w-0.5 h-16 
+                                    <div class="w-1 h-16 
                                         @if($etape->statut === 'terminée') bg-green-500
-                                        @else bg-gray-300 @endif mt-2"></div>
+                                        @else bg-gray-300 @endif mt-2 rounded-full"></div>
                                 @endif
                             </div>
                             
                             <!-- Contenu -->
                             <div class="flex-1 min-w-0">
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h3 class="font-semibold text-gray-900">{{ $etape->nom }}</h3>
-                                        <span class="text-sm text-gray-500">
-                                            {{ $etape->date_prevue ? \Carbon\Carbon::parse($etape->date_prevue)->format('d/m/Y') : '' }}
-                                        </span>
+                                <div class="bg-gray-50 rounded-xl p-5 border border-gray-200 group-hover:border-blue-300 transition-colors">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+                                        <h3 class="font-semibold text-gray-900 text-lg">{{ $etape->nom }}</h3>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-calendar mr-2 text-blue-500"></i>
+                                            {{ $etape->date_prevue ? \Carbon\Carbon::parse($etape->date_prevue)->format('d/m/Y') : 'Date à définir' }}
+                                        </div>
                                     </div>
                                     
                                     @if($etape->description)
-                                        <p class="text-gray-600 text-sm mb-3">{{ $etape->description }}</p>
+                                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ $etape->description }}</p>
                                     @endif
                                     
-                                    <div class="flex items-center justify-between text-sm">
-                                        <span class="status-badge status-{{ str_replace(' ', '-', strtolower($etape->statut)) }}">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+                                        @php
+                                            $etapeStatusColors = [
+                                                'terminée' => 'bg-green-100 text-green-800 border-green-200',
+                                                'en_cours' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                                'en_attente' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                            ];
+                                            $etapeStatusClass = $etapeStatusColors[$etape->statut] ?? 'bg-gray-100 text-gray-800 border-gray-200';
+                                        @endphp
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border {{ $etapeStatusClass }}">
+                                            <i class="fas fa-circle mr-2 text-xs"></i>
                                             {{ ucfirst(str_replace('_', ' ', $etape->statut)) }}
                                         </span>
                                         
                                         @if($etape->agent)
-                                            <span class="text-gray-600">
-                                                <i class="fas fa-user mr-1"></i> {{ $etape->agent->name }}
+                                            <span class="text-gray-600 flex items-center">
+                                                <i class="fas fa-user-circle mr-2 text-purple-500"></i>
+                                                {{ $etape->agent->name }}
                                             </span>
                                         @endif
                                     </div>
@@ -173,52 +246,70 @@
                     @endforeach
                 </div>
             @else
-                <div class="text-center py-8">
-                    <div class="text-4xl mb-4">🚚</div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Suivi en préparation</h3>
-                    <p class="text-gray-600">Les étapes de suivi seront disponibles une fois votre demande traitée.</p>
+                <div class="text-center py-12">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shipping-fast text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Suivi en préparation</h3>
+                    <p class="text-gray-600 max-w-md mx-auto mb-6">
+                        Les étapes de suivi détaillées seront disponibles une fois votre demande prise en charge par notre équipe logistique.
+                    </p>
+                    <div class="flex items-center justify-center text-sm text-gray-500">
+                        <i class="fas fa-info-circle mr-2 text-blue-500"></i>
+                        Votre demande est en cours de traitement
+                    </div>
                 </div>
             @endif
         </div>
         
         <!-- Documents -->
-        <div class="dashboard-card p-6 fade-in">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">
-                    <i class="fas fa-file-alt mr-2 text-purple-500"></i> Documents
-                </h2>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-upload mr-2"></i> Ajouter un document
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-file-alt text-purple-600 text-lg"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900">Documents associés</h2>
+                </div>
+                <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm">
+                    <i class="fas fa-cloud-upload-alt mr-3"></i> Ajouter un document
                 </button>
             </div>
             
             @if($demande->documents && $demande->documents->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach($demande->documents as $document)
-                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-all duration-300 group">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                        <i class="fas fa-file text-blue-600"></i>
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                                        <i class="fas fa-file-pdf text-blue-600 text-lg"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-900">{{ $document->nom }}</h4>
-                                        <p class="text-sm text-gray-600">{{ $document->created_at->format('d/m/Y') }}</p>
+                                        <h4 class="font-semibold text-gray-900">{{ $document->nom }}</h4>
+                                        <p class="text-sm text-gray-600 flex items-center">
+                                            <i class="fas fa-calendar mr-2 text-gray-400"></i>
+                                            {{ $document->created_at->format('d/m/Y à H:i') }}
+                                        </p>
                                     </div>
                                 </div>
                                 <a href="{{ route('documents.download', $document) }}" 
-                                   class="text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-download"></i>
+                                   class="text-blue-600 hover:text-blue-800 transition-colors transform hover:scale-110">
+                                    <i class="fas fa-download text-lg"></i>
                                 </a>
                             </div>
                         </div>
                     @endforeach
                 </div>
             @else
-                <div class="text-center py-8">
-                    <div class="text-4xl mb-4">📄</div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucun document</h3>
-                    <p class="text-gray-600">Les documents liés à votre demande apparaîtront ici.</p>
+                <div class="text-center py-12">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-file-import text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Aucun document</h3>
+                    <p class="text-gray-600 max-w-md mx-auto">
+                        Les documents liés à votre demande (factures, bons de livraison, etc.) apparaîtront ici au fur et à mesure de l'avancement.
+                    </p>
                 </div>
             @endif
         </div>
@@ -227,82 +318,104 @@
     <!-- Sidebar -->
     <div class="space-y-6">
         <!-- Résumé -->
-        <div class="dashboard-card p-6 fade-in">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                <i class="fas fa-chart-pie mr-2 text-orange-500"></i> Résumé
-            </h3>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-pie text-orange-600 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Résumé de la demande</h3>
+            </div>
             
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <span class="text-gray-600">Statut actuel :</span>
-                    <span class="status-badge status-{{ str_replace(' ', '-', strtolower($demande->statut)) }}">
-                        {{ $demande->statut }}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border {{ $statusClass }}">
+                        {{ ucfirst($demande->statut) }}
                     </span>
                 </div>
                 
                 @if($demande->etapes && $demande->etapes->count() > 0)
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-600">Progression :</span>
-                        <span class="font-medium">
-                            {{ $demande->etapes->where('statut', 'terminée')->count() }}/{{ $demande->etapes->count() }}
-                        </span>
-                    </div>
-                    
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        @php
-                            $progress = ($demande->etapes->where('statut', 'terminée')->count() / $demande->etapes->count()) * 100;
-                        @endphp
-                        <div class="bg-gradient-to-r from-blue-600 to-green-600 h-2 rounded-full" 
-                             style="width: {{ $progress }}%"></div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Progression :</span>
+                            <span class="font-semibold text-gray-900">
+                                {{ $demande->etapes->where('statut', 'terminée')->count() }}/{{ $demande->etapes->count() }}
+                            </span>
+                        </div>
+                        
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            @php
+                                $progress = ($demande->etapes->where('statut', 'terminée')->count() / $demande->etapes->count()) * 100;
+                            @endphp
+                            <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-1000 ease-out" 
+                                 style="width: {{ $progress }}%"></div>
+                        </div>
                     </div>
                 @endif
                 
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <span class="text-gray-600">Documents :</span>
-                    <span class="font-medium">{{ $demande->documents ? $demande->documents->count() : 0 }}</span>
+                    <span class="font-semibold text-gray-900">{{ $demande->documents ? $demande->documents->count() : 0 }}</span>
                 </div>
             </div>
         </div>
         
         <!-- Actions rapides -->
-        <div class="dashboard-card p-6 fade-in">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                <i class="fas fa-bolt mr-2 text-yellow-500"></i> Actions Rapides
-            </h3>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-bolt text-yellow-600 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Actions Rapides</h3>
+            </div>
             
             <div class="space-y-3">
-                <button class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-phone mr-2"></i> Contacter le support
+                <button class="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm">
+                    <i class="fas fa-phone-alt mr-3"></i> Contacter le support
                 </button>
                 
-                <button class="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                    <i class="fas fa-whatsapp mr-2"></i> WhatsApp
+                <button class="w-full flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm">
+                    <i class="fab fa-whatsapp mr-3 text-lg"></i> WhatsApp
                 </button>
                 
-                <button class="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                    <i class="fas fa-print mr-2"></i> Imprimer
+                <button class="w-full flex items-center justify-center px-4 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-print mr-3"></i> Imprimer les détails
                 </button>
             </div>
         </div>
         
         <!-- Informations de contact -->
-        <div class="dashboard-card p-6 fade-in">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                <i class="fas fa-headset mr-2 text-red-500"></i> Besoin d'aide ?
-            </h3>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-headset text-red-600 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Besoin d'aide ?</h3>
+            </div>
             
-            <div class="space-y-3 text-sm">
-                <div class="flex items-center">
-                    <i class="fas fa-phone mr-3 text-blue-500"></i>
-                    <span>+228 22 61 00 00</span>
+            <div class="space-y-4 text-sm">
+                <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                    <i class="fas fa-phone mr-3 text-blue-600"></i>
+                    <div>
+                        <div class="font-medium text-gray-900">+228 22 61 00 00</div>
+                        <div class="text-gray-600 text-xs">Support téléphonique</div>
+                    </div>
                 </div>
-                <div class="flex items-center">
-                    <i class="fas fa-envelope mr-3 text-green-500"></i>
-                    <span>support@nifa.tg</span>
+                
+                <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                    <i class="fas fa-envelope mr-3 text-green-600"></i>
+                    <div>
+                        <div class="font-medium text-gray-900">support@nifa.tg</div>
+                        <div class="text-gray-600 text-xs">Email de support</div>
+                    </div>
                 </div>
-                <div class="flex items-center">
-                    <i class="fas fa-clock mr-3 text-orange-500"></i>
-                    <span>Lun-Ven: 8h-18h</span>
+                
+                <div class="flex items-center p-3 bg-orange-50 rounded-lg">
+                    <i class="fas fa-clock mr-3 text-orange-600"></i>
+                    <div>
+                        <div class="font-medium text-gray-900">Lun - Ven: 8h-18h</div>
+                        <div class="text-gray-600 text-xs">Samedi: 8h-12h</div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-6">
-    <h1 class="text-2xl font-bold mb-6">📦 Détails de la demande</h1>
+    <h1 class="text-2xl font-bold mb-6">Détails de la demande</h1>
 
     <div class="bg-white rounded-lg shadow p-6 mb-8">
         <h2 class="text-lg font-semibold text-gray-700 mb-4">Informations principales</h2>
@@ -38,7 +38,7 @@
 
     {{-- Section Workflow Logistique --}}
     <div class="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">📋 Workflow Logistique</h2>
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Workflow Logistique</h2>
         
         @if($demande->etapes->count() > 0)
             <div class="space-y-4">
@@ -130,7 +130,7 @@
 
     {{-- Section Documents --}}
     <div class="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">📄 Documents</h2>
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Documents</h2>
         
         @if($demande->documents->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

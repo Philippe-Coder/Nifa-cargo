@@ -5,21 +5,29 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="gradient-bg-dashboard rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
+<div class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-black bg-opacity-10"></div>
+    <!-- Pattern Background -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"1\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
     <div class="relative z-10">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold mb-2">
-                    👋 Bonjour, {{ Auth::user()->name }} !
+                <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4 border border-white/30">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span class="text-sm font-medium">Bienvenue dans votre espace</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold mb-3">
+                    Bonjour, {{ Auth::user()->name }} !
                 </h1>
-                <p class="text-blue-100 text-lg">
-                    Bienvenue dans votre espace client NIFA
+                <p class="text-blue-100 text-lg max-w-2xl">
+                    Gérez vos demandes de transport et suivez vos expéditions en temps réel
                 </p>
             </div>
-            <div class="hidden md:block">
+            <div class="hidden lg:block">
                 <div class="text-6xl opacity-20">
-                    📦
+                    <i class="fas fa-tachometer-alt"></i>
                 </div>
             </div>
         </div>
@@ -29,132 +37,135 @@
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Total Demandes -->
-    <div class="dashboard-card p-6 fade-in">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">Total Demandes</p>
+                <p class="text-sm font-medium text-gray-600 mb-2">Total Demandes</p>
                 <p class="text-3xl font-bold text-gray-900">{{ $stats['total_demandes'] ?? 0 }}</p>
             </div>
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-boxes text-blue-600 text-xl"></i>
+            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-green-600 font-medium">
-                <i class="fas fa-arrow-up mr-1"></i> +12%
+            <span class="text-green-600 font-medium flex items-center">
+                <i class="fas fa-arrow-up mr-1 text-xs"></i> +12%
             </span>
             <span class="text-gray-500 ml-2">ce mois</span>
         </div>
     </div>
     
     <!-- En Cours -->
-    <div class="dashboard-card p-6 fade-in">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">En Cours</p>
+                <p class="text-sm font-medium text-gray-600 mb-2">En Cours</p>
                 <p class="text-3xl font-bold text-gray-900">{{ $stats['en_cours'] ?? 0 }}</p>
             </div>
-            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+            <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+                <i class="fas fa-shipping-fast text-yellow-600 text-xl"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-blue-600 font-medium">
-                <i class="fas fa-sync mr-1"></i> Actif
+            <span class="text-blue-600 font-medium flex items-center">
+                <i class="fas fa-sync-alt mr-1 text-xs"></i> Actif
             </span>
             <span class="text-gray-500 ml-2">suivi temps réel</span>
         </div>
     </div>
     
     <!-- Livrées -->
-    <div class="dashboard-card p-6 fade-in">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">Livrées</p>
+                <p class="text-sm font-medium text-gray-600 mb-2">Livrées</p>
                 <p class="text-3xl font-bold text-gray-900">{{ $stats['livrees'] ?? 0 }}</p>
             </div>
-            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+            <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                 <i class="fas fa-check-circle text-green-600 text-xl"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-green-600 font-medium">
-                <i class="fas fa-thumbs-up mr-1"></i> 98%
+            <span class="text-green-600 font-medium flex items-center">
+                <i class="fas fa-thumbs-up mr-1 text-xs"></i> 98%
             </span>
             <span class="text-gray-500 ml-2">satisfaction</span>
         </div>
     </div>
     
     <!-- Montant Total -->
-    <div class="dashboard-card p-6 fade-in">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">Montant Total</p>
+                <p class="text-sm font-medium text-gray-600 mb-2">Montant Total</p>
                 <p class="text-3xl font-bold text-gray-900">{{ number_format($stats['montant_total'] ?? 0) }} F</p>
             </div>
-            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-wallet text-purple-600 text-xl"></i>
+            <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                <i class="fas fa-file-invoice-dollar text-purple-600 text-xl"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-purple-600 font-medium">
-                <i class="fas fa-chart-line mr-1"></i> +8%
+            <span class="text-purple-600 font-medium flex items-center">
+                <i class="fas fa-chart-line mr-1 text-xs"></i> +8%
             </span>
             <span class="text-gray-500 ml-2">vs mois dernier</span>
         </div>
     </div>
 </div>
 
-<!-- Actions Rapides -->
+<!-- Actions Rapides et Profil -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-    <!-- Actions -->
+    <!-- Actions Rapides -->
     <div class="lg:col-span-2">
-        <div class="dashboard-card p-6 fade-in">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">
-                ⚡ Actions Rapides
-            </h2>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold text-gray-900">Actions Rapides</h2>
+                <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-bolt text-blue-600 text-sm"></i>
+                </div>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <a href="{{ route('demande.create') }}" 
-                   class="flex items-center p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-plus text-xl"></i>
+                   class="group flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-100 transition-colors">
+                        <i class="fas fa-plus text-blue-600 text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold">Nouvelle Demande</h3>
-                        <p class="text-sm text-blue-100">Créer une demande de transport</p>
+                        <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Nouvelle Demande</h3>
+                        <p class="text-sm text-gray-600">Créer une demande de transport</p>
                     </div>
                 </a>
                 
                 <a href="{{ route('mes-demandes') }}" 
-                   class="flex items-center p-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 transform hover:scale-105">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-list text-xl"></i>
+                   class="group flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:border-green-500 hover:shadow-md transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-green-100 transition-colors">
+                        <i class="fas fa-list text-green-600 text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold">Mes Demandes</h3>
-                        <p class="text-sm text-green-100">Voir toutes mes demandes</p>
+                        <h3 class="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Mes Demandes</h3>
+                        <p class="text-sm text-gray-600">Voir toutes mes demandes</p>
                     </div>
                 </a>
                 
                 <a href="{{ route('suivi.public') }}" 
-                   class="flex items-center p-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-300 transform hover:scale-105">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-search text-xl"></i>
+                   class="group flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-500 hover:shadow-md transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-purple-100 transition-colors">
+                        <i class="fas fa-search-location text-purple-600 text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold">Suivi Colis</h3>
-                        <p class="text-sm text-purple-100">Suivre un envoi</p>
+                        <h3 class="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">Suivi Colis</h3>
+                        <p class="text-sm text-gray-600">Suivre un envoi</p>
                     </div>
                 </a>
                 
                 <a href="{{ route('contact') }}" 
-                   class="flex items-center p-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-headset text-xl"></i>
+                   class="group flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:border-red-500 hover:shadow-md transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-red-100 transition-colors">
+                        <i class="fas fa-headset text-red-600 text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold">Support</h3>
-                        <p class="text-sm text-red-100">Contacter l'équipe</p>
+                        <h3 class="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">Support Client</h3>
+                        <p class="text-sm text-gray-600">Contacter notre équipe</p>
                     </div>
                 </a>
             </div>
@@ -162,56 +173,78 @@
     </div>
     
     <!-- Profil -->
-    <div class="dashboard-card p-6 fade-in">
-        <h2 class="text-xl font-semibold text-gray-900 mb-6">
-            👤 Mon Profil
-        </h2>
-        <div class="space-y-4">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Mon Profil</h2>
+            <div class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user text-gray-600 text-sm"></i>
+            </div>
+        </div>
+        <div class="space-y-6">
             <div class="flex items-center">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mr-4">
-                    <span class="text-white text-xl font-bold">
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <span class="text-white text-lg font-bold">
                         {{ substr(Auth::user()->name, 0, 2) }}
                     </span>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-900">{{ Auth::user()->name }}</h3>
-                    <p class="text-gray-600">{{ Auth::user()->email }}</p>
-                    <span class="inline-block mt-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                    <h3 class="font-semibold text-gray-900 text-lg">{{ Auth::user()->name }}</h3>
+                    <p class="text-gray-600 text-sm">{{ Auth::user()->email }}</p>
+                    <span class="inline-block mt-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
                         Client NIFA
                     </span>
                 </div>
             </div>
             
-            <div class="border-t pt-4">
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between">
+            <div class="border-t border-gray-200 pt-4">
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center">
                         <span class="text-gray-600">Membre depuis</span>
-                        <span class="font-medium">{{ Auth::user()->created_at->format('M Y') }}</span>
+                        <span class="font-medium text-gray-900">{{ Auth::user()->created_at->format('M Y') }}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Statut</span>
-                        <span class="text-green-600 font-medium">
-                            <i class="fas fa-check-circle mr-1"></i> Actif
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Statut du compte</span>
+                        <span class="flex items-center text-green-600 font-medium">
+                            <i class="fas fa-check-circle mr-1 text-xs"></i> Actif
                         </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Dernière connexion</span>
+                        <span class="font-medium text-gray-900">{{ now()->format('d/m H:i') }}</span>
                     </div>
                 </div>
             </div>
             
-            <button class="w-full mt-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
-                <i class="fas fa-edit mr-2"></i> Modifier le profil
-            </button>
+            <div class="flex space-x-3">
+                <a href="{{ route('profile.edit') }}" 
+                   class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors text-center text-sm border border-gray-200">
+                    <i class="fas fa-edit mr-2"></i> Modifier
+                </a>
+                <a href="{{ route('logout') }}" 
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                   class="flex-1 bg-red-50 hover:bg-red-100 text-red-700 font-medium py-2 px-4 rounded-lg transition-colors text-center text-sm border border-red-200">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Dernières Demandes -->
-<div class="dashboard-card p-6 fade-in">
+<div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
     <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-semibold text-gray-900">
-            📦 Dernières Demandes
-        </h2>
-        <a href="{{ route('mes-demandes') }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-            Voir tout <i class="fas fa-arrow-right ml-1"></i>
+        <div class="flex items-center">
+            <h2 class="text-xl font-semibold text-gray-900 mr-3">Dernières Demandes</h2>
+            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-history text-blue-600 text-sm"></i>
+            </div>
+        </div>
+        <a href="{{ route('mes-demandes') }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center group">
+            Voir tout
+            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
         </a>
     </div>
     
@@ -220,36 +253,49 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-gray-200">
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Référence</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Destination</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Statut</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Date</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Référence</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Destination</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Statut</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Date</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-100">
                     @foreach($recent_demandes as $demande)
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="py-3 px-4">
-                                <span class="font-mono text-sm font-medium text-blue-600">
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-4">
+                                <span class="font-mono text-sm font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded">
                                     {{ $demande->reference }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4">
-                                <span class="text-gray-900">{{ $demande->ville_destination }}</span>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-gray-400 mr-2 text-sm"></i>
+                                    <span class="text-gray-900 font-medium">{{ $demande->ville_destination }}</span>
+                                </div>
                             </td>
-                            <td class="py-3 px-4">
-                                <span class="status-badge status-{{ str_replace(' ', '-', strtolower($demande->statut)) }}">
+                            <td class="py-4 px-4">
+                                @php
+                                    $statusColors = [
+                                        'en_attente' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                        'en_cours' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                        'livree' => 'bg-green-100 text-green-800 border-green-200',
+                                        'annulee' => 'bg-red-100 text-red-800 border-red-200'
+                                    ];
+                                    $statusClass = $statusColors[str_replace(' ', '_', strtolower($demande->statut))] ?? 'bg-gray-100 text-gray-800 border-gray-200';
+                                @endphp
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border {{ $statusClass }}">
                                     {{ $demande->statut }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4 text-gray-600 text-sm">
+                            <td class="py-4 px-4 text-gray-600 text-sm">
                                 {{ $demande->created_at->format('d/m/Y') }}
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-4 px-4">
                                 <a href="{{ route('mes-demandes.show', $demande) }}" 
-                                   class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                    <i class="fas fa-eye mr-1"></i> Voir
+                                   class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center group">
+                                    <i class="fas fa-eye mr-2"></i>
+                                    Détails
                                 </a>
                             </td>
                         </tr>
@@ -259,11 +305,13 @@
         </div>
     @else
         <div class="text-center py-12">
-            <div class="text-6xl mb-4">📦</div>
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-box-open text-gray-400 text-2xl"></i>
+            </div>
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucune demande pour le moment</h3>
-            <p class="text-gray-600 mb-6">Commencez par créer votre première demande de transport</p>
+            <p class="text-gray-600 mb-6 max-w-md mx-auto">Commencez par créer votre première demande de transport pour suivre vos expéditions</p>
             <a href="{{ route('demande.create') }}" 
-               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
                 <i class="fas fa-plus mr-2"></i> Créer une demande
             </a>
         </div>
