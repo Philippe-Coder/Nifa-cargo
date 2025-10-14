@@ -164,14 +164,19 @@ class NotificationService
     private function envoyerEmail(User $user, DemandeTransport $demande, string $titre, string $message)
     {
         try {
+            Log::info("📧 Tentative d'envoi email", [
+                'destinataire' => $user->email,
+                'nom' => $user->name,
+                'titre' => $titre
+            ]);
+            
             // Créer la notification en base
             $notification = Notification::create([
                 'user_id' => $user->id,
-                'demande_transport_id' => $demande->id,
                 'type' => 'email',
-                'titre' => $titre,
                 'message' => $message,
-                'statut' => 'en_attente'
+                'notifiable_type' => get_class($demande),
+                'notifiable_id' => $demande->id
             ]);
 
             // Envoyer l'email
@@ -182,6 +187,8 @@ class NotificationService
 
             // Marquer comme envoyée
             $notification->marquerEnvoyee();
+            
+            Log::info("✅ Email envoyé avec succès à {$user->email}");
             
         } catch (\Exception $e) {
             Log::error('Erreur envoi email: ' . $e->getMessage());
@@ -197,13 +204,17 @@ class NotificationService
    private function envoyerWhatsApp(User $user, DemandeTransport $demande, string $message)
 {
     try {
+        Log::info("📱 Tentative d'envoi WhatsApp", [
+            'destinataire' => $user->telephone,
+            'nom' => $user->name
+        ]);
+        
         $notification = Notification::create([
             'user_id' => $user->id,
-            'demande_transport_id' => $demande->id,
             'type' => 'whatsapp',
-            'titre' => 'Notification WhatsApp',
             'message' => $message,
-            'statut' => 'en_attente'
+            'notifiable_type' => get_class($demande),
+            'notifiable_id' => $demande->id
         ]);
 
         // Construire le lien API CallMeBot
@@ -219,7 +230,7 @@ class NotificationService
 
         // Vérifier si succès
         if ($response->successful()) {
-            Log::info("WhatsApp envoyé à {$user->telephone}");
+            Log::info("✅ WhatsApp envoyé avec succès à {$user->telephone}");
             $notification->marquerEnvoyee();
         } else {
             Log::error("Échec WhatsApp: " . $response->body());
@@ -252,20 +263,46 @@ class NotificationService
     /**
      * Envoyer notification pour nouvelle étape
      */
-    public function envoyerNotificationEtape(DemandeTransport $demande, string $nomEtape)
+    public function envoyerNotificationEtape(DemandeTransport $demande, string $nomEtape, string $statut = 'en_cours')
     {
         $user = $demande->user;
-        $titre = "Nouvelle étape: {$nomEtape}";
-        $message = "Votre demande de transport pour {marchandise} vient de passer à l'étape: {$nomEtape}.";
+        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+        
+        // Log des informations utilisateur pour vérification
+        Log::info("📧 Envoi notification étape à l'utilisateur", [
+            'user_id' => $user->id,
+            'nom' => $user->name,
+            'email' => $user->email,
+            'telephone' => $user->telephone,
+            'etape' => $nomEtape,
+            'statut' => $statut,
+            'demande_ref' => $reference
+        ]);
+        
+        // Messages personnalisés selon le statut de l'étape
+        $messagesStatut = [
+            'en_attente' => "Bonjour {nom_client}, l'étape '{etape}' de votre demande {reference} est en attente de traitement.",
+            'en_cours' => "Bonjour {nom_client}, votre demande {reference} pour {marchandise} est maintenant à l'étape: {etape}. Nous travaillons activement sur votre dossier.",
+            'terminee' => "Excellente nouvelle {nom_client} ! L'étape '{etape}' de votre demande {reference} a été complétée avec succès. Votre marchandise {marchandise} progresse bien."
+        ];
+        
+        $titre = "Mise à jour - Étape: {$nomEtape}";
+        $message = $messagesStatut[$statut] ?? "Votre demande {reference} pour {marchandise} vient de passer à l'étape: {etape}.";
         
         $message = str_replace([
             '{nom_client}',
             '{marchandise}',
-            '{etape}'
+            '{etape}',
+            '{reference}',
+            '{origine}',
+            '{destination}'
         ], [
             $user->name,
-            $demande->marchandise,
-            $nomEtape
+            $demande->marchandise ?? 'votre marchandise',
+            $nomEtape,
+            $reference,
+            $demande->origine ?? 'N/A',
+            $demande->destination ?? 'N/A'
         ], $message);
 
         $this->envoyerEmail($user, $demande, $titre, $message);

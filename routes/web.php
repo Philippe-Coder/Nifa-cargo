@@ -140,3 +140,22 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Route de test pour les notifications (à supprimer en production)
+Route::get('/test-notification/{userId}', function($userId) {
+    $user = \App\Models\User::findOrFail($userId);
+    $demande = $user->demandesTransport()->first();
+    
+    if (!$demande) {
+        return "Aucune demande trouvée pour cet utilisateur";
+    }
+    
+    $notificationService = new \App\Services\NotificationService();
+    
+    try {
+        $notificationService->envoyerNotificationEtape($demande, "Test Étape", "en_cours");
+        return "✅ Notification envoyée ! Vérifiez l'email: {$user->email} et WhatsApp: {$user->telephone}";
+    } catch (\Exception $e) {
+        return "❌ Erreur: " . $e->getMessage();
+    }
+})->middleware('auth');

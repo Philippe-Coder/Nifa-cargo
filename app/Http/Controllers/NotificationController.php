@@ -19,11 +19,6 @@ class NotificationController extends Controller
             ->paginate(15);
 
         return view('notifications.index', compact('notifications'));
-    });
-
-        return Inertia::render('Notifications/Index', [
-            'notifications' => $notifications
-        ]);
     }
 
     /**
@@ -43,7 +38,7 @@ class NotificationController extends Controller
      */
     public function markAllAsRead()
     {
-        Auth::user()->unreadNotifications->markAsRead();
+        Auth::user()->unreadNotifications()->update(['is_read' => true]);
         
         if (request()->wantsJson()) {
             return response()->json(['success' => true]);
@@ -99,7 +94,7 @@ class NotificationController extends Controller
      */
     public function unread()
     {
-        $unreadCount = Auth::user()->unreadNotifications->count();
+        $unreadCount = Auth::user()->unreadNotifications()->count();
         $notifications = Auth::user()->unreadNotifications()->latest()->take(5)->get();
         
         return response()->json([
@@ -110,7 +105,8 @@ class NotificationController extends Controller
                     'message' => $notification->message,
                     'time' => $notification->created_at->diffForHumans(),
                     'icon' => $notification->icon,
-                    'url' => $notification->notifiable->notificationUrl() ?? '#'
+                    'type' => $notification->type,
+                    'url' => $notification->notifiable ? route('admin.demandes.show', $notification->notifiable_id) : '#'
                 ];
             })
         ]);

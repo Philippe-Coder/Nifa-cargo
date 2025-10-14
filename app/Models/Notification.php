@@ -14,7 +14,9 @@ class Notification extends Model
         'message',
         'notifiable_type',
         'notifiable_id',
-        'is_read'
+        'is_read',
+        'statut',
+        'erreur'
     ];
 
     protected $casts = [
@@ -77,5 +79,24 @@ class Notification extends Model
     public function scopeRead($query)
     {
         return $query->where('is_read', true);
+    }
+    
+    /**
+     * Marquer la notification comme envoyée
+     */
+    public function marquerEnvoyee(): void
+    {
+        $this->update(['statut' => 'envoyee']);
+    }
+    
+    /**
+     * Marquer la notification comme échouée
+     */
+    public function marquerEchouee(string $erreur = null): void
+    {
+        $this->update([
+            'statut' => 'echouee',
+            'erreur' => $erreur
+        ]);
     }
 }
