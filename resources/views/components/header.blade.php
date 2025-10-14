@@ -243,7 +243,7 @@
                             <i class="fas fa-sign-in-alt mr-2 text-sm"></i>
                             <span class="text-sm">Connexion</span>
                         </a>
-                        <a href="{{ route('register') }}" 
+                        <a href="{{ route('register.client') }}" 
                            class="hidden md:flex items-center btn-primary text-white px-5 py-2.5 rounded-lg font-semibold">
                             <i class="fas fa-box mr-2 text-sm"></i>
                             <span class="text-sm">Faire une demande</span>
@@ -332,7 +332,7 @@
                                 <i class="fas fa-sign-in-alt mr-3 w-5 text-center text-gray-500"></i>
                                 Connexion
                             </a>
-                            <a href="{{ route('register') }}" 
+                            <a href="{{ route('register.client') }}" 
                                class="flex items-center justify-center btn-primary text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 mx-4">
                                 <i class="fas fa-box mr-2"></i>
                                 Faire une demande

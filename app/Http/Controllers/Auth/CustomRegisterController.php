@@ -46,7 +46,7 @@ class CustomRegisterController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'telephone' => ['nullable', 'string', 'max:20'],
+            'telephone' => ['required', 'string', 'max:20'],
             'adresse' => ['nullable', 'string', 'max:500'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -83,7 +83,7 @@ class CustomRegisterController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'telephone' => ['nullable', 'string', 'max:20'],
+            'telephone' => ['required', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'admin_key' => ['required', 'string'], // Clé secrète pour créer un admin
         ]);

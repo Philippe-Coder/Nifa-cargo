@@ -55,4 +55,12 @@ class EtapeLogistique extends Model
     {
         return $query->where('statut', 'en_cours');
     }
+
+    /**
+     * Relation avec les documents de l'étape
+     */
+    public function documents()
+    {
+        return $this->hasMany(EtapeDocument::class);
+    }
 }

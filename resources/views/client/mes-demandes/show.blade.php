@@ -219,6 +219,33 @@
                                         <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ $etape->description }}</p>
                                     @endif
                                     
+                                    {{-- Documents de l'étape --}}
+                                    @if($etape->documents && $etape->documents->count() > 0)
+                                        <div class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                            <h4 class="text-xs font-semibold text-gray-700 mb-2 flex items-center">
+                                                <i class="fas fa-paperclip mr-2 text-blue-600"></i>
+                                                Documents disponibles ({{ $etape->documents->count() }})
+                                            </h4>
+                                            <div class="space-y-2">
+                                                @foreach($etape->documents as $doc)
+                                                    @if($doc->estVisiblePour(auth()->user()))
+                                                        <div class="flex items-center justify-between bg-white p-2 rounded">
+                                                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                                                <i class="fas fa-file-alt text-gray-400 text-xs"></i>
+                                                                <span class="text-xs text-gray-700 truncate">{{ $doc->nom }}</span>
+                                                                <span class="text-xs text-gray-400">({{ number_format($doc->taille / 1024, 1) }} KB)</span>
+                                                            </div>
+                                                            <a href="{{ route('etape-documents.download', $doc->id) }}" 
+                                                               class="text-blue-600 hover:text-blue-800 text-xs font-medium ml-2 whitespace-nowrap">
+                                                                <i class="fas fa-download mr-1"></i>Télécharger
+                                                            </a>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
                                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
                                         @php
                                             $etapeStatusColors = [
@@ -276,25 +303,60 @@
                 </button>
             </div>
             
-            @if($demande->documents && $demande->documents->count() > 0)
+            @php
+                $documentsGeneraux = $demande->documents;
+                $documentsEtapes = $demande->documentsEtapes()->filter(function($doc) {
+                    return $doc->estVisiblePour(auth()->user());
+                });
+                $tousDocuments = $documentsGeneraux->merge($documentsEtapes);
+            @endphp
+            
+            @if($tousDocuments->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @foreach($demande->documents as $document)
+                    {{-- Documents généraux --}}
+                    @foreach($documentsGeneraux as $document)
                         <div class="border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-all duration-300 group">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center">
+                                <div class="flex items-center flex-1 min-w-0">
                                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                                         <i class="fas fa-file-pdf text-blue-600 text-lg"></i>
                                     </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900">{{ $document->nom }}</h4>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-semibold text-gray-900 truncate">{{ $document->nom }}</h4>
                                         <p class="text-sm text-gray-600 flex items-center">
                                             <i class="fas fa-calendar mr-2 text-gray-400"></i>
-                                            {{ $document->created_at->format('d/m/Y à H:i') }}
+                                            {{ $document->created_at->format('d/m/Y') }}
                                         </p>
+                                        <span class="inline-block mt-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded">Document général</span>
                                     </div>
                                 </div>
                                 <a href="{{ route('documents.download', $document) }}" 
-                                   class="text-blue-600 hover:text-blue-800 transition-colors transform hover:scale-110">
+                                   class="text-blue-600 hover:text-blue-800 transition-colors transform hover:scale-110 ml-2">
+                                    <i class="fas fa-download text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                    
+                    {{-- Documents des étapes --}}
+                    @foreach($documentsEtapes as $document)
+                        <div class="border border-green-200 rounded-xl p-4 hover:bg-green-50 transition-all duration-300 group">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center flex-1 min-w-0">
+                                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                                        <i class="fas fa-file-alt text-green-600 text-lg"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-semibold text-gray-900 truncate">{{ $document->nom }}</h4>
+                                        <p class="text-sm text-gray-600 flex items-center">
+                                            <i class="fas fa-calendar mr-2 text-gray-400"></i>
+                                            {{ $document->created_at->format('d/m/Y') }}
+                                        </p>
+                                        <span class="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded">{{ $document->etapeLogistique->nom }}</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('etape-documents.download', $document->id) }}" 
+                                   class="text-green-600 hover:text-green-800 transition-colors transform hover:scale-110 ml-2">
                                     <i class="fas fa-download text-lg"></i>
                                 </a>
                             </div>
@@ -339,23 +401,26 @@
                         <div class="flex items-center justify-between">
                             <span class="text-gray-600">Progression :</span>
                             <span class="font-semibold text-gray-900">
-                                {{ $demande->etapes->where('statut', 'terminée')->count() }}/{{ $demande->etapes->count() }}
+                                {{ $demande->etapes->where('statut', 'terminee')->count() }}/{{ $demande->etapes->count() }}
                             </span>
                         </div>
                         
                         <div class="w-full bg-gray-200 rounded-full h-3">
-                            @php
-                                $progress = ($demande->etapes->where('statut', 'terminée')->count() / $demande->etapes->count()) * 100;
-                            @endphp
                             <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-1000 ease-out" 
-                                 style="width: {{ $progress }}%"></div>
+                                 style="width: {{ $demande->pourcentage_progression }}%"></div>
                         </div>
+                        <p class="text-xs text-gray-500 text-center mt-1">{{ $demande->pourcentage_progression }}% complété</p>
                     </div>
                 @endif
                 
                 <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <span class="text-gray-600">Documents :</span>
-                    <span class="font-semibold text-gray-900">{{ $demande->documents ? $demande->documents->count() : 0 }}</span>
+                    @php
+                        $totalDocs = $demande->documents->count() + $demande->documentsEtapes()->filter(function($doc) {
+                            return $doc->estVisiblePour(auth()->user());
+                        })->count();
+                    @endphp
+                    <span class="font-semibold text-gray-900">{{ $totalDocs }}</span>
                 </div>
             </div>
         </div>

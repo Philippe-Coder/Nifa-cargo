@@ -173,4 +173,15 @@ class DemandeTransport extends Model
     {
         return route('mes-demandes.show', $this->id);
     }
+
+    /**
+     * Obtenir tous les documents des étapes
+     */
+    public function documentsEtapes()
+    {
+        return EtapeDocument::whereIn('etape_logistique_id', $this->etapes()->pluck('id'))
+            ->with(['etapeLogistique', 'user'])
+            ->latest()
+            ->get();
+    }
 }

@@ -36,9 +36,9 @@
         <!-- Telephone -->
         <div class="mt-4">
             <x-input-label for="telephone" value="Téléphone" />
-            <x-text-input id="telephone" class="block mt-1 w-full" type="tel" name="telephone" :value="old('telephone')" autocomplete="tel" placeholder="Ex: +228 90 12 34 56" />
+            <x-text-input id="telephone" class="block mt-1 w-full" type="tel" name="telephone" :value="old('telephone')" required autocomplete="tel" placeholder="Ex: +228 90 12 34 56" />
             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
-            <p class="text-xs text-gray-500 mt-1">Optionnel - Pour vous contacter rapidement</p>
+            <p class="text-xs text-gray-500 mt-1">Pour vous contacter rapidement</p>
         </div>
 
         <!-- Adresse -->

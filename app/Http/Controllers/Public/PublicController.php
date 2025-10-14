@@ -201,13 +201,18 @@ class PublicController extends Controller
     /**
      * Page du blog/actualités
      */
-    public function blog()
+    public function blog(Request $request)
     {
-        // Récupérer les annonces actives et valides, triées par ordre d'affichage
-        $annonces = Annonce::active()
-            ->valide()
-            ->ordered()
-            ->paginate(9);
+        $type = $request->get('type', 'all');
+
+        $query = Annonce::active()->valide()->ordered();
+
+        // Filtrer par type si spécifié
+        if ($type !== 'all') {
+            $query->where('type', $type);
+        }
+
+        $annonces = $query->paginate(9);
 
         return view('public.blog.index', compact('annonces'));
     }

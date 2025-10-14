@@ -44,6 +44,7 @@ Route::post('/paiement/callback/tmoney', [PaiementController::class, 'callbackTM
 Route::post('/paiement/webhook/stripe', [PaiementController::class, 'webhookStripe'])->name('paiement.webhook.stripe');
 
 // Routes d'inscription personnalisées
+Route::get('/register/client', [CustomRegisterController::class, 'showClientRegister'])->name('register.client');
 Route::post('/register/client', [CustomRegisterController::class, 'registerClient'])->name('register.client.store');
 Route::get('/register/admin', [CustomRegisterController::class, 'showAdminRegister'])->name('register.admin');
 Route::post('/register/admin', [CustomRegisterController::class, 'registerAdmin'])->name('register.admin.store');
@@ -130,6 +131,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Routes pour les documents d'étape
+    Route::post('/etapes/{etape}/documents', [\App\Http\Controllers\EtapeDocumentController::class, 'store'])->name('etape-documents.store');
+    Route::get('/etape-documents/{document}/download', [\App\Http\Controllers\EtapeDocumentController::class, 'download'])->name('etape-documents.download');
+    Route::delete('/etape-documents/{document}', [\App\Http\Controllers\EtapeDocumentController::class, 'destroy'])->name('etape-documents.destroy');
+    Route::get('/etapes/{etape}/documents', [\App\Http\Controllers\EtapeDocumentController::class, 'index'])->name('etape-documents.index');
 });
 
 require __DIR__.'/auth.php';

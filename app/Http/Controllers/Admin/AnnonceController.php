@@ -57,8 +57,8 @@ class AnnonceController extends Controller
         $validated['user_id'] = auth()->id();
         
         // Valeurs par défaut
-        $validated['active'] = $request->has('active');
-        $validated['epingle'] = $request->has('epingle');
+        $validated['active'] = $request->boolean('active');
+        $validated['epingle'] = $request->boolean('epingle');
         $validated['ordre'] = $validated['ordre'] ?? 0;
 
         Annonce::create($validated);
@@ -111,8 +111,8 @@ class AnnonceController extends Controller
         }
 
         // Valeurs par défaut
-        $validated['active'] = $request->has('active');
-        $validated['epingle'] = $request->has('epingle');
+        $validated['active'] = $request->boolean('active');
+        $validated['epingle'] = $request->boolean('epingle');
         $validated['ordre'] = $validated['ordre'] ?? 0;
 
         $annonce->update($validated);

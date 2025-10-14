@@ -153,7 +153,7 @@ class NotificationService
         $this->envoyerEmail($user, $demande, $titre, $message);
         
         // Envoyer WhatsApp si numéro disponible
-        if (isset($user->phone)) {
+        if (isset($user->telephone) && !empty($user->telephone)) {
             $this->envoyerWhatsApp($user, $demande, $message);
         }
     }
@@ -194,33 +194,46 @@ class NotificationService
     /**
      * Envoyer notification WhatsApp
      */
-    private function envoyerWhatsApp(User $user, DemandeTransport $demande, string $message)
-    {
-        try {
-            // Créer la notification en base
-            $notification = Notification::create([
-                'user_id' => $user->id,
-                'demande_transport_id' => $demande->id,
-                'type' => 'whatsapp',
-                'titre' => 'Notification WhatsApp',
-                'message' => $message,
-                'statut' => 'en_attente'
-            ]);
+   private function envoyerWhatsApp(User $user, DemandeTransport $demande, string $message)
+{
+    try {
+        $notification = Notification::create([
+            'user_id' => $user->id,
+            'demande_transport_id' => $demande->id,
+            'type' => 'whatsapp',
+            'titre' => 'Notification WhatsApp',
+            'message' => $message,
+            'statut' => 'en_attente'
+        ]);
 
-            // Simuler l'envoi WhatsApp (à remplacer par l'API réelle)
-            // Pour l'instant, on log le message
-            Log::info("WhatsApp à {$user->phone}: {$message}");
-            
-            // Marquer comme envoyée
+        // Construire le lien API CallMeBot
+        $url = 'https://api.callmebot.com/whatsapp.php';
+        $params = [
+            'phone' => $user->telephone,    // Numéro du client (ex: 22897311158)
+            'text'  => $message,            // Le message (sera encodé automatiquement par Http::get)
+            'apikey'=> '9540134'            // Clé CallMeBot
+        ];
+
+        // Envoi de la requête
+        $response = Http::get($url, $params);
+
+        // Vérifier si succès
+        if ($response->successful()) {
+            Log::info("WhatsApp envoyé à {$user->telephone}");
             $notification->marquerEnvoyee();
-            
-        } catch (\Exception $e) {
-            Log::error('Erreur envoi WhatsApp: ' . $e->getMessage());
-            if (isset($notification)) {
-                $notification->marquerEchouee($e->getMessage());
-            }
+        } else {
+            Log::error("Échec WhatsApp: " . $response->body());
+            $notification->marquerEchouee($response->body());
+        }
+
+    } catch (\Exception $e) {
+        Log::error('Erreur envoi WhatsApp: ' . $e->getMessage());
+        if (isset($notification)) {
+            $notification->marquerEchouee($e->getMessage());
         }
     }
+}
+
 
     /**
      * Messages prédéfinis par statut
@@ -257,7 +270,7 @@ class NotificationService
 
         $this->envoyerEmail($user, $demande, $titre, $message);
         
-        if (isset($user->phone)) {
+        if (isset($user->telephone) && !empty($user->telephone)) {
             $this->envoyerWhatsApp($user, $demande, $message);
         }
     }

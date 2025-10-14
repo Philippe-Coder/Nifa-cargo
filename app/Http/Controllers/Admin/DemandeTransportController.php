@@ -19,7 +19,8 @@ class DemandeTransportController extends Controller
     {
         $demande = DemandeTransport::with([
             'user', 
-            'etapes.agent', 
+            'etapes.agent',
+            'etapes.documents.user',
             'documents.uploadedBy'
         ])->findOrFail($id);
         return view('admin.demandes.show', compact('demande'));

@@ -81,7 +81,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('register') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
+                            <a href="{{ route('register.client') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-chevron-right mr-2 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                                 <span class="text-sm">Créer un compte</span>
                             </a>
@@ -182,7 +182,7 @@
         <div class="border-t border-gray-800 py-6">
             <div class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
                 <div class="flex flex-wrap justify-center gap-3">
-                    <a href="{{ route('register') }}" 
+                    <a href="{{ route('register.client') }}" 
                        class="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm flex items-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         <i class="fas fa-box mr-2"></i> Faire une demande
                     </a>

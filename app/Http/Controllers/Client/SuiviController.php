@@ -29,6 +29,7 @@ class SuiviController extends Controller
     {
         $demande = DemandeTransport::with([
             'etapes.agent',
+            'etapes.documents.user',
             'documents.uploadedBy',
             'notifications' => function($query) {
                 $query->where('notifiable_type', DemandeTransport::class)

@@ -193,7 +193,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-blue-700">
-                        <a href="{{ route('login') }}" class="font-medium text-blue-700 hover:text-blue-600 underline">Connectez-vous</a> ou <a href="{{ route('register') }}" class="font-medium text-blue-700 hover:text-blue-600 underline">inscrivez-vous</a> pour laisser un commentaire.
+                        <a href="{{ route('login') }}" class="font-medium text-blue-700 hover:text-blue-600 underline">Connectez-vous</a> ou <a href="{{ route('register.client') }}" class="font-medium text-blue-700 hover:text-blue-600 underline">inscrivez-vous</a> pour laisser un commentaire.
                     </p>
                 </div>
             </div>

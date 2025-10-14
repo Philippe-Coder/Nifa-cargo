@@ -20,6 +20,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Administrateur NIF CARGO',
                 'email' => 'admin@nif.com',
+                'telephone' => '+22890000000',
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
                 'email_verified_at' => now(),
@@ -32,6 +33,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Client Test',
                 'email' => 'client@nif.com',
+                'telephone' => '+22890111111',
                 'password' => Hash::make('client123'),
                 'role' => 'client',
                 'email_verified_at' => now(),

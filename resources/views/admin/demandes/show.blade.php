@@ -85,6 +85,69 @@
                             </p>
                         @endif
 
+                        {{-- Documents de l'étape --}}
+                        @if($etape->documents && $etape->documents->count() > 0)
+                            <div class="mt-3 pt-3 border-t border-gray-200">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">📎 Documents de cette étape</h4>
+                                <div class="space-y-2">
+                                    @foreach($etape->documents as $doc)
+                                        <div class="flex items-center justify-between bg-gray-50 p-2 rounded">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs text-gray-600">📄 {{ $doc->nom }}</span>
+                                                <span class="text-xs text-gray-400">({{ number_format($doc->taille / 1024, 2) }} KB)</span>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <a href="{{ route('etape-documents.download', $doc->id) }}" 
+                                                   class="text-blue-600 hover:underline text-xs">Télécharger</a>
+                                                <form action="{{ route('etape-documents.destroy', $doc->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:underline text-xs" 
+                                                            onclick="return confirm('Supprimer ce document ?')">Supprimer</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- Formulaire d'upload de document pour cette étape --}}
+                        <div class="mt-3 pt-3 border-t border-gray-200">
+                            <details class="mb-3">
+                                <summary class="cursor-pointer text-sm font-medium text-gray-700 hover:text-blue-600">
+                                    📤 Ajouter un document à cette étape
+                                </summary>
+                                <form action="{{ route('etape-documents.store', $etape->id) }}" method="POST" enctype="multipart/form-data" class="mt-3 space-y-3">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">Fichier *</label>
+                                        <input type="file" name="document" required
+                                               class="border rounded px-2 py-1 text-sm w-full"
+                                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx">
+                                        <p class="text-xs text-gray-500 mt-1">PDF, Word, Excel, Images (max 10MB)</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">Description</label>
+                                        <input type="text" name="description" 
+                                               class="border rounded px-2 py-1 text-sm w-full" 
+                                               placeholder="Description du document">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">Visibilité *</label>
+                                        <select name="visibilite" required class="border rounded px-2 py-1 text-sm">
+                                            <option value="tous">Visible par tous (admin + client)</option>
+                                            <option value="admin">Admin uniquement</option>
+                                            <option value="client">Client uniquement</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                                        ✓ Uploader le document
+                                    </button>
+                                </form>
+                            </details>
+                        </div>
+
                         {{-- Actions pour l'étape --}}
                         @if($etape->statut !== 'terminee')
                             <div class="mt-3 pt-3 border-t border-gray-200">
@@ -130,16 +193,24 @@
 
     {{-- Section Documents --}}
     <div class="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">Documents</h2>
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Documents Associés</h2>
         
-        @if($demande->documents->count() > 0)
+        @php
+            $documentsGeneraux = $demande->documents;
+            $documentsEtapes = $demande->documentsEtapes();
+            $tousDocuments = $documentsGeneraux->merge($documentsEtapes);
+        @endphp
+        
+        @if($tousDocuments->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach($demande->documents as $document)
-                    <div class="border rounded-lg p-3">
+                {{-- Documents généraux de la demande --}}
+                @foreach($documentsGeneraux as $document)
+                    <div class="border rounded-lg p-3 bg-gray-50">
                         <div class="flex items-start justify-between mb-2">
                             <div>
                                 <h4 class="font-medium text-gray-800 text-sm">{{ $document->nom }}</h4>
                                 <p class="text-xs text-gray-600">{{ ucfirst(str_replace('_', ' ', $document->type)) }}</p>
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded">Document général</span>
                             </div>
                             <span class="text-xs text-gray-500">{{ $document->taille_formattee }}</span>
                         </div>
@@ -148,6 +219,29 @@
                         </p>
                         <div class="flex gap-2">
                             <a href="{{ route('documents.download', $document->id) }}" 
+                               class="text-blue-600 hover:underline text-sm">Télécharger</a>
+                        </div>
+                    </div>
+                @endforeach
+                
+                {{-- Documents des étapes --}}
+                @foreach($documentsEtapes as $document)
+                    <div class="border rounded-lg p-3 bg-green-50">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h4 class="font-medium text-gray-800 text-sm">{{ $document->nom }}</h4>
+                                <p class="text-xs text-gray-600">{{ $document->type }}</p>
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded">
+                                    {{ $document->etapeLogistique->nom }}
+                                </span>
+                            </div>
+                            <span class="text-xs text-gray-500">{{ number_format($document->taille / 1024, 2) }} KB</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">
+                            Uploadé par {{ $document->user->name }} le {{ $document->created_at->format('d/m/Y') }}
+                        </p>
+                        <div class="flex gap-2">
+                            <a href="{{ route('etape-documents.download', $document->id) }}" 
                                class="text-blue-600 hover:underline text-sm">Télécharger</a>
                         </div>
                     </div>
