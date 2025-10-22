@@ -1,2 +1,21 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://nifcargo.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+
+# Allow important pages
+Allow: /
+Allow: /services
+Allow: /contact
+Allow: /suivi
+Allow: /apropos
+
+# Crawl delay
+Crawl-delay: 1

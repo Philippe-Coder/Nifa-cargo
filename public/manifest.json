@@ -1,0 +1,35 @@
+{
+    "name": "NIF Cargo - Transport et Logistique",
+    "short_name": "NIF Cargo",
+    "description": "NIF Cargo, leader du transport et de la logistique en Afrique. Services de transport maritime, aérien et terrestre avec suivi en temps réel.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1e3a8a",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "fr",
+    "icons": [
+        {
+            "src": "/images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon.ico",
+            "sizes": "16x16 32x32 48x48",
+            "type": "image/x-icon",
+            "purpose": "any"
+        }
+    ],
+    "categories": ["logistics", "transportation", "shipping"],
+    "dir": "ltr",
+    "prefer_related_applications": false
+}

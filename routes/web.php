@@ -16,6 +16,8 @@ use App\Http\Controllers\Public\PublicController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TestNotificationController;
 
 
 // Routes de la galerie
@@ -29,6 +31,13 @@ Route::post('/contact', [PublicController::class, 'envoyerContact'])->name('cont
 Route::get('/a-propos', [PublicController::class, 'apropos'])->name('apropos');
 Route::get('/suivi', [PublicController::class, 'suiviPublic'])->name('suivi.public');
 Route::post('/suivi', [PublicController::class, 'rechercherDemande'])->name('suivi.rechercher');
+
+// Route pour le sitemap XML
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Routes publiques de test des notifications (sans authentification)
+Route::get('/test-config', [\App\Http\Controllers\PublicTestController::class, 'testConfig'])->name('test.config.public');
+Route::get('/test-instructions', [\App\Http\Controllers\PublicTestController::class, 'instructions'])->name('test.instructions.public');
 
 // Routes pour le blog/actualités
 Route::get('/blog', [PublicController::class, 'blog'])->name('blog.index');
@@ -141,21 +150,27 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// Route de test pour les notifications (à supprimer en production)
-Route::get('/test-notification/{userId}', function($userId) {
-    $user = \App\Models\User::findOrFail($userId);
-    $demande = $user->demandesTransport()->first();
-    
-    if (!$demande) {
-        return "Aucune demande trouvée pour cet utilisateur";
-    }
-    
-    $notificationService = new \App\Services\NotificationService();
-    
-    try {
-        $notificationService->envoyerNotificationEtape($demande, "Test Étape", "en_cours");
-        return "✅ Notification envoyée ! Vérifiez l'email: {$user->email} et WhatsApp: {$user->telephone}";
-    } catch (\Exception $e) {
-        return "❌ Erreur: " . $e->getMessage();
-    }
-})->middleware('auth');
+// Routes de test pour les notifications (à supprimer en production)
+Route::middleware('auth')->group(function () {
+    Route::prefix('admin/test')->group(function () {
+        // Interface de test
+        Route::get('/', [\App\Http\Controllers\Admin\TestNotificationViewController::class, 'index'])
+            ->name('test.notifications.index');
+        
+        // Tests complets
+        Route::get('/notifications/{demande}', [TestNotificationController::class, 'testNotifications'])
+            ->name('test.notifications.all');
+        
+        // Tests spécifiques
+        Route::get('/email/{demande}', [TestNotificationController::class, 'testEmail'])
+            ->name('test.notifications.email');
+        Route::get('/whatsapp/{demande}', [TestNotificationController::class, 'testWhatsApp'])
+            ->name('test.notifications.whatsapp');
+        
+        // Configuration et diagnostics
+        Route::get('/config', [TestNotificationController::class, 'showConfig'])
+            ->name('test.notifications.config');
+        Route::get('/email-connection', [TestNotificationController::class, 'testEmailConnection'])
+            ->name('test.notifications.email-connection');
+    });
+});

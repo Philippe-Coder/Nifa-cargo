@@ -26,7 +26,9 @@ class CustomRegisterController extends Controller
     public function showAdminRegister()
     {
         // Vérifier si l'utilisateur est déjà admin ou si c'est le premier admin
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
+    /** @var \App\Models\User|null $current */
+    $current = Auth::user();
+        if (!$current || !($current instanceof \App\Models\User) || !$current->isAdmin()) {
             // Vérifier s'il y a déjà des admins dans le système
             $adminExists = User::where('role', 'admin')->exists();
             
@@ -51,10 +53,17 @@ class CustomRegisterController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Normaliser le téléphone en E.164
+        $telephone = preg_replace('/[^0-9+]/', '', $request->telephone);
+        if (!str_starts_with($telephone, '+')) {
+            $cc = '+' . ltrim(env('DEFAULT_PHONE_COUNTRY_CODE', ''), '+');
+            $telephone = $cc . ltrim($telephone, '0');
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'telephone' => $request->telephone,
+            'telephone' => $telephone,
             'adresse' => $request->adresse,
             'password' => Hash::make($request->password),
             'role' => 'client', // Forcer le rôle client
@@ -73,7 +82,9 @@ class CustomRegisterController extends Controller
     public function registerAdmin(Request $request)
     {
         // Double vérification de sécurité
-        if (Auth::check() && !Auth::user()->isAdmin()) {
+    /** @var \App\Models\User|null $current */
+    $current = Auth::user();
+        if ($current instanceof \App\Models\User && !$current->isAdmin()) {
             $adminExists = User::where('role', 'admin')->exists();
             if ($adminExists) {
                 abort(403, 'Accès non autorisé.');
@@ -93,10 +104,17 @@ class CustomRegisterController extends Controller
             return back()->withErrors(['admin_key' => 'Clé administrateur invalide.']);
         }
 
+        // Normaliser le téléphone en E.164
+        $telephone = preg_replace('/[^0-9+]/', '', $request->telephone);
+        if (!str_starts_with($telephone, '+')) {
+            $cc = '+' . ltrim(env('DEFAULT_PHONE_COUNTRY_CODE', ''), '+');
+            $telephone = $cc . ltrim($telephone, '0');
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'telephone' => $request->telephone,
+            'telephone' => $telephone,
             'password' => Hash::make($request->password),
             'role' => 'admin', // Forcer le rôle admin
         ]);

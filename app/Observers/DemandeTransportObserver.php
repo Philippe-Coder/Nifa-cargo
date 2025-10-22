@@ -17,10 +17,10 @@ class DemandeTransportObserver
         
         // Envoyer notification de création
         $notificationService = new NotificationService();
-        $notificationService->envoyerNotificationChangementStatut(
+        $notificationService->envoyerNotificationEtape(
             $demandeTransport, 
-            '', 
-            'en attente'
+            'Demande créée', 
+            'en_attente'
         );
     }
 
@@ -35,12 +35,7 @@ class DemandeTransportObserver
             $nouveauStatut = $demandeTransport->statut;
             
             // Envoyer notification de changement de statut
-            $notificationService = new NotificationService();
-            $notificationService->envoyerNotificationChangementStatut(
-                $demandeTransport,
-                $ancienStatut,
-                $nouveauStatut
-            );
+            NotificationService::notifyStatusChange($demandeTransport, $ancienStatut, $nouveauStatut);
         }
     }
 

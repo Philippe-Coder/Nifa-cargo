@@ -3,7 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord - Administration</title>
+    <title>@yield('title', 'Administration') - NIF Cargo</title>
+    <meta name="description" content="@yield('description', 'Tableau de bord administrateur NIF Cargo - Gestion des demandes de transport et logistique')">
+    
+    <!-- Favicon et icônes -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Métadonnées administrateur -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#1e3a8a">
+    
     @vite('resources/css/app.css')
 </head>
 

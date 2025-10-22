@@ -16,10 +16,7 @@
             </p>
         </div>
     </div>
-</div>
-@endsection
-
-@section('content')
+</section>
 
 <!-- Messages de feedback -->
 @if(session('error'))

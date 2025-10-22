@@ -5,7 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'NIF Cargo') }} - Connexion</title>
+
+        <!-- Favicon et icônes -->
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('images/logo.png') }}">
+        
+        <!-- Métadonnées -->
+        <meta name="description" content="Connexion à votre espace client NIF Cargo - Transport et logistique en Afrique">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="theme-color" content="#1e3a8a">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

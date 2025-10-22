@@ -6,8 +6,39 @@
     <title>@yield('title', 'Dashboard - NIF CARGO')</title>
     <meta name="description" content="@yield('description', 'Espace client NIF CARGO - Gérez vos demandes de transport et suivez vos envois.')">
     
-    <!-- Favicon -->
+    <!-- Favicon et icônes -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Métadonnées Open Graph pour les réseaux sociaux -->
+    <meta property="og:title" content="@yield('title', 'Dashboard - NIF CARGO')">
+    <meta property="og:description" content="@yield('description', 'Espace client NIF CARGO - Gérez vos demandes de transport et suivez vos envois.')">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="NIF Cargo">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Dashboard - NIF CARGO')">
+    <meta name="twitter:description" content="@yield('description', 'Espace client NIF CARGO - Gérez vos demandes de transport et suivez vos envois.')">
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+    
+    <!-- Métadonnées supplémentaires pour SEO -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="NIF Cargo">
+    <meta name="theme-color" content="#1e3a8a">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
     
     <!-- CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
