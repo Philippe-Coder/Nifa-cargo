@@ -389,6 +389,20 @@
     "Bienvenue": "欢迎",
     "Au revoir": "再见",
     "Merci": "谢谢",
-    "Veuillez patienter": "请等待",
-    "Traitement en cours": "处理中"
+    "Veuillez patienter": "请稍候",
+    "Traitement en cours": "处理中",
+    
+    "Mon espace": "我的空间",
+    "Suivre un colis": "跟踪包裹",
+    "Faire une demande": "提出请求",
+    "Administrateur": "管理员",
+    "Client": "客户",
+    "Mon profil": "我的资料",
+    "Se connecter": "登录",
+    "Se souvenir de moi": "记住我",
+    "Mot de passe oublié ?": "忘记密码?",
+    "Prendre rendez-vous": "预约",
+    "Nous localiser": "找到我们",
+    "Accédez facilement à nos implantations": "轻松访问我们的办事处",
+    "Site Public": "公共网站"
 }

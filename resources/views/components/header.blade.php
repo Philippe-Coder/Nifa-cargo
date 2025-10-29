@@ -150,7 +150,7 @@
                 <!-- Language Selector & CTA Buttons -->
                 <div class="flex items-center space-x-3">
                     <!-- Language Selector -->
-                    <x-language-selector />
+                    <x-language-selector-url />
                     
                     <!-- Suivi colis - Desktop -->
                     <a href="{{ route('suivi.public') }}" 

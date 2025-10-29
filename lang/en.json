@@ -390,5 +390,19 @@
     "Au revoir": "Goodbye",
     "Merci": "Thank you",
     "Veuillez patienter": "Please wait",
-    "Traitement en cours": "Processing"
+    "Traitement en cours": "Processing",
+    
+    "Mon espace": "My Space",
+    "Suivre un colis": "Track Package",
+    "Faire une demande": "Make Request",
+    "Administrateur": "Administrator",
+    "Client": "Client",
+    "Mon profil": "My Profile",
+    "Se connecter": "Log In",
+    "Se souvenir de moi": "Remember Me",
+    "Mot de passe oublié ?": "Forgot Password?",
+    "Prendre rendez-vous": "Make Appointment",
+    "Nous localiser": "Find Us",
+    "Accédez facilement à nos implantations": "Easily access our locations",
+    "Site Public": "Public Site"
 }
