@@ -109,7 +109,7 @@
         </div>
         
         <div class="footer">
-            <p>📞 <strong>Support client :</strong> +228 97 31 11 58</p>
+            <p>📞 <strong>Support client :</strong> +228 99 25 25 31/ +229 96 36 46 07/ +226 05 79 13 10</p>
             <p>📧 <strong>Email :</strong> contact@nifgroupecargo.com</p>
             <p>🏢 <strong>Adresse :</strong> Totsi, Lomé - Togo</p>
             <p style="font-size: 12px; color: #999; margin-top: 20px;">© {{ date('Y') }} NIF CARGO - Transport et Logistique</p>

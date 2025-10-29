@@ -304,7 +304,7 @@ class NotificationService
         <body>
             <div class='container'>
                 <div class='header'>
-                    <div class='logo'>🚛 NIF CARGO</div>
+                    <div class='logo'> NIF CARGO</div>
                     <h2 style='margin: 10px 0 0 0;'>{$titre}</h2>
                 </div>
                 

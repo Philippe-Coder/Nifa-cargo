@@ -23,6 +23,11 @@ use App\Http\Controllers\LanguageController;
 // Route pour changer de langue
 Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 
+// Route de test pour les traductions (à enlever en production)
+Route::get('/test-translation', function () {
+    return view('test-translation');
+})->name('test.translation');
+
 // Routes de la galerie
 Route::get('/galerie', [GalerieController::class, 'index'])->name('galerie.index');
 Route::get('/galerie/{galerie}', [GalerieController::class, 'show'])->name('galerie.show');
