@@ -49,8 +49,8 @@
                 Si vous rencontrez des difficultés, contactez notre support client.
             </p>
             <div class="mt-2">
-                <a href="mailto:contact@nif-tg.com" class="text-blue-600 hover:underline text-sm">
-                    📧 contact@nif-tg.com
+                <a href="mailto:contact@nifgroupecargo.com" class="text-blue-600 hover:underline text-sm">
+                    📧 contact@nifgroupecargo.com
                 </a>
                 <span class="mx-2 text-gray-400">|</span>
                 <a href="tel:+22899252531" class="text-blue-600 hover:underline text-sm">

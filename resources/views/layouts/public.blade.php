@@ -199,9 +199,9 @@
                     <h3 class="text-lg font-semibold mb-4">Contact</h3>
                     <div class="space-y-2 text-sm text-gray-300">
                         <p>Totsi à 100m non loin de l’\église catholique Lomé</p>
-                        <p>+228 22 61 00 00</p>
                         <p>+228 99 25 25 31</p>
-                        <p>contact@nif-tg.com</p>
+                        <p>+228 99 25 25 31</p>
+                        <p>contact@nifgroupecargo.com</p>
                     </div>
                 </div>
             </div>

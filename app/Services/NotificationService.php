@@ -328,7 +328,7 @@ class NotificationService
                 </div>
                 
                 <div class='footer'>
-                    <p>📞 <strong>Contact :</strong> +228 97 31 11 58 | 📧 contact@nif-tg.com</p>
+                    <p>📞 <strong>Contact :</strong> +228 97 31 11 58 | 📧 contact@nifgroupecargo.com</p>
                     <p>🏢 Totsi, Lomé - Togo</p>
                     <p style='font-size: 12px; color: #999;'>© " . date('Y') . " NIF CARGO - Transport et Logistique</p>
                 </div>

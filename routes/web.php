@@ -101,6 +101,110 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/demandes/search-clients', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'searchClients'])->name('admin.demandes.search-clients');
     Route::get('/demandes/get-client/{id}', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'getClient'])->name('admin.demandes.get-client');
     
+    // Route de test pour vérifier l'envoi d'email
+    Route::get('/test-email', function () {
+        try {
+            \Illuminate\Support\Facades\Mail::html(
+                '<div style="padding: 20px; background: #f4f4f4;"><div style="background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;"><h1 style="color: #10b981;">🧪 Test Email NIF CARGO</h1><p>Ceci est un test d\'envoi d\'email depuis l\'admin.</p><p><strong>Date:</strong> ' . now() . '</p><p><strong>Configuration email actuelle:</strong></p><ul><li>Host: ' . config('mail.mailers.smtp.host') . '</li><li>Port: ' . config('mail.mailers.smtp.port') . '</li><li>Username: ' . config('mail.mailers.smtp.username') . '</li><li>From: ' . config('mail.from.address') . '</li></ul></div></div>',
+                function ($mail) {
+                    $mail->to(config('mail.from.address')) // Envoyer à soi-même pour test
+                         ->subject('🧪 Test Email NIF CARGO - ' . now()->format('d/m/Y H:i'))
+                         ->from(config('mail.from.address'), config('mail.from.name'));
+                }
+            );
+            return response()->json([
+                'success' => true, 
+                'message' => 'Email de test envoyé avec succès à ' . config('mail.from.address'),
+                'config' => [
+                    'mailer' => config('mail.default'),
+                    'host' => config('mail.mailers.smtp.host'),
+                    'port' => config('mail.mailers.smtp.port'),
+                    'from' => config('mail.from.address')
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+        }
+    })->name('admin.test-email');
+    
+    // Route de test pour les templates de notification
+    Route::get('/test-notifications', function () {
+        try {
+            $testClient = (object) [
+                'name' => 'Test Client',
+                'email' => config('mail.from.address'),
+                'telephone' => '+22800000000'
+            ];
+            
+            $testDemande = (object) [
+                'numero_tracking' => 'TRK202410290001',
+                'ville_depart' => 'Lomé',
+                'ville_destination' => 'Accra',
+                'nature_colis' => 'Vêtements',
+                'poids' => 5.5,
+                'volume' => 0.1,
+                'type' => 'express',
+                'statut' => 'en attente',
+                'frais_expedition' => 25000
+            ];
+            
+            $results = [];
+            
+            // Test email bienvenue
+            try {
+                \Illuminate\Support\Facades\Mail::send('emails.welcome-client', [
+                    'client_name' => $testClient->name,
+                    'email' => $testClient->email,
+                    'password' => 'NIF20241234',
+                    'login_url' => route('login')
+                ], function ($mail) use ($testClient) {
+                    $mail->to($testClient->email, $testClient->name)
+                         ->subject('🎉 Test - Bienvenue chez NIF CARGO')
+                         ->from(config('mail.from.address'), config('mail.from.name'));
+                });
+                $results['welcome_email'] = 'Envoyé ✅';
+            } catch (\Exception $e) {
+                $results['welcome_email'] = 'Erreur: ' . $e->getMessage();
+            }
+            
+            // Test email demande créée
+            try {
+                \Illuminate\Support\Facades\Mail::send('emails.demande-created-by-admin', [
+                    'client_name' => $testClient->name,
+                    'demande' => $testDemande,
+                    'tracking_number' => $testDemande->numero_tracking,
+                    'suivi_url' => route('suivi.public') . '?tracking=' . $testDemande->numero_tracking,
+                    'login_url' => route('login')
+                ], function ($mail) use ($testClient, $testDemande) {
+                    $mail->to($testClient->email, $testClient->name)
+                         ->subject('📦 Test - Nouvelle demande ' . $testDemande->numero_tracking)
+                         ->from(config('mail.from.address'), config('mail.from.name'));
+                });
+                $results['demande_email'] = 'Envoyé ✅';
+            } catch (\Exception $e) {
+                $results['demande_email'] = 'Erreur: ' . $e->getMessage();
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Tests des notifications terminés',
+                'results' => $results,
+                'sent_to' => $testClient->email
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    })->name('admin.test-notifications');
+    
     // Routes générales pour les demandes (APRÈS les routes spécifiques)
     Route::get('/demandes', [DemandeTransportController::class, 'index'])->name('admin.demandes.index');
     Route::get('/demandes/{id}', [DemandeTransportController::class, 'show'])->name('admin.demandes.show');

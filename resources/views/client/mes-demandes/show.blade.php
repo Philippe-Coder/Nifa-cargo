@@ -462,7 +462,7 @@
                 <div class="flex items-center p-3 bg-blue-50 rounded-lg">
                     <i class="fas fa-phone mr-3 text-blue-600"></i>
                     <div>
-                        <div class="font-medium text-gray-900">+228 22 61 00 00</div>
+                        <div class="font-medium text-gray-900">+228 99 25 25 31/ +229 96 36 46 07/ +226 05 79 13 10</div>
                         <div class="text-gray-600 text-xs">Support téléphonique</div>
                     </div>
                 </div>
@@ -470,7 +470,7 @@
                 <div class="flex items-center p-3 bg-green-50 rounded-lg">
                     <i class="fas fa-envelope mr-3 text-green-600"></i>
                     <div>
-                        <div class="font-medium text-gray-900">contact@nif-tg.com</div>
+                        <div class="font-medium text-gray-900">contact@nifgroupecargo.com</div>
                         <div class="text-gray-600 text-xs">Email de support</div>
                     </div>
                 </div>

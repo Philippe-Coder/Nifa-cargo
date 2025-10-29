@@ -295,7 +295,7 @@
                             <div>
                                 <p class="text-slate-700 font-semibold">{{ __('Téléphones') }}</p>
                                 <div class="text-slate-600 space-y-1">
-                                    <a href="tel:+22822610000" class="block hover:text-blue-600 transition-colors">+228 22 61 00 00</a>
+                                    <a href="tel:+22899252531" class="block hover:text-blue-600 transition-colors">+228 99 25 25 31</a>
                                     <a href="tel:+22890123456" class="block hover:text-blue-600 transition-colors">+228 90 12 34 56</a>
                                 </div>
                             </div>

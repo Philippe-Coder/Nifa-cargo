@@ -70,10 +70,12 @@ class AdminDemandeController extends Controller
     /**
      * Crée ou trouve un client existant
      */
-    private function findOrCreateClient($data): User
+    private function findOrCreateClient($data)
     {
         // Chercher d'abord par email
         $client = User::where('email', $data['email'])->first();
+        $isNewClient = false;
+        $temporaryPassword = null;
         
         if ($client) {
             // Mettre à jour les informations si nécessaire
@@ -81,25 +83,25 @@ class AdminDemandeController extends Controller
                 'name' => $data['name'],
                 'telephone' => $data['telephone'],
             ]);
-            return $client;
+        } else {
+            // Créer un nouveau client avec mot de passe temporaire
+            $temporaryPassword = $this->generateTemporaryPassword();
+            $isNewClient = true;
+            
+            $client = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+                'password' => Hash::make($temporaryPassword),
+                'role' => 'client',
+                'email_verified_at' => now(), // Auto-vérifier le compte créé par admin
+            ]);
+
+            // Envoyer les identifiants par email et WhatsApp
+            $this->sendWelcomeNotifications($client, $temporaryPassword);
         }
 
-        // Créer un nouveau client avec mot de passe temporaire
-        $temporaryPassword = $this->generateTemporaryPassword();
-        
-        $client = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'telephone' => $data['telephone'],
-            'password' => Hash::make($temporaryPassword),
-            'role' => 'client',
-            'email_verified_at' => now(), // Auto-vérifier le compte créé par admin
-        ]);
-
-        // Envoyer les identifiants par email et WhatsApp
-        $this->sendWelcomeNotifications($client, $temporaryPassword);
-
-        return $client;
+        return ['client' => $client, 'isNew' => $isNewClient, 'password' => $temporaryPassword];
     }
 
     /**
@@ -107,25 +109,147 @@ class AdminDemandeController extends Controller
      */
     private function sendWelcomeNotifications(User $client, string $password)
     {
-        // Créer une demande temporaire pour les notifications
-        $tempDemande = new DemandeTransport([
-            'marchandise' => 'Nouveau compte client',
-            'origine' => 'NIF CARGO',
-            'destination' => 'Espace client',
+        try {
+            \Illuminate\Support\Facades\Log::info("🚀 Début envoi notifications de bienvenue pour {$client->email}");
+            
+            // Envoi d'email de bienvenue avec template Blade
+            \Illuminate\Support\Facades\Mail::send('emails.welcome-client', [
+                'client_name' => $client->name,
+                'email' => $client->email,
+                'password' => $password,
+                'login_url' => route('login')
+            ], function ($mail) use ($client) {
+                $mail->to($client->email, $client->name)
+                     ->subject('🎉 Bienvenue chez NIF CARGO - Vos identifiants de connexion')
+                     ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+            \Illuminate\Support\Facades\Log::info("📧 Email envoyé à {$client->email}");
+
+            // Envoyer aussi par WhatsApp si numéro disponible
+            if ($client->telephone) {
+                \Illuminate\Support\Facades\Log::info("📱 Tentative WhatsApp pour {$client->telephone}");
+                
+                $whatsappMessage = "🎉 Bienvenue chez NIF CARGO!\n\n" .
+                                 "Votre compte a été créé avec succès par notre équipe.\n\n" .
+                                 "📧 Email de connexion: {$client->email}\n" .
+                                 "🔐 Mot de passe temporaire: {$password}\n\n" .
+                                 "🌐 Connectez-vous sur: " . route('login') . "\n\n" .
+                                 "Vous pouvez modifier votre mot de passe après votre première connexion.\n\n" .
+                                 "Merci de nous faire confiance pour vos expéditions! 🚚📦";
+
+                $this->sendWhatsAppMessage($client, $whatsappMessage);
+                \Illuminate\Support\Facades\Log::info("📱 WhatsApp traité pour {$client->telephone}");
+            } else {
+                \Illuminate\Support\Facades\Log::info("📱 Pas de numéro WhatsApp pour {$client->email}");
+            }
+            
+            \Illuminate\Support\Facades\Log::info("✅ Notifications de bienvenue envoyées à {$client->email}");
+            
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("❌ Erreur notifications de bienvenue pour {$client->email}: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error("❌ Stack trace: " . $e->getTraceAsString());
+        }
+    }
+
+
+
+    /**
+     * Envoie un message WhatsApp
+     */
+    private function sendWhatsAppMessage(User $client, string $message)
+    {
+        try {
+            // Utiliser le service de notification pour WhatsApp uniquement
+            if (env('WHATSAPP_ACCESS_TOKEN') && env('WHATSAPP_PHONE_NUMBER_ID')) {
+                // Méthode Meta WhatsApp Cloud API
+                $this->sendWhatsAppMeta($client, $message);
+            } elseif (env('TWILIO_SID') && env('TWILIO_AUTH_TOKEN')) {
+                // Méthode Twilio
+                $this->sendWhatsAppTwilio($client, $message);
+            } elseif (env('CALLMEBOT_API_KEY')) {
+                // Méthode CallMeBot
+                $this->sendWhatsAppCallMeBot($client, $message);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Erreur WhatsApp pour {$client->telephone}: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Envoie WhatsApp via Meta Cloud API
+     */
+    private function sendWhatsAppMeta(User $client, string $message)
+    {
+        $accessToken = env('WHATSAPP_ACCESS_TOKEN');
+        $phoneNumberId = env('WHATSAPP_PHONE_NUMBER_ID');
+        
+        $phone = $this->formatPhoneE164($client->telephone);
+        $url = sprintf('https://graph.facebook.com/v20.0/%s/messages', $phoneNumberId);
+
+        $payload = [
+            'messaging_product' => 'whatsapp',
+            'to' => $phone,
+            'type' => 'text',
+            'text' => ['body' => $message]
+        ];
+
+        \Illuminate\Support\Facades\Http::withToken($accessToken)
+            ->acceptJson()
+            ->post($url, $payload);
+    }
+
+    /**
+     * Envoie WhatsApp via Twilio
+     */
+    private function sendWhatsAppTwilio(User $client, string $message)
+    {
+        $sid = env('TWILIO_SID');
+        $token = env('TWILIO_AUTH_TOKEN');
+        $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
+        
+        $twilio = new \Twilio\Rest\Client($sid, $token);
+        
+        $phone = 'whatsapp:' . $this->formatPhoneE164($client->telephone);
+
+        $twilio->messages->create($phone, [
+            'from' => $twilioWhatsAppNumber,
+            'body' => $message
         ]);
+    }
 
-        $message = "🎉 Bienvenue chez NIF CARGO!\n\n" .
-                  "Votre compte a été créé avec succès par notre équipe.\n\n" .
-                  "📧 Email de connexion: {$client->email}\n" .
-                  "🔐 Mot de passe temporaire: {$password}\n\n" .
-                  "🌐 Connectez-vous sur: " . route('login') . "\n\n" .
-                  "Vous pouvez modifier votre mot de passe après votre première connexion.\n\n" .
-                  "Merci de nous faire confiance pour vos expéditions! 🚚📦";
+    /**
+     * Envoie WhatsApp via CallMeBot
+     */
+    private function sendWhatsAppCallMeBot(User $client, string $message)
+    {
+        $apiKey = env('CALLMEBOT_API_KEY');
+        $phone = preg_replace('/[^0-9]/', '', $client->telephone);
+        
+        $url = "https://api.callmebot.com/whatsapp.php";
+        
+        \Illuminate\Support\Facades\Http::get($url, [
+            'phone' => $phone,
+            'text' => $message,
+            'apikey' => $apiKey
+        ]);
+    }
 
-        $titre = 'Bienvenue chez NIF CARGO - Vos identifiants de connexion';
-
-        // Utiliser le service de notification existant
-        NotificationService::envoyerNotification($client, $tempDemande, $titre, $message);
+    /**
+     * Normalise le numéro de téléphone au format E.164
+     */
+    private function formatPhoneE164(string $phone): string
+    {
+        $p = preg_replace('/[^0-9+]/', '', $phone ?? '');
+        if (!$p) {
+            throw new \Exception('Numéro de téléphone manquant');
+        }
+        if (str_starts_with($p, '+')) {
+            return $p;
+        }
+        $defaultCc = env('DEFAULT_PHONE_COUNTRY_CODE', '+228');
+        $cc = '+' . ltrim($defaultCc, '+');
+        $local = ltrim($p, '0');
+        return $cc . $local;
     }
 
     /**
@@ -158,11 +282,14 @@ class AdminDemandeController extends Controller
             DB::beginTransaction();
 
             // Créer ou trouver le client
-            $client = $this->findOrCreateClient([
+            $clientData = $this->findOrCreateClient([
                 'name' => $request->client_name,
                 'email' => $request->client_email,
                 'telephone' => $request->client_telephone,
             ]);
+            
+            $client = $clientData['client'];
+            $isNewClient = $clientData['isNew'];
 
             // Créer la demande
             $demande = DemandeTransport::create([
@@ -214,22 +341,45 @@ class AdminDemandeController extends Controller
      */
     private function sendDemandeCreationNotification(User $client, DemandeTransport $demande)
     {
-        $message = "📦 Nouvelle expédition créée!\n\n" .
-                  "Bonjour {$client->name},\n\n" .
-                  "Une nouvelle demande de transport a été créée pour vous:\n\n" .
-                  "🔍 N° de suivi: {$demande->numero_tracking}\n" .
-                  "📍 Trajet: {$demande->ville_depart} → {$demande->ville_destination}\n" .
-                  "📦 Nature: {$demande->nature_colis}\n" .
-                  "⚖️ Poids: {$demande->poids} kg\n" .
-                  "📊 Statut: " . ucfirst($demande->statut) . "\n\n" .
-                  "Suivez votre colis sur: " . route('suivi.public') . "\n" .
-                  "Ou connectez-vous à votre espace: " . route('login') . "\n\n" .
-                  "NIF CARGO - Transport & Logistique 🚚";
+        try {
+            \Illuminate\Support\Facades\Log::info("🚀 Envoi notification demande créée pour {$client->email} - Tracking: {$demande->numero_tracking}");
+            
+            // Envoi d'email avec template Blade  
+            \Illuminate\Support\Facades\Mail::send('emails.demande-created-by-admin', [
+                'client_name' => $client->name,
+                'demande' => $demande,
+                'tracking_number' => $demande->numero_tracking,
+                'suivi_url' => route('suivi.public') . '?tracking=' . $demande->numero_tracking,
+                'login_url' => route('login')
+            ], function ($mail) use ($client, $demande) {
+                $mail->to($client->email, $client->name)
+                     ->subject('📦 Nouvelle demande de transport créée - ' . $demande->numero_tracking)
+                     ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+            
+            // Message WhatsApp
+            $whatsappMessage = "📦 Nouvelle expédition créée!\n\n" .
+                              "Bonjour {$client->name},\n\n" .
+                              "Une nouvelle demande de transport a été créée pour vous:\n\n" .
+                              "🔍 N° de suivi: {$demande->numero_tracking}\n" .
+                              "📍 Trajet: {$demande->ville_depart} → {$demande->ville_destination}\n" .
+                              "📦 Nature: {$demande->nature_colis}\n" .
+                              "⚖️ Poids: {$demande->poids} kg\n" .
+                              "📊 Statut: " . ucfirst($demande->statut) . "\n\n" .
+                              "Suivez votre colis sur: " . route('suivi.public') . "\n" .
+                              "Ou connectez-vous à votre espace: " . route('login') . "\n\n" .
+                              "NIF CARGO - Transport & Logistique 🚚";
 
-        $titre = 'Nouvelle demande de transport créée - ' . $demande->numero_tracking;
-
-        // Utiliser le service de notification existant
-        NotificationService::envoyerNotification($client, $demande, $titre, $message);
+            // Envoyer WhatsApp si numéro disponible
+            if ($client->telephone) {
+                $this->sendWhatsAppMessage($client, $whatsappMessage);
+            }
+            
+            \Illuminate\Support\Facades\Log::info("✅ Notifications demande créée envoyées à {$client->email}");
+            
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("❌ Erreur notification demande créée pour {$client->email}: " . $e->getMessage());
+        }
     }
 
     /**

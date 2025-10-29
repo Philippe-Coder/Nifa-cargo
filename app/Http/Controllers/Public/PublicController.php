@@ -146,18 +146,18 @@ class PublicController extends Controller
                 'pays' => 'Togo',
                 'ville' => 'Lomé',
                 'adresse' => 'Totsi à 100m non loin de l\'eglise catholique, Lomé',
-                'telephone' => '+228 22 61 00 00',
+                'telephone' => '+228 99 25 25 31',
                 'mobile' => '+228 99 25 25 31',
-                'email' => 'contact@nif-tg.com',
+                'email' => 'contact@nifgroupecargo.com',
                 'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
             ],
             'benin' => [
                 'pays' => 'Bénin',
                 'ville' => 'Cotonou',
                 'adresse' => '456 Avenue Clozel, Cotonou',
-                'telephone' => '+229 21 30 00 00',
-                'mobile' => '+229 97 12 34 56',
-                'email' => 'contact@nif-tg.com',
+                'telephone' => '+229 96 36 46 07',
+                'mobile' => '+229 96 36 46 07',
+                'email' => 'contact@nifgroupecargo.com',
                 'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
             ]
         ];

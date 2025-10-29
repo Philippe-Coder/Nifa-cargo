@@ -119,11 +119,11 @@
                                 </li>
                                 <li class="flex items-center">
                                     <i class="fas fa-phone mr-2 text-blue-400 text-xs"></i>
-                                    <a href="tel:+22822610000" class="hover:text-white transition-colors">+228 99 25 25 31</a>
+                                    <a href="tel:+22899252531" class="hover:text-white transition-colors">+228 99 25 25 31</a>
                                 </li>
                                 <li class="flex items-center">
                                     <i class="fas fa-mobile-alt mr-2 text-blue-400 text-xs"></i>
-                                    <a href="tel:+22890123456" class="hover:text-white transition-colors">+228 90 12 34 56</a>
+                                    <a href="tel:+22899252531" class="hover:text-white transition-colors">+228 99 25 25 31</a>
                                 </li>
                             </ul>
                         </div>
@@ -137,11 +137,11 @@
                             <ul class="space-y-2 text-gray-400 text-sm">
                                 <li class="flex items-center">
                                     <i class="fas fa-phone mr-2 text-red-400 text-xs"></i>
-                                    <a href="tel:+22921123456" class="hover:text-white transition-colors">+229 96 12 34 56</a>
+                                    <a href="tel:+22996364607" class="hover:text-white transition-colors">+229 96 36 46 07</a>
                                 </li>
                                 <li class="flex items-center">
                                     <i class="fas fa-mobile-alt mr-2 text-red-400 text-xs"></i>
-                                    <a href="tel:+22996123456" class="hover:text-white transition-colors">+229 96 12 34 56</a>
+                                    <a href="tel:+22996364607" class="hover:text-white transition-colors">+229 96 36 46 07</a>
                                 </li>
                             </ul>
                             
@@ -150,11 +150,11 @@
                                 <ul class="space-y-2 text-gray-400 text-sm">
                                     <li class="flex items-center">
                                         <i class="fas fa-envelope mr-2 text-blue-400 text-xs"></i>
-                                        <a href="mailto:contact@nif-tg.com" class="hover:text-white transition-colors">contact@nif-tg.com</a>
+                                        <a href="mailto:contact@nifgroupecargo.com" class="hover:text-white transition-colors">contact@nifgroupecargo.com</a>
                                     </li>
                                     <li class="flex items-center">
                                         <i class="fas fa-headset mr-2 text-red-400 text-xs"></i>
-                                        <a href="mailto:contact@nif-tg.com" class="hover:text-white transition-colors">contact@nif-tg.com</a>
+                                        <a href="mailto:contact@nifgroupecargo.com" class="hover:text-white transition-colors">contact@nifgroupecargo.com</a>
                                     </li>
                                 </ul>
                             </div>
@@ -171,7 +171,7 @@
                             <div>Lun - Ven : 8h00 - 18h00</div>
                             <div>Samedi : 8h00 - 12h00</div>
                             <div>Dimanche : Fermé</div>
-                            <div class="text-red-400 font-medium">Urgences 24h/7j : +228 90 00 00 00</div>
+                            <div class="text-red-400 font-medium">Urgences 24h/7j : +228 99252531</div>
                         </div>
                     </div>
                 </div>
