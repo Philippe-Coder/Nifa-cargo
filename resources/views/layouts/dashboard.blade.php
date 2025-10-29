@@ -436,14 +436,19 @@
                                 <span class="menu-text">Dashboard</span>
                             </a>
                             <a href="{{ route('admin.demandes.index') }}" 
-                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.demandes.*') ? 'active' : '' }}">
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.demandes.index') || request()->routeIs('admin.demandes.show') ? 'active' : '' }}">
                                 <i class="fas fa-boxes mr-3 text-base"></i>
-                                <span class="menu-text">Demandes</span>
+                                <span class="menu-text">Gestion Demandes</span>
                                 @if(isset($pending_count) && $pending_count > 0)
                                     <span class="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                                         {{ $pending_count }}
                                     </span>
                                 @endif
+                            </a>
+                            <a href="{{ route('admin.demandes.create-admin') }}" 
+                               class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.demandes.create-admin') ? 'active' : '' }}">
+                                <i class="fas fa-plus-circle mr-3 text-base"></i>
+                                <span class="menu-text">Créer Demande Client</span>
                             </a>
                             <a href="{{ route('admin.clients.index') }}" 
                                class="menu-item flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">

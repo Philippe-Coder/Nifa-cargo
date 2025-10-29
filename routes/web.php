@@ -94,10 +94,19 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    
+    // Routes spécifiques pour les demandes (AVANT les routes avec paramètres)
+    Route::get('/demandes/create-admin', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'create'])->name('admin.demandes.create-admin');
+    Route::post('/demandes/store-admin', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'store'])->name('admin.demandes.store-admin');
+    Route::get('/demandes/search-clients', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'searchClients'])->name('admin.demandes.search-clients');
+    Route::get('/demandes/get-client/{id}', [\App\Http\Controllers\Admin\AdminDemandeController::class, 'getClient'])->name('admin.demandes.get-client');
+    
+    // Routes générales pour les demandes (APRÈS les routes spécifiques)
     Route::get('/demandes', [DemandeTransportController::class, 'index'])->name('admin.demandes.index');
     Route::get('/demandes/{id}', [DemandeTransportController::class, 'show'])->name('admin.demandes.show');
     Route::post('/demandes/{id}/statut', [DemandeTransportController::class, 'updateStatut'])->name('admin.demandes.updateStatut');
     Route::delete('/demandes/{id}', [DemandeTransportController::class, 'destroy'])->name('admin.demandes.destroy');
+    
     Route::get('/clients', [ClientController::class, 'index'])->name('admin.clients.index');
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('admin.clients.show');
     Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('admin.clients.destroy');

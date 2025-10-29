@@ -13,6 +13,9 @@ class DemandeTransport extends Model
         'type_transport',
         'marchandise',
         'poids',
+        'volume',
+        'nature_colis',
+        'frais_expedition',
         'origine',
         'destination',
         'ville_depart',
@@ -21,11 +24,13 @@ class DemandeTransport extends Model
         'statut',
         'document_path',
         'reference',
+        'numero_tracking',
         'date_souhaitee',
         'dimensions',
         'valeur',
         'fragile',
-        'montant'
+        'montant',
+        'created_by_admin'
     ];
 
     /**
@@ -63,9 +68,12 @@ class DemandeTransport extends Model
 
     protected $casts = [
         'poids' => 'decimal:2',
+        'volume' => 'decimal:2',
         'valeur' => 'decimal:2',
         'montant' => 'decimal:2',
+        'frais_expedition' => 'decimal:2',
         'fragile' => 'boolean',
+        'created_by_admin' => 'boolean',
         'date_souhaitee' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

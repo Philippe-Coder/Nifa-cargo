@@ -142,6 +142,9 @@
             <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
                 <i class="fas fa-filter mr-2"></i> Filtres
             </button>
+            <a href="{{ route('admin.demandes.create-admin') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
+                <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
+            </a>
             <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
                 <i class="fas fa-file-export mr-2"></i> Exporter
             </button>
