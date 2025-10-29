@@ -18,7 +18,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestNotificationController;
+use App\Http\Controllers\LanguageController;
 
+// Route pour changer de langue
+Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 
 // Routes de la galerie
 Route::get('/galerie', [GalerieController::class, 'index'])->name('galerie.index');

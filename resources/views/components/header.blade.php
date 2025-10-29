@@ -127,33 +127,36 @@
                 <nav class="hidden lg:flex items-center space-x-1">
                     <a href="{{ route('accueil') }}" 
                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('accueil') ? 'active text-gray-900' : '' }}">
-                        Accueil
+                        {{ __('Accueil') }}
                     </a>
                     <a href="{{ route('services') }}" 
                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('services') ? 'active text-gray-900' : '' }}">
-                        Services
+                        {{ __('Services') }}
                     </a>
                     <a href="{{ route('apropos') }}" 
                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('apropos') ? 'active text-gray-900' : '' }}">
-                        À propos
+                        {{ __('À Propos') }}
                     </a>
                     <a href="{{ route('contact') }}" 
                        class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('contact') ? 'active text-gray-900' : '' }}">
-                        Contact
+                        {{ __('Contact') }}
                     </a>
                     <a href="{{ route('blog.index') }}" 
                         class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('blog.*') ? 'active text-gray-900' : '' }}">
-                            Actualités
+                            {{ __('Galerie') }}
                     </a>
                 </nav>
                 
-                <!-- CTA Buttons -->
+                <!-- Language Selector & CTA Buttons -->
                 <div class="flex items-center space-x-3">
+                    <!-- Language Selector -->
+                    <x-language-selector />
+                    
                     <!-- Suivi colis - Desktop -->
                     <a href="{{ route('suivi.public') }}" 
                        class="hidden md:flex items-center btn-secondary text-gray-700 font-medium px-4 py-2.5 rounded-lg">
                         <i class="fas fa-search mr-2 text-sm"></i>
-                        <span class="text-sm">Suivre un colis</span>
+                        <span class="text-sm">{{ __('Suivre un colis') }}</span>
                     </a>
                     
                     @auth
@@ -162,13 +165,13 @@
                             <a href="{{ route('admin.dashboard') }}" 
                                class="hidden md:flex items-center btn-primary text-white px-5 py-2.5 rounded-lg font-semibold">
                                 <i class="fas fa-tachometer-alt mr-2 text-sm"></i>
-                                <span class="text-sm">Admin</span>
+                                <span class="text-sm">{{ __('Admin') }}</span>
                             </a>
                         @else
                             <a href="{{ route('dashboard') }}" 
                                class="hidden md:flex items-center btn-primary text-white px-5 py-2.5 rounded-lg font-semibold">
                                 <i class="fas fa-user mr-2 text-sm"></i>
-                                <span class="text-sm">Mon espace</span>
+                                <span class="text-sm">{{ __('Mon espace') }}</span>
                             </a>
                         @endif
                         
@@ -194,9 +197,9 @@
                                     <p class="text-xs text-gray-500 truncate mt-1">{{ Auth::user()->email }}</p>
                                     <span class="inline-block mt-2 px-2.5 py-1 bg-gradient-to-r from-blue-50 to-green-50 text-gray-700 border border-gray-200 rounded-full text-xs font-medium">
                                         @if(Auth::user()->isAdmin())
-                                            Administrateur
+                                            {{ __('Administrateur') }}
                                         @else
-                                            Client
+                                            {{ __('Client') }}
                                         @endif
                                     </span>
                                 </div>
@@ -206,19 +209,19 @@
                                     <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" 
                                        class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                         <i class="fas fa-tachometer-alt mr-3 text-gray-500 w-4"></i>
-                                        Dashboard
+                                        {{ __('Dashboard') }}
                                     </a>
                                     <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                         <i class="fas fa-user mr-3 text-gray-500 w-4"></i>
-                                        Mon profil
+                                        {{ __('Mon profil') }}
                                     </a>
                                     <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                         <i class="fas fa-cog mr-3 text-gray-500 w-4"></i>
-                                        Paramètres
+                                        {{ __('Paramètres') }}
                                     </a>
                                     <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                         <i class="fas fa-bell mr-3 text-gray-500 w-4"></i>
-                                        Notifications
+                                        {{ __('Notifications') }}
                                     </a>
                                 </div>
                                 
@@ -231,7 +234,7 @@
                                     <button type="submit" 
                                             class="flex items-center w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
                                         <i class="fas fa-sign-out-alt mr-3 w-4"></i>
-                                        Déconnexion
+                                        {{ __('Déconnexion') }}
                                     </button>
                                 </form>
                             </div>
@@ -241,12 +244,12 @@
                         <a href="{{ route('login') }}" 
                            class="hidden md:flex items-center btn-secondary text-gray-700 font-medium px-4 py-2.5 rounded-lg">
                             <i class="fas fa-sign-in-alt mr-2 text-sm"></i>
-                            <span class="text-sm">Connexion</span>
+                            <span class="text-sm">{{ __('Connexion') }}</span>
                         </a>
                         <a href="{{ route('register.client') }}" 
                            class="hidden md:flex items-center btn-primary text-white px-5 py-2.5 rounded-lg font-semibold">
                             <i class="fas fa-box mr-2 text-sm"></i>
-                            <span class="text-sm">Faire une demande</span>
+                            <span class="text-sm">{{ __('Faire une demande') }}</span>
                         </a>
                     @endauth
                     
@@ -265,32 +268,32 @@
                     <a href="{{ route('accueil') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('accueil') ? 'text-gray-900 bg-gray-50' : '' }}">
                         <i class="fas fa-home mr-3 w-5 text-center text-gray-500"></i>
-                        Accueil
+                        {{ __('Accueil') }}
                     </a>
                     <a href="{{ route('services') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('services') ? 'text-gray-900 bg-gray-50' : '' }}">
                         <i class="fas fa-shipping-fast mr-3 w-5 text-center text-gray-500"></i>
-                        Services
+                        {{ __('Services') }}
                     </a>
                     <a href="{{ route('apropos') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('apropos') ? 'text-gray-900 bg-gray-50' : '' }}">
                         <i class="fas fa-info-circle mr-3 w-5 text-center text-gray-500"></i>
-                        À propos
+                        {{ __('À Propos') }}
                     </a>
                     <a href="{{ route('contact') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('contact') ? 'text-gray-900 bg-gray-50' : '' }}">
                         <i class="fas fa-envelope mr-3 w-5 text-center text-gray-500"></i>
-                        Contact
+                        {{ __('Contact') }}
                     </a>
                     <a href="{{ route('blog.index') }}" 
    class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('blog.*') ? 'text-gray-900 bg-gray-50' : '' }}">
     <i class="fas fa-newspaper mr-3 w-5 text-center text-gray-500"></i>
-    Actualités
+    {{ __('Galerie') }}
 </a>
                     <a href="{{ route('suivi.public') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                         <i class="fas fa-search mr-3 w-5 text-center text-gray-500"></i>
-                        Suivre un colis
+                        {{ __('Suivre un colis') }}
                     </a>
                     
                     @auth
@@ -304,15 +307,15 @@
                             <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" 
                                class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                                 <i class="fas fa-tachometer-alt mr-3 w-5 text-center text-gray-500"></i>
-                                Mon espace
+                                {{ __('Mon espace') }}
                             </a>
                             <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                                 <i class="fas fa-user mr-3 w-5 text-center text-gray-500"></i>
-                                Mon profil
+                                {{ __('Mon profil') }}
                             </a>
                             <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                                 <i class="fas fa-cog mr-3 w-5 text-center text-gray-500"></i>
-                                Paramètres
+                                {{ __('Paramètres') }}
                             </a>
                             
                             <form method="POST" action="{{ route('logout') }}">
@@ -320,7 +323,7 @@
                                 <button type="submit" 
                                         class="flex items-center w-full px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 font-medium rounded-lg transition-all duration-300">
                                     <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
-                                    Déconnexion
+                                    {{ __('Déconnexion') }}
                                 </button>
                             </form>
                         </div>
@@ -330,12 +333,12 @@
                             <a href="{{ route('login') }}" 
                                class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                                 <i class="fas fa-sign-in-alt mr-3 w-5 text-center text-gray-500"></i>
-                                Connexion
+                                {{ __('Connexion') }}
                             </a>
                             <a href="{{ route('register.client') }}" 
                                class="flex items-center justify-center btn-primary text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 mx-4">
                                 <i class="fas fa-box mr-2"></i>
-                                Faire une demande
+                                {{ __('Faire une demande') }}
                             </a>
                         </div>
                     @endauth

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenue chez NIF CARGO</title>
+    <title>{{ __('Bienvenue') }} - {{ __('NIF CARGO - Transport & Logistique') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -274,25 +274,25 @@
     <div class="container">
         <div class="header">
             <div class="logo">NIF CARGO</div>
-            <div class="logo-subtitle">Transport et Logistique</div>
-            <h2>Bienvenue dans votre espace client !</h2>
+            <div class="logo-subtitle">{{ __('NIF CARGO - Transport & Logistique') }}</div>
+            <h2>{{ __('Bienvenue') }} {{ __('Mon Compte') }} !</h2>
         </div>
         
         <div class="content">
             <div class="greeting">
-                <p>Bonjour <strong>{{ $client_name }}</strong>,</p>
+                <p>{{ __('Hello!') }} <strong>{{ $client_name }}</strong>,</p>
             </div>
             
             <div class="highlight-box">
-                <p><i class="fas fa-trophy" style="color: #ffc107; margin-right: 8px;"></i> <strong>Félicitations !</strong> Votre compte client a été créé avec succès par notre équipe NIF CARGO.</p>
+                <p><i class="fas fa-trophy" style="color: #ffc107; margin-right: 8px;"></i> <strong>{{ __('Opération réussie !') }}</strong> {{ __('Votre partenaire de confiance pour tous vos besoins de transport') }}.</p>
             </div>
             
-            <p>Vous pouvez maintenant suivre toutes vos expéditions en temps réel et gérer vos demandes de transport directement depuis votre espace personnel.</p>
+            <p>{{ __('Votre partenaire de confiance pour tous vos besoins de transport') }}.</p>
             
             <div class="credentials-box">
                 <div class="credentials-title">
                     <i class="fas fa-key"></i>
-                    <span>Vos identifiants de connexion :</span>
+                    <span>{{ __('Connexion') }} :</span>
                 </div>
                 
                 <div class="credential-item">
@@ -300,7 +300,7 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div>
-                        <strong>Email :</strong> {{ $email }}
+                        <strong>{{ __('Email') }} :</strong> {{ $email }}
                     </div>
                 </div>
                 
@@ -309,7 +309,7 @@
                         <i class="fas fa-lock"></i>
                     </div>
                     <div>
-                        <strong>Mot de passe temporaire :</strong> 
+                        <strong>{{ __('Password') }} :</strong> 
                         <span class="password">{{ $password }}</span>
                     </div>
                 </div>
@@ -320,21 +320,21 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div>
-                    <p><strong>Important :</strong> Pour votre sécurité, nous vous recommandons vivement de changer ce mot de passe temporaire lors de votre première connexion.</p>
+                    <p><strong>{{ __('Information') }} :</strong> {{ __('Ensure your account is using a long, random password to stay secure.') }}</p>
                 </div>
             </div>
             
             <div class="button-container">
                 <a href="{{ $login_url }}" class="button">
                     <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>
-                    Se connecter à mon espace
+                    {{ __('Connexion') }}
                 </a>
             </div>
             
             <div class="features">
                 <div class="features-title">
                     <i class="fas fa-rocket"></i>
-                    <span>Que pouvez-vous faire dans votre espace client ?</span>
+                    <span>{{ __('Nos Services') }}</span>
                 </div>
                 
                 <ul class="features-list">
@@ -342,36 +342,36 @@
                         <div class="feature-icon">
                             <i class="fas fa-shipping-fast"></i>
                         </div>
-                        <span>Suivre vos expéditions en temps réel</span>
+                        <span>{{ __('Suivre un Colis') }}</span>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-history"></i>
                         </div>
-                        <span>Consulter l'historique de vos demandes</span>
+                        <span>{{ __('Mes Demandes') }}</span>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-file-download"></i>
                         </div>
-                        <span>Télécharger vos documents et factures</span>
+                        <span>{{ __('Files') }}</span>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-bell"></i>
                         </div>
-                        <span>Recevoir des notifications sur l'avancement</span>
+                        <span>{{ __('Notifications') }}</span>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-headset"></i>
                         </div>
-                        <span>Contacter notre équipe support</span>
+                        <span>{{ __('Contact') }}</span>
                     </li>
                 </ul>
             </div>
             
-            <p>Notre équipe est à votre disposition pour vous accompagner dans toutes vos expéditions. N'hésitez pas à nous contacter si vous avez des questions.</p>
+            <p>{{ __('NIF CARGO est votre partenaire de confiance pour tous vos besoins de transport et de logistique au Togo et dans la région.') }}</p>
         </div>
         
         <div class="footer">
