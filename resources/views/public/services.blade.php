@@ -3,6 +3,18 @@
 @section('title', 'Nos Services - NIF CARGO')
 @section('description', 'Découvrez nos services de transport maritime, aérien, terrestre, dédouanement, entreposage et assurance en Afrique.')
 
+@php
+// Définition des images par service avec vos images personnalisées - AVANT le contenu
+$serviceImages = [
+    'Transport Maritime' => asset('images/Transport Maritime.jpg'),
+    'Transport Aérien' => asset('images/Transport Aérien.jpg'),
+    'Transport Terrestre' => asset('images/Transport Terrestre.jpg'),
+    'Dédouanement' => asset('images/Dédouanement.jpg'),
+    'Entreposage' => asset('images/Entreposage.jpg'),
+    'Assurance' => asset('images/Assurance.jpg')
+];
+@endphp
+
 @section('content')
 <!-- Hero Section avec Image -->
 <section class="hero-bg-services relative overflow-hidden py-20 lg:py-28">
@@ -98,7 +110,7 @@
                     <div class="{{ $index % 2 == 1 ? 'lg:col-start-1' : '' }} relative">
                         <!-- Image principale du service -->
                         <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                            <img src="{{ $service['image_url'] ?? $serviceImages[$service['titre']] ?? 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}" 
+                            <img src="{{ $serviceImages[$service['titre']] ?? asset('images/Transport Maritime.jpg') }}" 
                                  alt="{{ $service['titre'] }} - NIF CARGO"
                                  class="w-full h-80 object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
@@ -485,15 +497,3 @@
 .hero-particles .particle:nth-child(9) { left: 90%; animation-delay: 3.5s; }
 </style>
 @endpush
-
-@php
-// Définition des images par service avec vos images personnalisées
-$serviceImages = [
-    'Transport Maritime' => asset('images/Transport Maritime.jpg'),
-    'Transport Aérien' => asset('images/Transport Aérien.jpg'),
-    'Transport Terrestre' => asset('images/Transport Terrestre.jpg'),
-    'Dédouanement' => asset('images/Dédouanement.jpg'), // Utilisation de l'image terrestre pour le dédouanement
-    'Entreposage' => asset('images/Entreposage.jpg'),
-    'Assurance' => asset('images/Assurance.jpg')
-];
-@endphp
