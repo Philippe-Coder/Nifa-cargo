@@ -67,7 +67,7 @@
         </div>
         <div class="p-6">
             <!-- Recherche de client existant -->
-            <div class="mb-6">
+            <div class="mb-6 relative">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     <i class="fas fa-search mr-2"></i>Rechercher un client existant
                 </label>
@@ -75,10 +75,17 @@
                     <input type="text" 
                            id="clientSearch" 
                            placeholder="Tapez le nom, email ou téléphone du client..."
-                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                           class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                           autocomplete="off">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <i id="searchSpinner" class="fas fa-spinner fa-spin absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hidden"></i>
+                    <i id="searchClear" class="fas fa-times absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hidden hover:text-gray-600"></i>
                 </div>
-                <div id="clientResults" class="hidden mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto z-10 absolute w-full"></div>
+                <div id="clientResults" class="hidden mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-60 overflow-y-auto z-50 absolute w-full"></div>
+                <p class="text-xs text-gray-500 mt-1">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Commencez à taper pour rechercher un client existant ou créer un nouveau compte
+                </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -86,6 +93,7 @@
                 <div>
                     <label for="client_name" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-user mr-2 text-blue-500"></i>Nom complet *
+                        <span id="clientStatus" class="ml-2 text-xs"></span>
                     </label>
                     <input type="text" 
                            name="client_name" 
@@ -94,6 +102,7 @@
                            required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                            placeholder="Ex: Jean Dupont">
+                    <input type="hidden" id="client_id" name="client_id" value="">
                 </div>
 
                 <!-- Email du client -->
@@ -407,60 +416,185 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Éléments DOM
     const clientSearch = document.getElementById('clientSearch');
     const clientResults = document.getElementById('clientResults');
     const clientName = document.getElementById('client_name');
     const clientEmail = document.getElementById('client_email');
     const clientTelephone = document.getElementById('client_telephone');
+    const clientId = document.getElementById('client_id');
+    const clientStatus = document.getElementById('clientStatus');
+    const searchSpinner = document.getElementById('searchSpinner');
+    const searchClear = document.getElementById('searchClear');
     
     let searchTimeout;
+    let currentSelectedClient = null;
 
-    // Recherche de clients
+    // État de l'interface
+    function setLoading(isLoading) {
+        if (isLoading) {
+            searchSpinner.classList.remove('hidden');
+            searchClear.classList.add('hidden');
+        } else {
+            searchSpinner.classList.add('hidden');
+            if (clientSearch.value.length > 0) {
+                searchClear.classList.remove('hidden');
+            }
+        }
+    }
+
+    function setClientStatus(type, message, client = null) {
+        clientStatus.innerHTML = '';
+        
+        if (type === 'existing') {
+            clientStatus.innerHTML = `
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                    <i class="fas fa-check-circle mr-1"></i>Client existant
+                </span>
+            `;
+            currentSelectedClient = client;
+        } else if (type === 'new') {
+            clientStatus.innerHTML = `
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    <i class="fas fa-plus-circle mr-1"></i>Nouveau client
+                </span>
+            `;
+            currentSelectedClient = null;
+        } else if (type === 'searching') {
+            clientStatus.innerHTML = `
+                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                    <i class="fas fa-search mr-1"></i>Recherche...
+                </span>
+            `;
+        }
+    }
+
+    function clearClientFields() {
+        clientName.value = '';
+        clientEmail.value = '';
+        clientTelephone.value = '';
+        clientId.value = '';
+        currentSelectedClient = null;
+        setClientStatus('new');
+    }
+
+    function fillClientFields(client) {
+        clientName.value = client.name;
+        clientEmail.value = client.email;
+        clientTelephone.value = client.telephone || '';
+        clientId.value = client.id;
+        clientSearch.value = client.name + ' - ' + client.email;
+        setClientStatus('existing', null, client);
+        
+        // Animation de confirmation
+        [clientName, clientEmail, clientTelephone].forEach(field => {
+            field.classList.add('bg-green-50', 'border-green-300');
+            setTimeout(() => {
+                field.classList.remove('bg-green-50', 'border-green-300');
+            }, 1500);
+        });
+    }
+
+    // Recherche de clients avec debounce
     clientSearch.addEventListener('input', function() {
         const query = this.value.trim();
         
+        // Afficher/masquer le bouton clear
+        if (query.length > 0) {
+            searchClear.classList.remove('hidden');
+        } else {
+            searchClear.classList.add('hidden');
+        }
+        
         if (query.length < 2) {
             clientResults.classList.add('hidden');
+            if (query.length === 0) {
+                clearClientFields();
+            }
             return;
         }
 
+        setLoading(true);
+        setClientStatus('searching');
         clearTimeout(searchTimeout);
+        
         searchTimeout = setTimeout(() => {
             fetch('/admin/demandes/search-clients?q=' + encodeURIComponent(query))
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur réseau');
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    setLoading(false);
                     clientResults.innerHTML = '';
                     
                     if (data.length === 0) {
                         clientResults.innerHTML = `
-                            <div class="p-4 text-gray-500 text-sm">
-                                <i class="fas fa-info-circle mr-2"></i>
-                                Aucun client trouvé. Un nouveau compte sera créé.
+                            <div class="p-4 text-center">
+                                <i class="fas fa-user-plus text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600 font-medium">Aucun client trouvé</p>
+                                <p class="text-xs text-gray-500 mt-1">Un nouveau compte sera créé avec ces informations</p>
                             </div>
                         `;
+                        setClientStatus('new');
                     } else {
-                        data.forEach(client => {
+                        // En-tête
+                        clientResults.innerHTML = `
+                            <div class="p-3 bg-gray-50 border-b border-gray-200">
+                                <p class="text-xs font-medium text-gray-700">
+                                    <i class="fas fa-users mr-1"></i>
+                                    ${data.length} client(s) trouvé(s)
+                                </p>
+                            </div>
+                        `;
+                        
+                        data.forEach((client, index) => {
                             const div = document.createElement('div');
-                            div.className = 'p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                            div.className = 'p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-150';
+                            
+                            // Mise en évidence du terme recherché
+                            const highlightText = (text, query) => {
+                                if (!text) return 'N/A';
+                                const regex = new RegExp(`(${query})`, 'gi');
+                                return text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+                            };
+                            
                             div.innerHTML = `
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mr-3">
-                                        <span class="text-white text-sm font-bold">${client.name.charAt(0)}</span>
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4 shadow-sm">
+                                        <span class="text-white text-sm font-bold">${client.name.charAt(0).toUpperCase()}</span>
                                     </div>
-                                    <div>
-                                        <p class="font-semibold text-gray-900">${client.name}</p>
-                                        <p class="text-sm text-gray-500">${client.email}</p>
-                                        <p class="text-xs text-gray-400">${client.telephone || 'N/A'}</p>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900">${highlightText(client.name, query)}</p>
+                                        <p class="text-sm text-gray-600">${highlightText(client.email, query)}</p>
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            <i class="fas fa-phone mr-1"></i>
+                                            ${highlightText(client.telephone, query)}
+                                        </p>
+                                    </div>
+                                    <div class="ml-4">
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
                                     </div>
                                 </div>
                             `;
                             
+                            // Effet hover amélioré
+                            div.addEventListener('mouseenter', () => {
+                                div.classList.add('shadow-md', 'transform', 'scale-[1.02]');
+                            });
+                            
+                            div.addEventListener('mouseleave', () => {
+                                div.classList.remove('shadow-md', 'transform', 'scale-[1.02]');
+                            });
+                            
                             div.addEventListener('click', () => {
-                                clientName.value = client.name;
-                                clientEmail.value = client.email;
-                                clientTelephone.value = client.telephone || '';
-                                clientSearch.value = client.name;
+                                fillClientFields(client);
                                 clientResults.classList.add('hidden');
+                                
+                                // Notification toast
+                                showToast('Client sélectionné', `${client.name} a été sélectionné`, 'success');
                             });
                             
                             clientResults.appendChild(div);
@@ -471,8 +605,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Erreur lors de la recherche:', error);
+                    setLoading(false);
+                    clientResults.innerHTML = `
+                        <div class="p-4 text-center text-red-600">
+                            <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
+                            <p class="text-sm">Erreur lors de la recherche</p>
+                            <p class="text-xs mt-1">Veuillez réessayer</p>
+                        </div>
+                    `;
+                    clientResults.classList.remove('hidden');
                 });
         }, 300);
+    });
+
+    // Bouton clear
+    searchClear.addEventListener('click', function() {
+        clientSearch.value = '';
+        clearClientFields();
+        clientResults.classList.add('hidden');
+        searchClear.classList.add('hidden');
+        clientSearch.focus();
     });
 
     // Fermer les résultats en cliquant ailleurs
@@ -481,6 +633,39 @@ document.addEventListener('DOMContentLoaded', function() {
             clientResults.classList.add('hidden');
         }
     });
+
+    // Navigation au clavier
+    let selectedIndex = -1;
+    clientSearch.addEventListener('keydown', function(e) {
+        const items = clientResults.querySelectorAll('[role="option"]');
+        
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+            updateSelection(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, -1);
+            updateSelection(items);
+        } else if (e.key === 'Enter' && selectedIndex >= 0) {
+            e.preventDefault();
+            items[selectedIndex].click();
+        } else if (e.key === 'Escape') {
+            clientResults.classList.add('hidden');
+            selectedIndex = -1;
+        }
+    });
+
+    function updateSelection(items) {
+        items.forEach((item, index) => {
+            if (index === selectedIndex) {
+                item.classList.add('bg-blue-100');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('bg-blue-100');
+            }
+        });
+    }
 
     // Auto-remplissage des villes depuis origine/destination
     document.getElementById('origine').addEventListener('blur', function() {
@@ -495,25 +680,69 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Validation du formulaire
+    // Validation du formulaire améliorée
     document.getElementById('demandeForm').addEventListener('submit', function(e) {
         let isValid = true;
         const requiredFields = this.querySelectorAll('[required]');
         
         requiredFields.forEach(field => {
+            field.classList.remove('border-red-500', 'border-green-500');
+            
             if (!field.value.trim()) {
                 field.classList.add('border-red-500');
                 isValid = false;
             } else {
-                field.classList.remove('border-red-500');
+                field.classList.add('border-green-500');
             }
         });
 
         if (!isValid) {
             e.preventDefault();
-            alert('Veuillez remplir tous les champs obligatoires.');
+            showToast('Erreur de validation', 'Veuillez remplir tous les champs obligatoires.', 'error');
+            
+            // Scroll vers le premier champ invalide
+            const firstInvalid = this.querySelector('.border-red-500');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
+            }
         }
     });
+
+    // Fonction toast pour les notifications
+    function showToast(title, message, type = 'info') {
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+        
+        toast.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+        toast.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-3"></i>
+                <div>
+                    <p class="font-semibold">${title}</p>
+                    <p class="text-sm opacity-90">${message}</p>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Animation d'entrée
+        setTimeout(() => {
+            toast.classList.remove('translate-x-full');
+        }, 100);
+        
+        // Suppression automatique
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    // Initialisation
+    setClientStatus('new');
 });
 </script>
 @endpush

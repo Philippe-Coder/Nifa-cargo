@@ -21,7 +21,7 @@ class AdminDemandeController extends Controller
      */
     public function create()
     {
-        return view('admin.demandes.create-simple');
+        return view('admin.demandes.create');
     }
 
     /**
