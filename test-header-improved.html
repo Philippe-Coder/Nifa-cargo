@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Amélioré - Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-7xl mx-auto p-6">
+        <h1 class="text-4xl font-bold text-center mb-8">✅ Header Amélioré</h1>
+        
+        <!-- Résumé des améliorations -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Améliorations visuelles -->
+            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-green-800 mb-4">🎨 Améliorations Visuelles</h2>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-check-circle text-green-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-green-700">Espacement des liens amélioré</p>
+                            <p class="text-sm text-green-600">Padding augmenté de px-5 py-2.5 → px-6 py-3</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-check-circle text-green-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-green-700">Texte plus visible</p>
+                            <p class="text-sm text-green-600">Couleur changée de text-gray-700 → text-gray-800</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-check-circle text-green-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-green-700">Prévention de la compression</p>
+                            <p class="text-sm text-green-600">Ajout de whitespace-nowrap sur tous les liens</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-check-circle text-green-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-green-700">Header plus spacieux</p>
+                            <p class="text-sm text-green-600">Hauteur augmentée py-4 → py-5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Repositionnement -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-blue-800 mb-4">📐 Repositionnement</h2>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-arrow-right text-blue-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-blue-700">Navigation vers la gauche</p>
+                            <p class="text-sm text-blue-600">justify-start ml-4 pour pousser les liens à gauche</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-arrow-right text-blue-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-blue-700">Boutons vers la droite</p>
+                            <p class="text-sm text-blue-600">ml-auto et ml-4 pour pousser les boutons à droite</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-arrow-right text-blue-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-blue-700">Espacement entre sections</p>
+                            <p class="text-sm text-blue-600">space-x-3 et space-x-4 pour plus d'air</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-arrow-right text-blue-600 mt-1"></i>
+                        <div>
+                            <p class="font-medium text-blue-700">Container plus large</p>
+                            <p class="text-sm text-blue-600">max-w-7xl → max-w-8xl pour plus d'espace</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Schéma du nouveau layout -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">🏗️ Nouveau Layout du Header</h2>
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <!-- Logo -->
+                <div class="flex items-center bg-blue-100 px-4 py-2 rounded-lg mr-4">
+                    <i class="fas fa-image text-blue-600 mr-2"></i>
+                    <span class="font-medium text-blue-800">Logo</span>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="flex items-center space-x-2 flex-grow ml-4 bg-green-100 px-4 py-2 rounded-lg">
+                    <span class="text-xs text-green-700 font-medium">Navigation (plus à gauche)</span>
+                    <div class="flex space-x-1">
+                        <div class="w-12 h-6 bg-green-200 rounded"></div>
+                        <div class="w-12 h-6 bg-green-200 rounded"></div>
+                        <div class="w-12 h-6 bg-green-200 rounded"></div>
+                        <div class="w-12 h-6 bg-green-200 rounded"></div>
+                    </div>
+                </div>
+                
+                <!-- Boutons -->
+                <div class="flex items-center space-x-2 ml-auto bg-orange-100 px-4 py-2 rounded-lg">
+                    <span class="text-xs text-orange-700 font-medium">Boutons (plus à droite)</span>
+                    <div class="flex space-x-1">
+                        <div class="w-16 h-6 bg-orange-200 rounded"></div>
+                        <div class="w-16 h-6 bg-orange-200 rounded"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="text-center p-3 bg-blue-50 rounded">
+                    <p class="font-medium text-blue-700">Logo</p>
+                    <p class="text-blue-600">Position fixe à gauche</p>
+                </div>
+                <div class="text-center p-3 bg-green-50 rounded">
+                    <p class="font-medium text-green-700">Navigation</p>
+                    <p class="text-green-600">Flex-grow, justify-start, ml-4</p>
+                </div>
+                <div class="text-center p-3 bg-orange-50 rounded">
+                    <p class="font-medium text-orange-700">Boutons</p>
+                    <p class="text-orange-600">ml-auto pour pousser à droite</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparaison avant/après -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">📊 Comparaison Avant/Après</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold">Élément</th>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-red-700">❌ Avant</th>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-green-700">✅ Après</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-3 font-medium">Padding des liens</td>
+                            <td class="border border-gray-300 px-4 py-3 text-red-700">px-5 py-2.5 (serré)</td>
+                            <td class="border border-gray-300 px-4 py-3 text-green-700">px-6 py-3 (spacieux)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-3 font-medium">Espacement navigation</td>
+                            <td class="border border-gray-300 px-4 py-3 text-red-700">space-x-1 (minimal)</td>
+                            <td class="border border-gray-300 px-4 py-3 text-green-700">space-x-3 (confortable)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-3 font-medium">Couleur des textes</td>
+                            <td class="border border-gray-300 px-4 py-3 text-red-700">text-gray-700 (fade)</td>
+                            <td class="border border-gray-300 px-4 py-3 text-green-700">text-gray-800 (visible)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-3 font-medium">Container width</td>
+                            <td class="border border-gray-300 px-4 py-3 text-red-700">max-w-7xl (standard)</td>
+                            <td class="border border-gray-300 px-4 py-3 text-green-700">max-w-8xl (large)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-3 font-medium">Compression texte</td>
+                            <td class="border border-gray-300 px-4 py-3 text-red-700">Texte peut se comprimer</td>
+                            <td class="border border-gray-300 px-4 py-3 text-green-700">whitespace-nowrap (protégé)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Test du header -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 class="text-xl font-bold text-blue-800 mb-4">🚀 Tester le Nouveau Header</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="http://127.0.0.1:8000/" 
+                   target="_blank"
+                   class="block p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center transition-colors">
+                    🏠 Voir le Header sur la Page d'Accueil
+                    <p class="text-sm text-blue-100 mt-1">Testez les nouveaux espacements et positions</p>
+                </a>
+                <a href="http://127.0.0.1:8000/services" 
+                   target="_blank"
+                   class="block p-4 bg-green-600 text-white rounded-lg hover:bg-green-700 text-center transition-colors">
+                    🛠️ Voir le Header sur la Page Services
+                    <p class="text-sm text-green-100 mt-1">Vérifiez la lisibilité sur différentes pages</p>
+                </a>
+            </div>
+            
+            <div class="mt-4 p-4 bg-blue-100 rounded-lg">
+                <p class="text-sm text-blue-700">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <strong>Points à vérifier :</strong> Espacement des liens, lisibilité du texte, positionnement des boutons, et absence de compression sur écrans plus petits.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

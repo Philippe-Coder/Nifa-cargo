@@ -51,7 +51,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Transport Maritime',
                 'description' => 'Transport de marchandises par voie maritime vers l\'Afrique et l\'Europe',
-                'icon' => '🚢',
+                'icon' => '<i class="fas fa-ship"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Conteneurs 20 et 40 pieds',
@@ -63,7 +63,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Transport Aérien',
                 'description' => 'Transport rapide par voie aérienne pour vos marchandises urgentes',
-                'icon' => '✈️',
+                'icon' => '<i class="fas fa-plane"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1436491865333-7b9af8f9b6b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Livraison express',
@@ -75,7 +75,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Transport Terrestre',
                 'description' => 'Transport routier en Afrique de l\'Ouest avec notre flotte moderne',
-                'icon' => '🚛',
+                'icon' => '<i class="fas fa-truck"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Camions réfrigérés',
@@ -87,7 +87,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Dédouanement',
                 'description' => 'Service complet de dédouanement et formalités administratives',
-                'icon' => '📋',
+                'icon' => '<i class="fas fa-file-alt"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1454165804606-c3da57b4f6e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Déclaration en douane',
@@ -99,7 +99,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Entreposage',
                 'description' => 'Solutions d\'entreposage sécurisé dans nos entrepôts modernes',
-                'icon' => '🏭',
+                'icon' => '<i class="fas fa-warehouse"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Entrepôts sécurisés',
@@ -111,7 +111,7 @@ class PublicController extends Controller
             [
                 'titre' => 'Assurance',
                 'description' => 'Protection complète de vos marchandises pendant le transport',
-                'icon' => '🛡️',
+                'icon' => '<i class="fas fa-shield-alt"></i>',
                 'image_url' => 'https://images.unsplash.com/photo-1554224155-3a58922a22c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
                 'features' => [
                     'Couverture tous risques',
