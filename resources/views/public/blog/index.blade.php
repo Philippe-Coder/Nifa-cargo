@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.main')
 
 @section('title', 'Actualités & Blog - ' . config('app.name'))
 
@@ -84,9 +84,15 @@
                             <article class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
                                 <a href="{{ route('blog.show', $annonce->id) }}" class="block">
                                     <div class="h-48 overflow-hidden">
-                                        <img src="{{ $annonce->image ?? 'https://via.placeholder.com/800x500?text=' . urlencode($annonce->titre) }}"
-                                             alt="{{ $annonce->titre }}"
-                                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                        @if($annonce->image)
+                                            <img src="{{ asset('storage/' . $annonce->image) }}"
+                                                 alt="{{ $annonce->titre }}"
+                                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                        @else
+                                            <img src="https://via.placeholder.com/800x500?text={{ urlencode($annonce->titre) }}"
+                                                 alt="{{ $annonce->titre }}"
+                                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                        @endif
                                     </div>
                                     <div class="p-6">
                                         <div class="flex items-center text-sm text-gray-500 mb-3">

@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.main')
 
 @section('title', $article->titre . ' - ' . config('app.name'))
 
@@ -6,8 +6,8 @@
     <meta name="description" content="{{ Str::limit(strip_tags($article->contenu), 160) }}">
     <meta property="og:title" content="{{ $article->titre }} - {{ config('app.name') }}">
     <meta property="og:description" content="{{ Str::limit(strip_tags($article->contenu), 160) }}">
-    @if($article->image_url)
-    <meta property="og:image" content="{{ asset($article->image_url) }}">
+    @if($article->image)
+    <meta property="og:image" content="{{ asset('storage/' . $article->image) }}">
     @endif
     <meta property="og:type" content="article">
     <meta name="twitter:card" content="summary_large_image">
@@ -27,15 +27,18 @@
             
             <div class="flex items-center text-sm text-gray-500 mb-4">
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                    {{ ucfirst($article->categorie) }}
+                    {{ ucfirst($article->type) }}
                 </span>
                 <span class="mx-2">•</span>
-                <time datetime="{{ $article->date_publication->format('Y-m-d') }}">
-                    {{ $article->date_publication->format('d/m/Y') }}
+                @php
+                    $dateToShow = $article->date_publication ?? $article->created_at;
+                @endphp
+                <time datetime="{{ $dateToShow->format('Y-m-d') }}">
+                    {{ $dateToShow->format('d/m/Y') }}
                 </time>
-                @if($article->auteur)
+                @if($article->user)
                 <span class="mx-2">•</span>
-                <span>Par {{ $article->auteur->name }}</span>
+                <span>Par {{ $article->user->name }}</span>
                 @endif
             </div>
             
@@ -45,14 +48,11 @@
             <p class="text-xl text-gray-600 mb-6">{{ $article->sous_titre }}</p>
             @endif
             
-            @if($article->image_url)
-            <div class="rounded-xl overflow-hidden mb-8">
-                <img src="{{ $article->image_url }}" 
+            @if($article->image)
+            <div class="rounded-xl overflow-hidden mb-8 shadow-lg">
+                <img src="{{ asset('storage/' . $article->image) }}" 
                      alt="{{ $article->titre }}" 
-                     class="w-full h-auto rounded-lg">
-                @if($article->legende_image)
-                <p class="mt-2 text-sm text-gray-500 text-center">{{ $article->legende_image }}</p>
-                @endif
+                     class="w-full h-64 md:h-96 object-cover rounded-lg hover:scale-105 transition-transform duration-300">
             </div>
             @endif
         </div>
@@ -103,22 +103,16 @@
         </div>
 
         <!-- Auteur (optionnel) -->
-        @if($article->auteur)
+        @if($article->user)
         <div class="flex items-center bg-gray-50 rounded-lg p-6 mb-12">
             <div class="w-16 h-16 rounded-full bg-gray-200 overflow-hidden mr-4">
-                @if($article->auteur->profile_photo_path)
-                <img src="{{ $article->auteur->profile_photo_url }}" alt="{{ $article->auteur->name }}" class="w-full h-full object-cover">
-                @else
                 <div class="w-full h-full flex items-center justify-center bg-blue-600 text-white text-2xl font-bold">
-                    {{ substr($article->auteur->name, 0, 1) }}
+                    {{ substr($article->user->name, 0, 1) }}
                 </div>
-                @endif
             </div>
             <div>
-                <h3 class="font-bold text-lg text-gray-900">{{ $article->auteur->name }}</h3>
-                @if($article->auteur->profile_photo_path)
-                <p class="text-gray-600">{{ $article->auteur->profile_photo_path }}</p>
-                @endif
+                <h3 class="font-bold text-lg text-gray-900">{{ $article->user->name }}</h3>
+                <p class="text-gray-600">{{ __('Auteur') }}</p>
             </div>
         </div>
         @endif
@@ -147,7 +141,7 @@
                             {{ $article->titre }}
                         </h3>
                         <p class="text-sm text-gray-500">
-                            {{ $article->date_publication->format('d/m/Y') }}
+                            {{ ($article->date_publication ?? $article->created_at)->format('d/m/Y') }}
                         </p>
                     </div>
                 </a>
@@ -169,7 +163,7 @@
         @auth
         <!-- Formulaire de commentaire -->
         <div class="bg-gray-50 rounded-lg p-6 mb-8">
-            <form id="comment-form" action="{{ route('comments.store') }}" method="POST">
+            <form id="comment-form" action="{{ route('comments.store', $article->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="annonce_id" id="annonce-id" value="{{ $article->id }}">
                 <div class="mb-4">
@@ -225,7 +219,8 @@
         currentUser.dataset.user = JSON.stringify({
             id: {{ auth()->id() }},
             name: '{{ addslashes(auth()->user()->name) }}',
-            avatar_url: '{{ auth()->user()->avatar_url ?? '' }}'
+            avatar_url: '{{ auth()->user()->avatar_url ?? '' }}',
+            is_admin: {{ auth()->user()->isAdmin() ? 'true' : 'false' }}
         });
         document.body.appendChild(currentUser);
         @endauth
@@ -238,6 +233,135 @@
         });
     </script>
 @endpush
+
+<!-- Section des commentaires -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8">
+                <i class="fas fa-comments text-blue-600 mr-3"></i>
+                Commentaires ({{ $comments->count() }})
+            </h3>
+
+            <!-- Formulaire d'ajout de commentaire -->
+            <div class="border-b border-gray-200 pb-8 mb-8">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Laisser un commentaire</h4>
+                
+                @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <form method="POST" action="{{ route('comments.store', $article->id) }}" class="space-y-4">
+                    @csrf
+                    
+                    @guest
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="nom" class="block text-sm font-medium text-gray-700 mb-2">Nom *</label>
+                            <input type="text" 
+                                   id="nom" 
+                                   name="nom" 
+                                   value="{{ old('nom') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ old('email') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   required>
+                        </div>
+                    </div>
+                    @endguest
+
+                    <div>
+                        <label for="contenu" class="block text-sm font-medium text-gray-700 mb-2">Commentaire *</label>
+                        <textarea id="contenu" 
+                                  name="contenu" 
+                                  rows="4" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="Partagez votre opinion sur cet article..."
+                                  required>{{ old('contenu') }}</textarea>
+                    </div>
+
+                    <button type="submit" 
+                            class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Publier le commentaire
+                    </button>
+                </form>
+            </div>
+
+            <!-- Liste des commentaires -->
+            @if($comments->count() > 0)
+            <div class="space-y-6">
+                @foreach($comments as $comment)
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h5 class="font-semibold text-gray-900">{{ $comment->author_name }}</h5>
+                                <span class="text-gray-500 text-sm">{{ $comment->created_at->format('d/m/Y à H:i') }}</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed">{{ $comment->contenu }}</p>
+                            
+                            <!-- Réponses -->
+                            @if($comment->replies->count() > 0)
+                            <div class="mt-4 space-y-4">
+                                @foreach($comment->replies as $reply)
+                                <div class="bg-white rounded-lg p-4 ml-6 border-l-3 border-blue-600">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-user text-white text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow">
+                                            <div class="flex items-center space-x-2 mb-2">
+                                                <h6 class="font-medium text-gray-900">{{ $reply->author_name }}</h6>
+                                                <span class="text-gray-500 text-sm">{{ $reply->created_at->format('d/m/Y à H:i') }}</span>
+                                            </div>
+                                            <p class="text-gray-700">{{ $reply->contenu }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="text-center py-8">
+                <i class="fas fa-comments text-gray-400 text-4xl mb-4"></i>
+                <p class="text-gray-600">Soyez le premier à commenter cet article !</p>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
 
 <!-- CTA Section -->
 <section class="bg-blue-600 text-white py-16">

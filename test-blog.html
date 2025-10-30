@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Blog - NIF Cargo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto p-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">🚀 Test du système de blog et commentaires</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Liens de test :</h2>
+            <div class="space-y-3">
+                <div>
+                    <a href="http://127.0.0.1:8000/" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        Page d'accueil (sans restriction de date)
+                    </a>
+                </div>
+                
+                <div>
+                    <a href="http://127.0.0.1:8000/blog" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="fas fa-newspaper mr-2"></i>
+                        Blog/Actualités (toutes les dates)
+                    </a>
+                </div>
+                
+                <div>
+                    <a href="http://127.0.0.1:8000/galerie" class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="fas fa-images mr-2"></i>
+                        Galerie publique
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">✅ Modifications effectuées :</h2>
+            <ul class="space-y-2 text-gray-700">
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Restriction de date supprimée :</strong> Les actualités s'affichent maintenant peu importe leur date de publication</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Navigation unifiée :</strong> Toutes les pages (blog, galerie) utilisent maintenant le même header/footer</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Système de commentaires :</strong> Ajout d'un système complet de commentaires pour les articles de blog</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Commentaires invités :</strong> Les visiteurs non connectés peuvent maintenant commenter (avec modération)</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Liens de navigation :</strong> Galerie et Blog ajoutés au menu principal</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                    <span><strong>Correction des erreurs :</strong> Problèmes de date_publication et champs manquants corrigés</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-6 p-4 bg-blue-100 border border-blue-300 rounded-lg">
+            <h3 class="font-semibold text-blue-800 mb-2">🔧 Pour tester les commentaires :</h3>
+            <ol class="list-decimal list-inside text-blue-700 space-y-1">
+                <li>Allez sur la page Blog</li>
+                <li>Cliquez sur un article pour voir sa page détaillée</li>
+                <li>Descendez jusqu'à la section des commentaires</li>
+                <li>Testez en ajoutant un commentaire (avec ou sans connexion)</li>
+                <li>Les commentaires nécessitent une modération admin</li>
+            </ol>
+        </div>
+
+        <div class="mt-6 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+            <h3 class="font-semibold text-yellow-800 mb-2">⚠️ Notes importantes :</h3>
+            <ul class="list-disc list-inside text-yellow-700 space-y-1">
+                <li>Les commentaires sont soumis à modération (approuve = false par défaut)</li>
+                <li>Les administrateurs peuvent approuver/supprimer les commentaires</li>
+                <li>Le système supporte les réponses aux commentaires</li>
+                <li>Les utilisateurs connectés et invités peuvent commenter</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

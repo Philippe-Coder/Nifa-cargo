@@ -76,16 +76,22 @@
                 <!-- Menu principal -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('accueil') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('accueil') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
-                        🏠 Accueil
+                        🏠 {{ __('Accueil') }}
                     </a>
                     <a href="{{ route('services') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('services') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
-                        🚛 Services
+                        🚛 {{ __('Services') }}
+                    </a>
+                    <a href="{{ route('galerie.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('galerie.*') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
+                        📸 {{ __('Galerie') }}
+                    </a>
+                    <a href="{{ route('blog.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('blog.*') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
+                        📰 {{ __('Actualités') }}
                     </a>
                     <a href="{{ route('suivi.public') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('suivi.public') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
-                        📦 Suivi
+                        📦 {{ __('Suivi') }}
                     </a>
                     <a href="{{ route('contact') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium {{ request()->routeIs('contact') ? 'text-blue-600 border-b-2 border-blue-600' : '' }}">
-                        📞 Contact
+                        📞 {{ __('Contact') }}
                     </a>
                 </div>
 
@@ -124,16 +130,22 @@
         <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="{{ route('accueil') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
-                    🏠 Accueil
+                    🏠 {{ __('Accueil') }}
                 </a>
                 <a href="{{ route('services') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
-                    🚛 Services
+                    🚛 {{ __('Services') }}
+                </a>
+                <a href="{{ route('galerie.index') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
+                    📸 {{ __('Galerie') }}
+                </a>
+                <a href="{{ route('blog.index') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
+                    📰 {{ __('Actualités') }}
                 </a>
                 <a href="{{ route('suivi.public') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
-                    📦 Suivi
+                    📦 {{ __('Suivi') }}
                 </a>
                 <a href="{{ route('contact') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
-                    📞 Contact
+                    📞 {{ __('Contact') }}
                 </a>
             </div>
         </div>
@@ -186,11 +198,13 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Liens Utiles</h3>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="{{ route('suivi.public') }}" class="hover:text-white">Suivre un colis</a></li>
-                        <li><a href="{{ route('demande.create') }}" class="hover:text-white">Faire une demande</a></li>
-                        <li><a href="{{ route('apropos') }}" class="hover:text-white">ℹÀ propos</a></li>
-                        <li><a href="#" class="hover:text-white">Conditions générales</a></li>
-                        <li><a href="#" class="hover:text-white">Politique de confidentialité</a></li>
+                        <li><a href="{{ route('suivi.public') }}" class="hover:text-white">📦 {{ __('Suivre un colis') }}</a></li>
+                        <li><a href="{{ route('galerie.index') }}" class="hover:text-white">📸 {{ __('Galerie photos') }}</a></li>
+                        <li><a href="{{ route('blog.index') }}" class="hover:text-white">📰 {{ __('Actualités') }}</a></li>
+                        @auth<li><a href="{{ route('demande.create') }}" class="hover:text-white">📋 {{ __('Faire une demande') }}</a></li>@endauth
+                        <li><a href="{{ route('apropos') }}" class="hover:text-white">ℹ️ {{ __('À propos') }}</a></li>
+                        <li><a href="#" class="hover:text-white">📄 {{ __('Conditions générales') }}</a></li>
+                        <li><a href="#" class="hover:text-white">🔒 {{ __('Politique de confidentialité') }}</a></li>
                     </ul>
                 </div>
 

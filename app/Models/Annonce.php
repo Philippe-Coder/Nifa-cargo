@@ -16,6 +16,8 @@ class Annonce extends Model
         'epingle',
         'date_debut',
         'date_fin',
+        'date_publication',
+        'date_expiration',
         'user_id',
         'ordre'
     ];
@@ -25,6 +27,8 @@ class Annonce extends Model
         'epingle' => 'boolean',
         'date_debut' => 'date',
         'date_fin' => 'date',
+        'date_publication' => 'datetime',
+        'date_expiration' => 'datetime',
     ];
 
     // Types d'annonces disponibles
@@ -41,6 +45,22 @@ class Annonce extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relation avec les commentaires
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('approuve', true)->whereNull('parent_id')->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Relation avec tous les commentaires (pour l'admin)
+     */
+    public function allComments()
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
 
     /**

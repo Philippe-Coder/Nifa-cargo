@@ -26,9 +26,8 @@ class PublicController extends Controller
             'annees_experience' => 10 // Nombre fixe pour l'exemple
         ];
         
-        // Récupérer les annonces actives et valides
+        // Récupérer les annonces actives 
         $annonces = Annonce::active()
-            ->valide()
             ->ordered()
             ->take(5)
             ->get();
@@ -205,7 +204,7 @@ class PublicController extends Controller
     {
         $type = $request->get('type', 'all');
 
-        $query = Annonce::active()->valide()->ordered();
+        $query = Annonce::active()->ordered();
 
         // Filtrer par type si spécifié
         if ($type !== 'all') {
@@ -224,19 +223,20 @@ class PublicController extends Controller
     {
         $article = Annonce::where('id', $id)
             ->active()
-            ->valide()
             ->firstOrFail();
 
         // Articles similaires (même type, limité à 3)
-        $articlesSimilaires = Annonce::where('id', '!=', $article->id)
+        $articlesSimilaires = Annonce::where('id', '!=', $id)
             ->where('type', $article->type)
             ->active()
-            ->valide()
             ->ordered()
             ->take(3)
             ->get();
 
-        return view('public.blog.show', compact('article', 'articlesSimilaires'));
+        // Récupérer les commentaires approuvés pour cet article
+        $comments = $article->comments()->with(['user', 'replies.user'])->get();
+
+        return view('public.blog.show', compact('article', 'articlesSimilaires', 'comments'));
     }
 
     /**

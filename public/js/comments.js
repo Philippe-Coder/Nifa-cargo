@@ -182,44 +182,38 @@ class CommentSystem {
         commentElement.className = 'comment mb-4';
         commentElement.id = `comment-${comment.id}`;
         
-        const userAvatar = comment.user.avatar_url || '/images/default-avatar.png';
+        const userAvatar = comment.author_name ? '/images/default-avatar.png' : (comment.user?.avatar_url || '/images/default-avatar.png');
         const isCurrentUser = this.currentUser && this.currentUser.id === comment.user_id;
+        const isAdmin = this.currentUser && this.currentUser.is_admin;
+        const authorName = comment.author_name || comment.user?.name || 'Anonyme';
         
         commentElement.innerHTML = `
-            <div class="d-flex">
-                <div class="flex-shrink-0 me-3">
-                    <img src="${userAvatar}" alt="${comment.user.name}" class="rounded-circle" width="50" height="50">
-                </div>
-                <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0 fw-bold">${comment.user.name}</h6>
-                        <small class="text-muted">${new Date(comment.created_at).toLocaleString()}</small>
+            <div class="flex items-start space-x-3 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-medium text-gray-700">${authorName.charAt(0).toUpperCase()}</span>
                     </div>
-                    <p class="comment-content mb-2">${this.escapeHtml(comment.content)}</p>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-sm font-medium text-gray-900">${authorName}</h4>
+                        <time class="text-xs text-gray-500">${new Date(comment.created_at).toLocaleString('fr-FR')}</time>
+                    </div>
+                    <p class="comment-content text-sm text-gray-700 mb-3">${this.escapeHtml(comment.contenu)}</p>
                     
-                    <div class="comment-actions d-flex align-items-center">
-                        <button class="btn btn-sm btn-link text-decoration-none like-comment ${comment.is_liked ? 'liked' : ''}" 
+                    <div class="comment-actions flex items-center space-x-4">
+                        <button class="reply-button text-xs text-blue-600 hover:text-blue-800" 
                                 data-comment-id="${comment.id}">
-                            <i class="far fa-thumbs-up"></i>
-                            <span class="like-count">${comment.likes_count || 0}</span>
+                            Répondre
                         </button>
                         
-                        <button class="btn btn-sm btn-link text-decoration-none reply-button" 
-                                data-comment-id="${comment.id}">
-                            <i class="far fa-comment"></i> Répondre
-                        </button>
-                        
-                        ${isCurrentUser ? `
-                            <button class="btn btn-sm btn-link text-decoration-none edit-comment" 
+                        ${(isCurrentUser || isAdmin) ? `
+                            <button class="delete-comment text-xs text-red-600 hover:text-red-800" 
                                     data-comment-id="${comment.id}">
-                                <i class="far fa-edit"></i> Modifier
-                            </button>
-                            <button class="btn btn-sm btn-link text-danger text-decoration-none delete-comment" 
-                                    data-comment-id="${comment.id}">
-                                <i class="far fa-trash-alt"></i> Supprimer
+                                Supprimer
                             </button>
                         ` : ''}
-                    </div>
+                    </div>`
                     
                     <div class="reply-form mt-3" id="reply-form-${comment.id}" style="display: none;">
                         <form class="comment-form" action="/comments" method="POST">
@@ -334,6 +328,51 @@ class CommentSystem {
         }
     }
     
+    async loadComments(annonceId) {
+        try {
+            const response = await fetch(`/blog/${annonceId}/comments`);
+            const data = await response.json();
+            
+            if (data.success) {
+                this.renderComments(data.comments);
+            }
+        } catch (error) {
+            console.error('Erreur lors du chargement des commentaires:', error);
+        }
+    }
+    
+    renderComments(comments) {
+        const commentList = document.getElementById('comment-list');
+        if (!commentList) return;
+        
+        // Vider le conteneur
+        commentList.innerHTML = '';
+        
+        if (comments.length === 0) {
+            commentList.innerHTML = `
+                <div class="text-center py-8">
+                    <p class="text-gray-500">Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Afficher chaque commentaire
+        comments.forEach(comment => {
+            const commentElement = this.createCommentElement(comment);
+            commentList.appendChild(commentElement);
+            
+            // Afficher les réponses si elles existent
+            if (comment.replies && comment.replies.length > 0) {
+                const repliesContainer = commentElement.querySelector('.comment-replies');
+                comment.replies.forEach(reply => {
+                    const replyElement = this.createCommentElement(reply);
+                    repliesContainer.appendChild(replyElement);
+                });
+            }
+        });
+    }
+
     escapeHtml(unsafe) {
         return unsafe
             .replace(/&/g, "&amp;")

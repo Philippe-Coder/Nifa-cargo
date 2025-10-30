@@ -143,7 +143,11 @@
                     </a>
                     <a href="{{ route('blog.index') }}" 
                         class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('blog.*') ? 'active text-gray-900' : '' }}">
-                            {{ __('Galerie') }}
+                            {{ __('Actualités') }}
+                    </a>
+                    <a href="{{ route('galerie.index') }}" 
+                       class="nav-link px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-all duration-300 rounded-lg {{ request()->routeIs('galerie.*') ? 'active text-gray-900' : '' }}">
+                        {{ __('Galerie') }}
                     </a>
                 </nav>
                 
@@ -288,8 +292,13 @@
                     <a href="{{ route('blog.index') }}" 
    class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('blog.*') ? 'text-gray-900 bg-gray-50' : '' }}">
     <i class="fas fa-newspaper mr-3 w-5 text-center text-gray-500"></i>
-    {{ __('Galerie') }}
+    {{ __('Actualités') }}
 </a>
+                    <a href="{{ route('galerie.index') }}" 
+                       class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300 {{ request()->routeIs('galerie.*') ? 'text-gray-900 bg-gray-50' : '' }}">
+                        <i class="fas fa-images mr-3 w-5 text-center text-gray-500"></i>
+                        {{ __('Galerie') }}
+                    </a>
                     <a href="{{ route('suivi.public') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300">
                         <i class="fas fa-search mr-3 w-5 text-center text-gray-500"></i>

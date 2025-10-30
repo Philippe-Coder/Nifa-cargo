@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images de Services Mises à Jour</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-7xl mx-auto p-6">
+        <h1 class="text-4xl font-bold text-center mb-8">✅ Images de Services Mises à Jour</h1>
+        
+        <!-- Résumé des changements -->
+        <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-green-800 mb-4">🎯 Changements Effectués</h2>
+            <p class="text-green-700 mb-4">Toutes les images Unsplash ont été remplacées par vos images personnalisées :</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                    <h3 class="font-semibold text-green-800">🚢 Images Remplacées :</h3>
+                    <ul class="space-y-2 text-sm text-green-700">
+                        <li>• Transport Maritime → <code>Transport Maritime.jpg</code></li>
+                        <li>• Transport Aérien → <code>Transport Aérien.jpg</code></li>
+                        <li>• Transport Terrestre → <code>Transport Terrestre.jpg</code></li>
+                        <li>• Entreposage → <code>Entreposage.jpg</code></li>
+                        <li>• Assurance → <code>Assurance.jpg</code></li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-3">
+                    <h3 class="font-semibold text-green-800">📂 Fichiers Modifiés :</h3>
+                    <ul class="space-y-2 text-sm text-green-700">
+                        <li>• <code>resources/views/public/services.blade.php</code></li>
+                        <li>• <code>resources/views/public/accueil.blade.php</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aperçu des images -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">🖼️ Aperçu de Vos Images</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="text-center">
+                    <img src="http://127.0.0.1:8000/images/Transport Maritime.jpg" 
+                         alt="Transport Maritime" 
+                         class="w-full h-24 object-cover rounded-lg shadow-md mb-2">
+                    <p class="text-xs text-gray-600">Transport Maritime</p>
+                </div>
+                <div class="text-center">
+                    <img src="http://127.0.0.1:8000/images/Transport Aérien.jpg" 
+                         alt="Transport Aérien" 
+                         class="w-full h-24 object-cover rounded-lg shadow-md mb-2">
+                    <p class="text-xs text-gray-600">Transport Aérien</p>
+                </div>
+                <div class="text-center">
+                    <img src="http://127.0.0.1:8000/images/Transport Terrestre.jpg" 
+                         alt="Transport Terrestre" 
+                         class="w-full h-24 object-cover rounded-lg shadow-md mb-2">
+                    <p class="text-xs text-gray-600">Transport Terrestre</p>
+                </div>
+                <div class="text-center">
+                    <img src="http://127.0.0.1:8000/images/Entreposage.jpg" 
+                         alt="Entreposage" 
+                         class="w-full h-24 object-cover rounded-lg shadow-md mb-2">
+                    <p class="text-xs text-gray-600">Entreposage</p>
+                </div>
+                <div class="text-center">
+                    <img src="http://127.0.0.1:8000/images/Assurance.jpg" 
+                         alt="Assurance" 
+                         class="w-full h-24 object-cover rounded-lg shadow-md mb-2">
+                    <p class="text-xs text-gray-600">Assurance</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparaison avant/après -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Avant -->
+            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                <h3 class="text-xl font-bold text-red-800 mb-4">❌ AVANT</h3>
+                <div class="space-y-3">
+                    <p class="text-red-700">Images externes (Unsplash) :</p>
+                    <code class="block bg-red-100 p-2 rounded text-xs break-all">
+                        https://images.unsplash.com/photo-1589001015195-3cfc13e81f8c...
+                    </code>
+                    <ul class="text-sm text-red-700 space-y-1">
+                        <li>• Dépendance externe</li>
+                        <li>• Chargement plus lent</li>
+                        <li>• Images génériques</li>
+                        <li>• Risque de non-disponibilité</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Après -->
+            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                <h3 class="text-xl font-bold text-green-800 mb-4">✅ APRÈS</h3>
+                <div class="space-y-3">
+                    <p class="text-green-700">Images locales personnalisées :</p>
+                    <code class="block bg-green-100 p-2 rounded text-xs">
+                        asset('images/Transport Maritime.jpg')
+                    </code>
+                    <ul class="text-sm text-green-700 space-y-1">
+                        <li>• Images hébergées localement</li>
+                        <li>• Chargement plus rapide</li>
+                        <li>• Images spécifiques à votre entreprise</li>
+                        <li>• Contrôle total sur les images</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions à tester -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 class="text-xl font-bold text-blue-800 mb-4">🚀 Pages à Tester</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="http://127.0.0.1:8000/" 
+                   target="_blank"
+                   class="block p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center transition-colors">
+                    🏠 Tester la Page d'Accueil
+                    <p class="text-sm text-blue-100 mt-1">Section services avec nouvelles images</p>
+                </a>
+                <a href="http://127.0.0.1:8000/services" 
+                   target="_blank"
+                   class="block p-4 bg-green-600 text-white rounded-lg hover:bg-green-700 text-center transition-colors">
+                    🛠️ Tester la Page Services
+                    <p class="text-sm text-green-100 mt-1">Galerie de services complète</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

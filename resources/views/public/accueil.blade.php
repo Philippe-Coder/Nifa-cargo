@@ -50,75 +50,71 @@
                     <div class="slide-content active" data-slide="1">
                         <div class="inline-flex items-center bg-blue-600 text-white rounded-full px-4 py-2 mb-6">
                             <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
-                            <span class="text-sm font-medium">Transport Maritime</span>
+                            <span class="text-sm font-medium">{{ __('Transport Maritime') }}</span>
                         </div>
                     </div>
                     <div class="slide-content" data-slide="2">
                         <div class="inline-flex items-center bg-red-600 text-white rounded-full px-4 py-2 mb-6">
                             <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
-                            <span class="text-sm font-medium">Transport Aérien Express</span>
+                            <span class="text-sm font-medium">{{ __('Transport Aérien Express') }}</span>
                         </div>
                     </div>
                     <div class="slide-content" data-slide="3">
                         <div class="inline-flex items-center bg-green-600 text-white rounded-full px-4 py-2 mb-6">
                             <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
-                            <span class="text-sm font-medium">Solutions Logistiques</span>
+                            <span class="text-sm font-medium">{{ __('Solutions Logistiques') }}</span>
                         </div>
                     </div>
                     <div class="slide-content" data-slide="4">
                         <div class="inline-flex items-center bg-purple-600 text-white rounded-full px-4 py-2 mb-6">
                             <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
-                            <span class="text-sm font-medium">Réseau International</span>
+                            <span class="text-sm font-medium">{{ __('Réseau International') }}</span>
                         </div>
                     </div>
                     
                     <!-- Titre dynamique -->
                     <div class="slide-content active" data-slide="1">
                         <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-                            Transport <span class="text-blue-400">Maritime</span> 
-                            vers l'Afrique
+                            {{ __('Transport Maritime') }} <span class="text-blue-400">{{ __('vers l\'Afrique') }}</span>
                         </h1>
                         <p class="text-xl text-slate-200 mb-8 leading-relaxed">
-                            Conteneurs et groupage avec dédouanement inclus. Solutions fiables pour vos échanges commerciaux.
+                            {{ __('Conteneurs et groupage avec dédouanement inclus. Solutions fiables pour vos échanges commerciaux.') }}
                         </p>
                     </div>
                     <div class="slide-content" data-slide="2">
                         <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-                            Transport <span class="text-red-400">Aérien</span> 
-                            Express
+                            {{ __('Transport Aérien Express') }} <span class="text-red-400"></span>
                         </h1>
                         <p class="text-xl text-slate-200 mb-8 leading-relaxed">
-                            Livraison urgente 24-48h pour marchandises sensibles. Rapidité et sécurité garanties.
+                            {{ __('Livraison urgente 24-48h pour marchandises sensibles. Rapidité et sécurité garanties.') }}
                         </p>
                     </div>
                     <div class="slide-content" data-slide="3">
                         <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-                            Solutions <span class="text-green-400">Logistiques</span> 
-                            Complètes
+                            {{ __('Solutions Logistiques') }} <span class="text-green-400">{{ __('Complètes') }}</span>
                         </h1>
                         <p class="text-xl text-slate-200 mb-8 leading-relaxed">
-                            De l'emballage à la livraison finale. Une gestion intégrée de votre supply chain.
+                            {{ __('De l\'emballage à la livraison finale. Une gestion intégrée de votre supply chain.') }}
                         </p>
                     </div>
                     <div class="slide-content" data-slide="4">
                         <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-                            Réseau <span class="text-purple-400">International</span> 
-                            en Afrique
+                            {{ __('Réseau International') }} <span class="text-purple-400">{{ __('en Afrique') }}</span>
                         </h1>
                         <p class="text-xl text-slate-200 mb-8 leading-relaxed">
-                            Présents dans 15+ pays avec des partenaires locaux de confiance. Votre pont vers l'Afrique.
+                            {{ __('Présents dans 15+ pays avec des partenaires locaux de confiance. Votre pont vers l\'Afrique.') }}
                         </p>
                     </div>
                     
                     <!-- Boutons CTA -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-8">
-                        <a href="{{ route('demande.create') }}" 
+                        <a href="{{ route('demande.create') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" 
                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center justify-center transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-box mr-3"></i> Faire une demande
+                            <i class="fas fa-box mr-3"></i> {{ __('Faire une demande') }}
                         </a>
-                        <a href="{{ route('suivi.public') }}" 
+                        <a href="{{ route('suivi.public') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" 
                            class="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center justify-center transition-all duration-300 border border-white/20">
-                            <i class="fas fa-search mr-3"></i> Suivre un colis
+                            <i class="fas fa-search mr-3"></i> {{ __('Suivre un colis') }}
                         </a>
                     </div>
                     
@@ -126,15 +122,15 @@
                     <div class="flex flex-wrap gap-6 text-slate-200">
                         <div class="flex items-center">
                             <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
-                            <span>Sécurité garantie</span>
+                            <span>{{ __('Sécurité garantie') }}</span>
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-clock text-blue-400 mr-2"></i>
-                            <span>Livraison rapide</span>
+                            <span>{{ __('Livraison rapide') }}</span>
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-headset text-blue-400 mr-2"></i>
-                            <span>Support 24/7</span>
+                            <span>{{ __('Support 24/7') }}</span>
                         </div>
                     </div>
                 </div>
@@ -144,19 +140,19 @@
                     <div class="grid grid-cols-2 gap-6">
                         <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm border border-white/10">
                             <div class="text-3xl font-bold mb-2 text-white">{{ number_format($stats['demandes_traitees']) }}+</div>
-                            <div class="text-sm text-slate-300">Demandes traitées</div>
+                            <div class="text-sm text-slate-300">{{ __('Demandes traitées') }}</div>
                         </div>
                         <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm border border-white/10">
                             <div class="text-3xl font-bold mb-2 text-white">{{ $stats['clients_satisfaits'] }}%</div>
-                            <div class="text-sm text-slate-300">Clients satisfaits</div>
+                            <div class="text-sm text-slate-300">{{ __('Clients satisfaits') }}</div>
                         </div>
                         <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm border border-white/10">
                             <div class="text-3xl font-bold mb-2 text-white">{{ $stats['pays_desservis'] }}+</div>
-                            <div class="text-sm text-slate-300">Pays desservis</div>
+                            <div class="text-sm text-slate-300">{{ __('Pays desservis') }}</div>
                         </div>
                         <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm border border-white/10">
                             <div class="text-3xl font-bold mb-2 text-white">{{ $stats['annees_experience'] }}+</div>
-                            <div class="text-sm text-slate-300">Années d'expérience</div>
+                            <div class="text-sm text-slate-300">{{ __('Années d\'expérience') }}</div>
                         </div>
                     </div>
                 </div>
@@ -189,13 +185,13 @@
         <div class="text-center mb-16">
             <div class="inline-flex items-center bg-blue-600 text-white rounded-full px-4 py-2 mb-4">
                 <i class="fas fa-bullhorn mr-2"></i>
-                <span class="font-semibold">Actualités & Annonces</span>
+                <span class="font-semibold">{{ __('Actualités & Annonces') }}</span>
             </div>
             <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                Restez <span class="text-blue-600">informé</span>
+                {{ __('Restez') }} <span class="text-blue-600">{{ __('informé') }}</span>
             </h2>
             <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-                Découvrez nos dernières nouvelles, promotions et actualités importantes
+                {{ __('Découvrez nos dernières nouvelles, promotions et actualités importantes') }}
             </p>
         </div>
         
@@ -257,15 +253,15 @@
                         <div class="flex justify-between items-center">
                             <button onclick="showAnnonceModal({{ $annonce->id }})" 
                                     class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors inline-flex items-center group">
-                                <span>Lire la suite</span>
+                                <span>{{ __('Lire la suite') }}</span>
                                 <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                             </button>
                             
                             @if($annonce->type == 'promotion')
-                                <a href="{{ route('demande.create') }}" 
+                                <a href="{{ route('demande.create') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" 
                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-xs font-medium transition-all transform hover:scale-105">
                                     <i class="fas fa-gift mr-1"></i>
-                                    Profiter
+                                    {{ __('Profiter') }}
                                 </a>
                             @endif
                         </div>
@@ -283,20 +279,20 @@
         <div class="text-center mb-16">
             <div class="inline-flex items-center bg-blue-600 text-white rounded-full px-4 py-2 mb-4">
                 <i class="fas fa-shipping-fast mr-2"></i>
-                <span class="font-semibold">Nos Services</span>
+                <span class="font-semibold">{{ __('Nos Services') }}</span>
             </div>
             <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                Solutions <span class="text-blue-600">complètes</span>
+                {{ __('Solutions') }} <span class="text-blue-600">{{ __('complètes') }}</span>
             </h2>
             <p class="text-xl text-slate-600 max-w-3xl mx-auto">
-                Des services de transport adaptés à tous vos besoins logistiques en Afrique et au-delà
+                {{ __('Des services de transport adaptés à tous vos besoins logistiques en Afrique et au-delà') }}
             </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Transport Maritime -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1561715276-a2d087060f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Maritime.jpg') }}')">
                     <div class="absolute inset-0 bg-blue-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-blue-600 text-xl shadow-lg">
@@ -306,26 +302,26 @@
                 </div>
                 
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Transport Maritime</h3>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">{{ __('Transport Maritime') }}</h3>
                     <p class="text-slate-600 mb-6 leading-relaxed">
-                        Conteneurs et groupage vers l'Afrique et l'Europe avec dédouanement complet
+                        {{ __('Conteneurs et groupage vers l\'Afrique et l\'Europe avec dédouanement complet') }}
                     </p>
                     <ul class="text-sm text-slate-600 space-y-3 mb-6">
                         <li class="flex items-center">
                             <i class="fas fa-check text-blue-600 mr-3"></i>
-                            Conteneurs 20 et 40 pieds
+                            {{ __('Conteneurs 20 et 40 pieds') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-blue-600 mr-3"></i>
-                            Groupage LCL
+                            {{ __('Groupage LCL') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-blue-600 mr-3"></i>
-                            Dédouanement inclus
+                            {{ __('Dédouanement inclus') }}
                         </li>
                     </ul>
-                    <a href="{{ route('services') }}" class="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center transition-colors group">
-                        <span>En savoir plus</span>
+                    <a href="{{ route('services') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" class="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center transition-colors group">
+                        <span>{{ __('En savoir plus') }}</span>
                         <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -333,7 +329,7 @@
 
             <!-- Transport Aérien -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Aérien.jpg') }}')">
                     <div class="absolute inset-0 bg-red-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-red-600 text-xl shadow-lg">
@@ -343,26 +339,26 @@
                 </div>
                 
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Transport Aérien</h3>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">{{ __('Transport Aérien') }}</h3>
                     <p class="text-slate-600 mb-6 leading-relaxed">
-                        Livraison express pour vos marchandises urgentes et fragiles
+                        {{ __('Livraison express pour vos marchandises urgentes et fragiles') }}
                     </p>
                     <ul class="text-sm text-slate-600 space-y-3 mb-6">
                         <li class="flex items-center">
                             <i class="fas fa-check text-red-600 mr-3"></i>
-                            Livraison 24-48h
+                            {{ __('Livraison 24-48h') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-red-600 mr-3"></i>
-                            Marchandises fragiles
+                            {{ __('Marchandises fragiles') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-red-600 mr-3"></i>
-                            Réseau mondial
+                            {{ __('Réseau mondial') }}
                         </li>
                     </ul>
-                    <a href="{{ route('services') }}" class="text-red-600 font-medium hover:text-red-800 inline-flex items-center transition-colors group">
-                        <span>En savoir plus</span>
+                    <a href="{{ route('services') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" class="text-red-600 font-medium hover:text-red-800 inline-flex items-center transition-colors group">
+                        <span>{{ __('En savoir plus') }}</span>
                         <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -370,7 +366,7 @@
 
             <!-- Transport Terrestre -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Terrestre.jpg') }}')">
                     <div class="absolute inset-0 bg-indigo-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-indigo-600 text-xl shadow-lg">
@@ -380,26 +376,26 @@
                 </div>
                 
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Transport Terrestre</h3>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">{{ __('Transport Terrestre') }}</h3>
                     <p class="text-slate-600 mb-6 leading-relaxed">
-                        Flotte moderne pour le transport routier en Afrique de l'Ouest
+                        {{ __('Flotte moderne pour le transport routier en Afrique de l\'Ouest') }}
                     </p>
                     <ul class="text-sm text-slate-600 space-y-3 mb-6">
                         <li class="flex items-center">
                             <i class="fas fa-check text-indigo-600 mr-3"></i>
-                            Camions réfrigérés
+                            {{ __('Camions réfrigérés') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-indigo-600 mr-3"></i>
-                            Transport véhicules
+                            {{ __('Transport véhicules') }}
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-indigo-600 mr-3"></i>
-                            Livraison domicile
+                            {{ __('Livraison domicile') }}
                         </li>
                     </ul>
-                    <a href="{{ route('services') }}" class="text-indigo-600 font-medium hover:text-indigo-800 inline-flex items-center transition-colors group">
-                        <span>En savoir plus</span>
+                    <a href="{{ route('services') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" class="text-indigo-600 font-medium hover:text-indigo-800 inline-flex items-center transition-colors group">
+                        <span>{{ __('En savoir plus') }}</span>
                         <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -414,13 +410,13 @@
         <div class="text-center mb-16">
             <div class="inline-flex items-center bg-blue-600 text-white rounded-full px-4 py-2 mb-4">
                 <i class="fas fa-cogs mr-2"></i>
-                <span class="font-semibold">Notre Processus</span>
+                <span class="font-semibold">{{ __('Notre Processus') }}</span>
             </div>
             <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                Votre envoi en <span class="text-blue-600">4 étapes simples</span>
+                {{ __('Votre envoi en') }} <span class="text-blue-600">{{ __('4 étapes simples') }}</span>
             </h2>
             <p class="text-xl text-slate-600">
-                Un processus transparent et professionnel du début à la fin
+                {{ __('Un processus transparent et professionnel du début à la fin') }}
             </p>
         </div>
 
@@ -434,26 +430,26 @@
                     $steps = [
                         [
                             'icon' => 'file-alt', 
-                            'title' => 'Demande en ligne', 
-                            'desc' => 'Remplissez notre formulaire en ligne avec les détails de votre envoi',
+                            'title' => __('Demande en ligne'), 
+                            'desc' => __('Remplissez notre formulaire en ligne avec les détails de votre envoi'),
                             'position' => 'left'
                         ],
                         [
                             'icon' => 'calculator', 
-                            'title' => 'Devis personnalisé', 
-                            'desc' => 'Recevez votre devis personnalisé sous 24h avec options de paiement',
+                            'title' => __('Devis personnalisé'), 
+                            'desc' => __('Recevez votre devis personnalisé sous 24h avec options de paiement'),
                             'position' => 'right'
                         ],
                         [
                             'icon' => 'shipping-fast', 
-                            'title' => 'Transport sécurisé', 
-                            'desc' => 'Nous organisons l\'enlèvement et le transport de vos marchandises',
+                            'title' => __('Transport sécurisé'), 
+                            'desc' => __('Nous organisons l\'enlèvement et le transport de vos marchandises'),
                             'position' => 'left'
                         ],
                         [
                             'icon' => 'box-open', 
-                            'title' => 'Livraison finale', 
-                            'desc' => 'Suivez votre colis en temps réel jusqu\'à la livraison finale',
+                            'title' => __('Livraison finale'), 
+                            'desc' => __('Suivez votre colis en temps réel jusqu\'à la livraison finale'),
                             'position' => 'right'
                         ]
                     ];
@@ -490,9 +486,9 @@
 
         <!-- Appel à l'action processus -->
         <div class="text-center mt-16">
-            <a href="{{ route('demande.create') }}" class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-lg transition-all transform hover:scale-105">
+            <a href="{{ route('demande.create') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-lg transition-all transform hover:scale-105">
                 <i class="fas fa-play-circle mr-3"></i>
-                Démarrer mon envoi
+                {{ __('Démarrer mon envoi') }}
             </a>
         </div>
     </div>
@@ -505,13 +501,13 @@
         <div class="text-center mb-16">
             <div class="inline-flex items-center bg-blue-600 text-white rounded-full px-4 py-2 mb-4">
                 <i class="fas fa-images mr-2"></i>
-                <span class="font-semibold">Galerie</span>
+                <span class="font-semibold">{{ __('Galerie') }}</span>
             </div>
             <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                Notre <span class="text-blue-600">univers</span>
+                {{ __('Notre') }} <span class="text-blue-600">{{ __('univers') }}</span>
             </h2>
             <p class="text-xl text-slate-600">
-                Découvrez nos activités, nos équipes et nos réalisations en images
+                {{ __('Découvrez nos activités, nos équipes et nos réalisations en images') }}
             </p>
         </div>
         
@@ -540,9 +536,9 @@
         </div>
         
         <div class="text-center mt-12">
-            <a href="{{ route('galerie.index') }}" class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all transform hover:scale-105">
+            <a href="{{ route('galerie.index') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all transform hover:scale-105">
                 <i class="fas fa-images mr-3"></i>
-                Explorer la galerie complète
+                {{ __('Explorer la galerie complète') }}
             </a>
         </div>
     </div>
@@ -556,20 +552,20 @@
             <div>
                 <div class="inline-flex items-center bg-blue-500 text-white rounded-full px-4 py-2 mb-6">
                     <i class="fas fa-trophy mr-2"></i>
-                    <span class="font-semibold">Pourquoi nous choisir</span>
+                    <span class="font-semibold">{{ __('Pourquoi nous choisir') }}</span>
                 </div>
                 
                 <h2 class="text-3xl lg:text-4xl font-bold mb-8">
-                    L'excellence <span class="text-blue-400">logistique</span>
+                    {{ __('L\'excellence') }} <span class="text-blue-400">{{ __('logistique') }}</span>
                 </h2>
                 
                 <div class="space-y-6">
                     @php
                         $advantages = [
-                            ['icon' => 'shield-alt', 'title' => 'Sécurité garantie', 'desc' => 'Assurance tous risques et emballage professionnel pour protéger vos marchandises'],
-                            ['icon' => 'map-marker-alt', 'title' => 'Suivi en temps réel', 'desc' => 'Notifications SMS et email à chaque étape du transport'],
-                            ['icon' => 'clock', 'title' => 'Service rapide', 'desc' => 'Délais respectés et service client réactif 7j/7'],
-                            ['icon' => 'euro-sign', 'title' => 'Prix compétitifs', 'desc' => 'Tarifs transparents sans frais cachés et options de paiement flexibles']
+                            ['icon' => 'shield-alt', 'title' => __('Sécurité garantie'), 'desc' => __('Assurance tous risques et emballage professionnel pour protéger vos marchandises')],
+                            ['icon' => 'map-marker-alt', 'title' => __('Suivi en temps réel'), 'desc' => __('Notifications SMS et email à chaque étape du transport')],
+                            ['icon' => 'clock', 'title' => __('Service rapide'), 'desc' => __('Délais respectés et service client réactif 7j/7')],
+                            ['icon' => 'euro-sign', 'title' => __('Prix compétitifs'), 'desc' => __('Tarifs transparents sans frais cachés et options de paiement flexibles')]
                         ];
                     @endphp
 
@@ -593,21 +589,21 @@
                     <div class="text-6xl mb-4 text-blue-400">
                         <i class="fas fa-globe-africa"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">Réseau International</h3>
+                    <h3 class="text-2xl font-bold mb-2">{{ __('Réseau International') }}</h3>
                     <p class="text-slate-300">
-                        Présent dans plus de 15 pays avec des partenaires de confiance
+                        {{ __('Présent dans plus de 15 pays avec des partenaires de confiance') }}
                     </p>
                 </div>
                 
                 <div class="grid grid-cols-3 gap-4">
                     @php
                         $countries = [
-                            ['flag' => '🇹🇬', 'name' => 'Togo', 'desc' => 'Siège social'],
-                            ['flag' => '🇧🇯', 'name' => 'Bénin', 'desc' => 'Agence'],
-                            ['flag' => '🇫🇷', 'name' => 'France', 'desc' => 'Partenaire'],
-                            ['flag' => '🇨🇮', 'name' => 'Côte d\'Ivoire', 'desc' => 'Agence'],
-                            ['flag' => '🇬🇭', 'name' => 'Ghana', 'desc' => 'Partenaire'],
-                            ['flag' => '🇳🇬', 'name' => 'Nigeria', 'desc' => 'Agence']
+                            ['flag' => '🇹🇬', 'name' => 'Togo', 'desc' => __('Siège social')],
+                            ['flag' => '🇧🇯', 'name' => 'Bénin', 'desc' => __('Agence')],
+                            ['flag' => '🇫🇷', 'name' => 'France', 'desc' => __('Partenaire')],
+                            ['flag' => '🇨🇮', 'name' => 'Côte d\'Ivoire', 'desc' => __('Agence')],
+                            ['flag' => '🇬🇭', 'name' => 'Ghana', 'desc' => __('Partenaire')],
+                            ['flag' => '🇳🇬', 'name' => 'Nigeria', 'desc' => __('Agence')]
                         ];
                     @endphp
 
@@ -628,19 +624,19 @@
 <section class="py-20 bg-blue-600 text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl lg:text-4xl font-bold mb-6">
-            Prêt à expédier vos marchandises ?
+            {{ __('Prêt à expédier vos marchandises ?') }}
         </h2>
         <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Obtenez un devis gratuit personnalisé en moins de 2 minutes
+            {{ __('Obtenez un devis gratuit personnalisé en moins de 2 minutes') }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('demande.create') }}" 
+            <a href="{{ route('demande.create') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" 
                class="bg-white text-blue-600 hover:bg-slate-100 px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center justify-center transition-all duration-300 transform hover:scale-105">
-                <i class="fas fa-box mr-3"></i> Demander un devis gratuit
+                <i class="fas fa-box mr-3"></i> {{ __('Demander un devis gratuit') }}
             </a>
-            <a href="{{ route('contact') }}" 
+            <a href="{{ route('contact') }}{{ app()->getLocale() != 'fr' ? '?locale=' . app()->getLocale() : '' }}" 
                class="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center justify-center transition-all duration-300">
-                <i class="fas fa-phone mr-3"></i> Nous contacter
+                <i class="fas fa-phone mr-3"></i> {{ __('Nous contacter') }}
             </a>
         </div>
         
@@ -648,15 +644,15 @@
         <div class="flex flex-wrap justify-center gap-6 mt-12 text-blue-100">
             <div class="flex items-center">
                 <i class="fas fa-lock mr-2"></i>
-                <span>100% Sécurisé</span>
+                <span>{{ __('100% Sécurisé') }}</span>
             </div>
             <div class="flex items-center">
                 <i class="fas fa-clock mr-2"></i>
-                <span>Réponse sous 24h</span>
+                <span>{{ __('Réponse sous 24h') }}</span>
             </div>
             <div class="flex items-center">
                 <i class="fas fa-star mr-2"></i>
-                <span>Service Premium</span>
+                <span>{{ __('Service Premium') }}</span>
             </div>
         </div>
     </div>

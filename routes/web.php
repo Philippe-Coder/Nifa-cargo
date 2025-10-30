@@ -19,6 +19,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestNotificationController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Public\GaleriePubliqueController;
 
 // Route pour changer de langue
 Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
@@ -32,12 +33,17 @@ Route::get('/test-translation-url', function () {
     return view('test-translation-url');
 })->name('test.translation.url');
 
+Route::get('/test-simple', function () {
+    return view('test-simple-translation');
+})->name('test.simple');
+
 Route::get('/api/test-locale', [App\Http\Controllers\TestController::class, 'testLocale']);
 Route::get('/api/set-locale/{locale}', [App\Http\Controllers\TestController::class, 'setTestLocale']);
 
-// Routes de la galerie
-Route::get('/galerie', [GalerieController::class, 'index'])->name('galerie.index');
-Route::get('/galerie/{galerie}', [GalerieController::class, 'show'])->name('galerie.show');
+// Routes publiques de la galerie
+Route::get('/galerie', [GaleriePubliqueController::class, 'index'])->name('galerie.index');
+Route::get('/galerie/{galerie}', [GaleriePubliqueController::class, 'show'])->name('galerie.show');
+Route::get('/galerie/categorie/{categorie}', [GaleriePubliqueController::class, 'categorie'])->name('galerie.categorie');
 // Routes publiques (vitrine)
 Route::get('/', [PublicController::class, 'accueil'])->name('accueil');
 Route::get('/services', [PublicController::class, 'services'])->name('services');
@@ -57,6 +63,12 @@ Route::get('/test-instructions', [\App\Http\Controllers\PublicTestController::cl
 // Routes pour le blog/actualités
 Route::get('/blog', [PublicController::class, 'blog'])->name('blog.index');
 Route::get('/blog/{id}', [PublicController::class, 'showArticle'])->name('blog.show');
+
+// Routes pour les commentaires
+Route::post('/blog/{annonce}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
+Route::get('/blog/{annonce}/comments', [\App\Http\Controllers\CommentController::class, 'index'])->name('comments.index');
+Route::post('/comments/{comment}/approve', [\App\Http\Controllers\CommentController::class, 'approve'])->name('comments.approve');
+Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy');
 
 
 
@@ -301,4 +313,40 @@ Route::middleware('auth')->group(function () {
         Route::get('/email-connection', [TestNotificationController::class, 'testEmailConnection'])
             ->name('test.notifications.email-connection');
     });
+});
+
+// Route de debug des traductions
+Route::get('/debug-lang', function() {
+    return [
+        'current_locale' => app()->getLocale(),
+        'url_locale' => request()->get('locale'),
+        'session_locale' => session('locale'),
+        'test_translation' => __('Accueil'),
+        'test_welcome' => __('Bienvenue'),
+        'test_transport' => __('Transport Maritime'),
+        'config_locale' => config('app.locale'),
+        'available_locales' => config('app.available_locales', ['fr', 'en', 'zh_CN'])
+    ];
+});
+
+// Page de test des traductions
+Route::get('/test-traductions', function() {
+    return view('test-traductions');
+});
+
+// Page de debug locale avancée
+Route::get('/debug-locale', function() {
+    return view('debug-locale');
+});
+
+// Route de test ultra simple pour le middleware
+Route::get('/test-middleware', function() {
+    return response()->json([
+        'middleware_test' => 'SUCCESS',
+        'current_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'url_locale' => request()->get('locale'),
+        'test_translation' => __('Accueil'),
+        'timestamp' => now()->toDateTimeString()
+    ]);
 });
