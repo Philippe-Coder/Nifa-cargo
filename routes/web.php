@@ -2,6 +2,64 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+// Route temporaire pour tester les images (à supprimer après test)
+Route::get('/test-images', function () {
+    return view('test-images');
+})->name('test.images');
+
+// Route temporaire pour tester WhatsApp 360dialog (à supprimer après test)
+Route::get('/test-whatsapp', function () {
+    try {
+        $apiKey = env('WHATSAPP_360_API_KEY');
+        $baseUrl = env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io');
+        
+        if (!$apiKey) {
+            return response()->json([
+                'success' => false,
+                'error' => 'API Key 360dialog manquante dans .env'
+            ]);
+        }
+        
+        // Numéro de test (remplacez par votre numéro)
+        $testPhone = request()->get('phone', '+22897311158'); // Votre numéro WhatsApp
+        $message = "🧪 Test WhatsApp 360dialog\n\nCeci est un test d'envoi WhatsApp depuis NIF CARGO.\n\nDate: " . now()->format('d/m/Y H:i') . "\n\n📦 NIF CARGO - Transport & Logistique";
+        
+        $url = $baseUrl . '/v1/messages';
+        
+        $payload = [
+            'to' => $testPhone,
+            'type' => 'text',
+            'text' => [
+                'body' => $message
+            ]
+        ];
+        
+        $response = \Illuminate\Support\Facades\Http::withHeaders([
+            'D360-API-KEY' => $apiKey,
+            'Content-Type' => 'application/json'
+        ])->post($url, $payload);
+        
+        return response()->json([
+            'success' => $response->successful(),
+            'status_code' => $response->status(),
+            'response_body' => $response->json(),
+            'config' => [
+                'api_key' => substr($apiKey, 0, 8) . '...',
+                'base_url' => $baseUrl,
+                'phone' => $testPhone
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]);
+    }
+})->name('test.whatsapp');
 use App\Http\Controllers\Public\DemandeController;
 use App\Http\Controllers\Admin\DemandeTransportController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -235,6 +293,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     // Routes générales pour les demandes (APRÈS les routes spécifiques)
     Route::get('/demandes', [DemandeTransportController::class, 'index'])->name('admin.demandes.index');
     Route::get('/demandes/{id}', [DemandeTransportController::class, 'show'])->name('admin.demandes.show');
+    Route::get('/demandes/{id}/pdf', [DemandeTransportController::class, 'downloadPDF'])->name('admin.demandes.pdf');
     Route::post('/demandes/{id}/statut', [DemandeTransportController::class, 'updateStatut'])->name('admin.demandes.updateStatut');
     Route::delete('/demandes/{id}', [DemandeTransportController::class, 'destroy'])->name('admin.demandes.destroy');
     

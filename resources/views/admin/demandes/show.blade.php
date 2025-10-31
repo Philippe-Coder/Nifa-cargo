@@ -2,7 +2,26 @@
 
 @section('content')
 <div class="p-6">
-    <h1 class="text-2xl font-bold mb-6">Détails de la demande</h1>
+    <!-- En-tête avec actions -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h1 class="text-2xl font-bold text-gray-900">Détails de la demande</h1>
+        
+        <div class="flex gap-3">
+            <!-- Bouton PDF -->
+            <a href="{{ route('admin.demandes.pdf', $demande->id) }}" 
+               class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors duration-200">
+                <i class="fas fa-file-pdf mr-2"></i>
+                Télécharger PDF
+            </a>
+            
+            <!-- Bouton retour -->
+            <a href="{{ route('admin.demandes.index') }}" 
+               class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg shadow-sm transition-colors duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
     
     {{-- Messages de succès/erreur --}}
     @if(session('success'))
@@ -41,8 +60,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <p class="mb-2"><span class="font-semibold">Type de transport :</span> {{ ucfirst($demande->type) }}</p>
+                <p class="mb-2"><span class="font-semibold">Mode de transport :</span> {{ $demande->type_transport ?? 'Non spécifié' }}</p>
                 <p class="mb-2"><span class="font-semibold">Marchandise :</span> {{ $demande->marchandise ?? 'Non spécifiée' }}</p>
                 <p class="mb-2"><span class="font-semibold">Poids :</span> {{ $demande->poids ? $demande->poids . ' kg' : 'Non spécifié' }}</p>
+                <p class="mb-2"><span class="font-semibold">Volume :</span> {{ $demande->volume ? $demande->volume . ' m³' : 'Non spécifié' }}</p>
                 <p class="mb-2"><span class="font-semibold">Origine :</span> {{ $demande->origine ?? 'Non spécifiée' }}</p>
                 <p class="mb-2"><span class="font-semibold">Destination :</span> {{ $demande->destination ?? 'Non spécifiée' }}</p>
                 <p class="mb-2"><span class="font-semibold">Description :</span> {{ $demande->description ?? 'Aucune description' }}</p>
@@ -50,7 +71,21 @@
             <div>
                 <p class="mb-2"><span class="font-semibold">Client :</span> {{ $demande->user->name }}</p>
                 <p class="mb-2"><span class="font-semibold">Email :</span> {{ $demande->user->email }}</p>
+                <p class="mb-2"><span class="font-semibold">Téléphone :</span> {{ $demande->user->telephone ?? 'Non renseigné' }}</p>
+                <p class="mb-2"><span class="font-semibold">Numéro de suivi :</span> <code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ $demande->numero_tracking ?? 'Non généré' }}</code></p>
                 <p class="mb-2"><span class="font-semibold">Date de création :</span> {{ $demande->created_at->format('d/m/Y H:i') }}</p>
+                @if($demande->date_souhaitee)
+                <p class="mb-2"><span class="font-semibold">Date souhaitée :</span> {{ \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') }}</p>
+                @endif
+                @if($demande->valeur)
+                <p class="mb-2"><span class="font-semibold">Valeur déclarée :</span> {{ number_format($demande->valeur, 0, ',', ' ') }} FCFA</p>
+                @endif
+                @if($demande->frais_expedition)
+                <p class="mb-2"><span class="font-semibold">Frais d'expédition :</span> {{ number_format($demande->frais_expedition, 0, ',', ' ') }} FCFA</p>
+                @endif
+                @if($demande->fragile)
+                <p class="mb-2"><span class="font-semibold">Colis fragile :</span> <span class="text-red-600 font-medium">⚠️ OUI</span></p>
+                @endif
                 <p class="mb-2"><span class="font-semibold">Statut :</span> 
                     <span class="px-2 py-1 rounded text-sm font-medium
                         @switch($demande->statut)

@@ -6,12 +6,12 @@
 @php
 // Définition des images par service avec vos images personnalisées - AVANT le contenu
 $serviceImages = [
-    'Transport Maritime' => asset('images/Transport Maritime.jpg'),
-    'Transport Aérien' => asset('images/Transport Aérien.jpg'),
-    'Transport Terrestre' => asset('images/Transport Terrestre.jpg'),
-    'Dédouanement' => asset('images/Dédouanement.jpg'),
-    'Entreposage' => asset('images/Entreposage.jpg'),
-    'Assurance' => asset('images/Assurance.jpg')
+    'Transport Maritime' => asset('images/transport-maritime.jpg'),
+    'Transport Aérien' => asset('images/transport-aerien.jpg'),
+    'Transport Terrestre' => asset('images/transport-terrestre.jpg'),
+    'Dédouanement' => asset('images/dedouanement.jpg'),
+    'Entreposage' => asset('images/entreposage.jpg'),
+    'Assurance' => asset('images/assurance.jpg')
 ];
 @endphp
 
@@ -110,7 +110,7 @@ $serviceImages = [
                     <div class="{{ $index % 2 == 1 ? 'lg:col-start-1' : '' }} relative">
                         <!-- Image principale du service -->
                         <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                            <img src="{{ $serviceImages[$service['titre']] ?? asset('images/Transport Maritime.jpg') }}" 
+                            <img src="{{ $serviceImages[$service['titre']] ?? asset('images/transport-maritime.jpg') }}" 
                                  alt="{{ $service['titre'] }} - NIF CARGO"
                                  class="w-full h-80 object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>

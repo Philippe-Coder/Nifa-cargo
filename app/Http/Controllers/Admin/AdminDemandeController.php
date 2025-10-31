@@ -159,43 +159,69 @@ class AdminDemandeController extends Controller
     private function sendWhatsAppMessage(User $client, string $message)
     {
         try {
-            // Utiliser le service de notification pour WhatsApp uniquement
-            if (env('WHATSAPP_ACCESS_TOKEN') && env('WHATSAPP_PHONE_NUMBER_ID')) {
+            // Priorité: 360dialog > Meta WhatsApp > Twilio > CallMeBot
+            if (env('WHATSAPP_360_API_KEY')) {
+                // Méthode 360dialog (Recommandée)
+                \Illuminate\Support\Facades\Log::info("📱 Utilisation 360dialog pour WhatsApp");
+                $this->sendWhatsAppMeta($client, $message);
+            } elseif (env('WHATSAPP_ACCESS_TOKEN') && env('WHATSAPP_PHONE_NUMBER_ID')) {
                 // Méthode Meta WhatsApp Cloud API
+                \Illuminate\Support\Facades\Log::info("📱 Utilisation Meta WhatsApp Cloud API");
                 $this->sendWhatsAppMeta($client, $message);
             } elseif (env('TWILIO_SID') && env('TWILIO_AUTH_TOKEN')) {
                 // Méthode Twilio
+                \Illuminate\Support\Facades\Log::info("📱 Utilisation Twilio WhatsApp");
                 $this->sendWhatsAppTwilio($client, $message);
             } elseif (env('CALLMEBOT_API_KEY')) {
                 // Méthode CallMeBot
+                \Illuminate\Support\Facades\Log::info("📱 Utilisation CallMeBot WhatsApp");
                 $this->sendWhatsAppCallMeBot($client, $message);
+            } else {
+                \Illuminate\Support\Facades\Log::warning("📱 Aucune configuration WhatsApp trouvée");
             }
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Erreur WhatsApp pour {$client->telephone}: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error("❌ Erreur WhatsApp pour {$client->telephone}: " . $e->getMessage());
         }
     }
 
     /**
-     * Envoie WhatsApp via Meta Cloud API
+     * Envoie WhatsApp via 360dialog API
      */
     private function sendWhatsAppMeta(User $client, string $message)
     {
-        $accessToken = env('WHATSAPP_ACCESS_TOKEN');
-        $phoneNumberId = env('WHATSAPP_PHONE_NUMBER_ID');
+        $apiKey = env('WHATSAPP_360_API_KEY');
+        $baseUrl = env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io');
+        
+        if (!$apiKey) {
+            \Illuminate\Support\Facades\Log::warning("360dialog API Key manquante");
+            return;
+        }
         
         $phone = $this->formatPhoneE164($client->telephone);
-        $url = sprintf('https://graph.facebook.com/v20.0/%s/messages', $phoneNumberId);
+        $url = $baseUrl . '/v1/messages';
 
         $payload = [
-            'messaging_product' => 'whatsapp',
             'to' => $phone,
             'type' => 'text',
-            'text' => ['body' => $message]
+            'text' => [
+                'body' => $message
+            ]
         ];
 
-        \Illuminate\Support\Facades\Http::withToken($accessToken)
-            ->acceptJson()
-            ->post($url, $payload);
+        try {
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'D360-API-KEY' => $apiKey,
+                'Content-Type' => 'application/json'
+            ])->post($url, $payload);
+
+            if ($response->successful()) {
+                \Illuminate\Support\Facades\Log::info("📱 WhatsApp envoyé via 360dialog à {$phone}");
+            } else {
+                \Illuminate\Support\Facades\Log::error("❌ Erreur 360dialog: " . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("❌ Erreur WhatsApp 360dialog: " . $e->getMessage());
+        }
     }
 
     /**

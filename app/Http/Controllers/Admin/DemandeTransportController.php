@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DemandeTransport;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DemandeTransportController extends Controller
 {
@@ -53,6 +54,30 @@ class DemandeTransportController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
+    }
+
+    /**
+     * Télécharger la demande en PDF
+     */
+    public function downloadPDF($id)
+    {
+        $demande = DemandeTransport::with([
+            'user', 
+            'etapes.agent',
+            'etapes.documents.user'
+        ])->findOrFail($id);
+
+        $pdf = Pdf::loadView('admin.demandes.pdf', compact('demande'))
+            ->setPaper('A4', 'portrait')
+            ->setOptions([
+                'defaultFont' => 'DejaVu Sans',
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true
+            ]);
+
+        $filename = 'demande-' . ($demande->numero_tracking ?? 'TRK-' . $demande->id) . '.pdf';
+        
+        return $pdf->download($filename);
     }
 
     public function destroy($id)

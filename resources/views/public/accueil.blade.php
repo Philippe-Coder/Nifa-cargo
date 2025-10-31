@@ -292,7 +292,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Transport Maritime -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Maritime.jpg') }}')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/transport-maritime.jpg') }}')">
                     <div class="absolute inset-0 bg-blue-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-blue-600 text-xl shadow-lg">
@@ -329,7 +329,7 @@
 
             <!-- Transport Aérien -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Aérien.jpg') }}')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/transport-aerien.jpg') }}')">
                     <div class="absolute inset-0 bg-red-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-red-600 text-xl shadow-lg">
@@ -366,7 +366,7 @@
 
             <!-- Transport Terrestre -->
             <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/Transport Terrestre.jpg') }}')">
+                <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('{{ asset('images/transport-terrestre.jpg') }}')">
                     <div class="absolute inset-0 bg-indigo-900/40"></div>
                     <div class="absolute bottom-4 left-4">
                         <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-indigo-600 text-xl shadow-lg">
