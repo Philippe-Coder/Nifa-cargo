@@ -260,22 +260,102 @@ class NotificationService
      */
     private static function envoyerWhatsApp(User $user, DemandeTransport $demande, string $message)
     {
-        // Priorité 1: Meta WhatsApp Cloud API (n'exige pas que le client écrive en premier, via template)
+        // Priorité 1: 360dialog API (Sandbox)
+        if (env('WHATSAPP_360_API_KEY')) {
+            \Illuminate\Support\Facades\Log::info("📱 Utilisation 360dialog pour WhatsApp dans NotificationService");
+            self::envoyer360Dialog($user, $demande, $message);
+            return;
+        }
+        // Priorité 2: Meta WhatsApp Cloud API (n'exige pas que le client écrive en premier, via template)
         if (env('WHATSAPP_ACCESS_TOKEN') && env('WHATSAPP_PHONE_NUMBER_ID')) {
             self::envoyerWhatsAppMeta($user, $demande, $message);
             return;
         }
-        // Priorité 2: Twilio
+        // Priorité 3: Twilio
         if (env('TWILIO_SID') && env('TWILIO_AUTH_TOKEN') && env('TWILIO_WHATSAPP_NUMBER')) {
             self::envoyerWhatsAppTwilio($user, $demande, $message);
             return;
         }
-        // Priorité 3: CallMeBot (dépannage/démo; nécessite autorisation manuelle côté utilisateur)
+        // Priorité 4: CallMeBot (dépannage/démo; nécessite autorisation manuelle côté utilisateur)
         if (env('CALLMEBOT_API_KEY')) {
             self::envoyerWhatsAppCallMeBot($user, $demande, $message);
             return;
         }
-        throw new \Exception('Aucun service WhatsApp configuré (Meta Cloud API recommandé, sinon Twilio).');
+        throw new \Exception('Aucun service WhatsApp configuré (360dialog, Meta Cloud API, ou Twilio requis).');
+    }
+
+    /**
+     * Envoyer WhatsApp - Méthode 360dialog API (Sandbox)
+     */
+    private static function envoyer360Dialog(User $user, DemandeTransport $demande, string $message)
+    {
+        $notification = self::create($user, 'whatsapp', $demande, $message);
+        
+        try {
+            $apiKey = env('WHATSAPP_360_API_KEY');
+            $baseUrl = env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io');
+            
+            if (!$apiKey) {
+                throw new \Exception('Configuration 360dialog incomplète - API Key manquante');
+            }
+            
+            $phone = self::formatPhoneE164($user->telephone);
+            $url = $baseUrl . '/v1/messages';
+
+            $payload = [
+                'messaging_product' => 'whatsapp',
+                'to' => $phone,
+                'type' => 'text',
+                'text' => [
+                    'body' => $message
+                ]
+            ];
+
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'D360-API-KEY' => $apiKey,
+                'Content-Type' => 'application/json'
+            ])->post($url, $payload);
+
+            if ($response->successful()) {
+                $notification->marquerEnvoyee();
+                \Illuminate\Support\Facades\Log::info("📱 WhatsApp 360dialog envoyé avec succès à {$phone}");
+            } else {
+                throw new \Exception('Erreur 360dialog API: ' . $response->body());
+            }
+            
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+            
+            // Gestion spéciale pour les erreurs sandbox 360dialog
+            if (str_contains($errorMessage, 'can only send to your verified number') || 
+                str_contains($errorMessage, 'Forbidden')) {
+                
+                \Illuminate\Support\Facades\Log::warning('⚠️ 360dialog Sandbox: Numéro non vérifié, tentative fallback vers CallMeBot', [
+                    'phone' => $phone,
+                    'error' => $errorMessage
+                ]);
+                
+                // Tentative de fallback automatique vers CallMeBot
+                try {
+                    $apiKey = env('CALLMEBOT_API_KEY');
+                    if ($apiKey) {
+                        \Illuminate\Support\Facades\Log::info('🔄 Fallback automatique vers CallMeBot pour ' . $phone);
+                        self::envoyerWhatsAppCallMeBot($user, $demande, $message);
+                        return; // Succès avec CallMeBot
+                    } else {
+                        \Illuminate\Support\Facades\Log::info('💡 CallMeBot non configuré, numéro ignoré en mode sandbox');
+                        $notification->marquerEchouee('Sandbox 360dialog: Numéro non vérifié (' . $phone . ')');
+                        return; // Pas d'erreur fatale en sandbox
+                    }
+                } catch (\Exception $fallbackError) {
+                    \Illuminate\Support\Facades\Log::error('❌ Erreur fallback CallMeBot: ' . $fallbackError->getMessage());
+                }
+            }
+            
+            $notification->marquerEchouee($errorMessage);
+            \Illuminate\Support\Facades\Log::error("❌ Erreur WhatsApp 360dialog: " . $errorMessage);
+            throw $e;
+        }
     }
 
     /**
@@ -328,7 +408,7 @@ class NotificationService
                 </div>
                 
                 <div class='footer'>
-                    <p>📞 <strong>Contact :</strong> +228 97 31 11 58 | 📧 contact@nifgroupecargo.com</p>
+                    <p>📞 <strong>Contact :</strong> +228 99 25 25 31 | 📧 contact@nifgroupecargo.com</p>
                     <p>🏢 Totsi, Lomé - Togo</p>
                     <p style='font-size: 12px; color: #999;'>© " . date('Y') . " NIF CARGO - Transport et Logistique</p>
                 </div>

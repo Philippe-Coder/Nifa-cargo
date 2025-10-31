@@ -144,6 +144,12 @@ class TestNotificationController extends Controller
                 'status' => config('mail.mailers.smtp.username') && config('mail.mailers.smtp.password') ? '✅ Configuré' : '❌ Manquant'
             ],
             'whatsapp' => [
+                '360dialog' => [
+                    'configured' => !empty(env('WHATSAPP_360_API_KEY')),
+                    'api_key' => env('WHATSAPP_360_API_KEY') ? substr(env('WHATSAPP_360_API_KEY'), 0, 8) . '***' : 'Non configuré',
+                    'base_url' => env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io'),
+                    'status' => !empty(env('WHATSAPP_360_API_KEY')) ? '✅ Configuré' : '❌ Manquant'
+                ],
                 'twilio' => [
                     'configured' => !empty(env('TWILIO_SID')) && !empty(env('TWILIO_AUTH_TOKEN')) && !empty(env('TWILIO_WHATSAPP_NUMBER')),
                     'sid' => env('TWILIO_SID') ? 'AC***' . substr(env('TWILIO_SID'), -4) : 'Non configuré',
@@ -202,13 +208,15 @@ class TestNotificationController extends Controller
      */
     private function getActiveWhatsAppMethod(): string
     {
+        if (!empty(env('WHATSAPP_360_API_KEY'))) {
+            return '360dialog';
+        }
         if (!empty(env('WHATSAPP_ACCESS_TOKEN')) && !empty(env('WHATSAPP_PHONE_NUMBER_ID'))) {
             return 'meta';
         }
         if (!empty(env('TWILIO_SID')) && !empty(env('TWILIO_AUTH_TOKEN')) && !empty(env('TWILIO_WHATSAPP_NUMBER'))) {
             return 'twilio';
         }
-        
         if (!empty(env('CALLMEBOT_API_KEY'))) {
             return 'callmebot';
         }

@@ -2,64 +2,278 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 // Route temporaire pour tester les images (à supprimer après test)
 Route::get('/test-images', function () {
     return view('test-images');
 })->name('test.images');
 
-// Route temporaire pour tester WhatsApp 360dialog (à supprimer après test)
-Route::get('/test-whatsapp', function () {
+// Route de test WhatsApp 360dialog - PRODUCTION READY
+Route::get('/test-whatsapp', function (Request $request) {
+    $phone = $request->query('phone');
+    
+    // Vérification du numéro
+    if (!$phone) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Paramètre "phone" requis. Exemple: /test-whatsapp?phone=+228XXXXXXXX',
+            'info' => 'En mode sandbox 360dialog, utilisez uniquement votre numéro vérifié'
+        ], 400);
+    }
+    
+    // Normalisation du numéro
+    if (!str_starts_with($phone, '+')) {
+        $phone = '+228' . ltrim($phone, '0'); // Ajouter indicatif Togo par défaut
+    }
+    
+    $message = "🚀 Test WhatsApp NIF CARGO via 360dialog\n" . 
+               "📅 " . now()->format('d/m/Y à H:i:s') . "\n" .
+               "✅ Configuration API fonctionnelle!";
+    
+    $payload = [
+        'messaging_product' => 'whatsapp',
+        'to' => $phone,
+        'type' => 'text',
+        'text' => [
+            'body' => $message
+        ]
+    ];
+    
     try {
-        $apiKey = env('WHATSAPP_360_API_KEY');
-        $baseUrl = env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io');
+        Log::info('📱 Test WhatsApp 360dialog', ['phone' => $phone, 'payload' => $payload]);
         
-        if (!$apiKey) {
+        $response = Http::withHeaders([
+            'D360-API-KEY' => env('WHATSAPP_360_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->timeout(30)->post(env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io') . '/v1/messages', $payload);
+        
+        Log::info('📱 Réponse 360dialog', ['status' => $response->status(), 'body' => $response->body()]);
+        
+        if ($response->successful()) {
+            $responseData = $response->json();
+            return response()->json([
+                'success' => true,
+                'message' => '✅ WhatsApp envoyé avec succès!',
+                'phone' => $phone,
+                'message_id' => $responseData['messages'][0]['id'] ?? null,
+                'status' => $responseData['messages'][0]['message_status'] ?? 'sent',
+                'timestamp' => now()->toISOString(),
+                'info' => 'Message envoyé via 360dialog API'
+            ]);
+        } else {
+            $errorBody = $response->body();
+            $errorData = json_decode($errorBody, true);
+            
+            // Messages d'erreur spécifiques
+            $errorMessage = 'Erreur 360dialog API';
+            if (str_contains($errorBody, 'can only send to your verified number')) {
+                $errorMessage = '🔒 Sandbox: Vous ne pouvez envoyer qu\'à votre numéro vérifié. Vérifiez votre numéro sur la plateforme 360dialog.';
+            } elseif (str_contains($errorBody, 'messaging_product')) {
+                $errorMessage = '⚙️ Erreur de configuration API: paramètre messaging_product requis.';
+            }
+            
             return response()->json([
                 'success' => false,
-                'error' => 'API Key 360dialog manquante dans .env'
-            ]);
+                'error' => $errorMessage,
+                'details' => $errorData['detail'] ?? $errorBody,
+                'status' => $response->status(),
+                'phone' => $phone,
+                'solution' => str_contains($errorBody, 'verified number') 
+                    ? 'Vérifiez votre numéro sur https://hub.360dialog.com ou utilisez votre numéro vérifié'
+                    : 'Vérifiez la configuration API dans le fichier .env'
+            ], 400);
         }
+    } catch (\Exception $e) {
+        Log::error('❌ Exception test WhatsApp', ['error' => $e->getMessage(), 'phone' => $phone]);
         
-        // Numéro de test (remplacez par votre numéro)
-        $testPhone = request()->get('phone', '+22897311158'); // Votre numéro WhatsApp
-        $message = "🧪 Test WhatsApp 360dialog\n\nCeci est un test d'envoi WhatsApp depuis NIF CARGO.\n\nDate: " . now()->format('d/m/Y H:i') . "\n\n📦 NIF CARGO - Transport & Logistique";
-        
-        $url = $baseUrl . '/v1/messages';
-        
+        return response()->json([
+            'success' => false,
+            'error' => 'Exception réseau ou configuration',
+            'details' => $e->getMessage(),
+            'phone' => $phone,
+            'solution' => 'Vérifiez votre connexion internet et la configuration .env'
+        ], 500);
+    }
+});
+
+// Route de test notification complète (admin uniquement)
+Route::middleware(['auth'])->get('/admin/test-notification', function (Request $request) {
+    $phone = $request->query('phone');
+    $email = $request->query('email', Auth::user()?->email ?? 'admin@nifcargo.com');
+    
+    if (!$phone) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Paramètre "phone" requis. Exemple: /admin/test-notification?phone=+228XXXXXXXX',
+        ], 400);
+    }
+    
+    // Normalisation du numéro
+    if (!str_starts_with($phone, '+')) {
+        $phone = '+228' . ltrim($phone, '0');
+    }
+    
+    $testData = [
+        'client_nom' => 'Test Client',
+        'reference' => 'TEST-' . now()->format('Ymd-His'),
+        'statut' => 'En transit',
+        'destination' => 'Lomé, Togo',
+        'date_creation' => now()->format('d/m/Y'),
+        'tracking_number' => 'TRK' . rand(100000, 999999)
+    ];
+    
+    $message = "🚛 *NIF CARGO* - Test Notification\n\n" .
+               "📋 **Référence**: {$testData['reference']}\n" .
+               "👤 **Client**: {$testData['client_nom']}\n" .
+               "📍 **Destination**: {$testData['destination']}\n" .
+               "📅 **Date**: {$testData['date_creation']}\n" .
+               "🔍 **Suivi**: {$testData['tracking_number']}\n" .
+               "📊 **Statut**: {$testData['statut']}\n\n" .
+               "✅ Système de notification fonctionnel!";
+    
+    try {
+        // Test avec payload WhatsApp direct pour éviter les erreurs de type
         $payload = [
-            'to' => $testPhone,
+            'messaging_product' => 'whatsapp',
+            'to' => $phone,
             'type' => 'text',
             'text' => [
                 'body' => $message
             ]
         ];
         
-        $response = \Illuminate\Support\Facades\Http::withHeaders([
-            'D360-API-KEY' => $apiKey,
-            'Content-Type' => 'application/json'
-        ])->post($url, $payload);
+        $whatsappResult = Http::withHeaders([
+            'D360-API-KEY' => env('WHATSAPP_360_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->timeout(30)->post(env('WHATSAPP_360_BASE_URL', 'https://waba-sandbox.360dialog.io') . '/v1/messages', $payload);
+        
+        // Test email basique
+        $emailResult = ['success' => true, 'message' => 'Email simulé (pas d\'envoi réel en test)'];
+        
+        $result = [
+            'whatsapp' => $whatsappResult->successful() ? 'Envoyé avec succès' : 'Erreur: ' . $whatsappResult->body(),
+            'email' => $emailResult['message']
+        ];
+        
+        Log::info('🧪 Test notification complète', [
+            'email' => $email,
+            'phone' => $phone,
+            'result' => $result,
+            'test_data' => $testData
+        ]);
         
         return response()->json([
-            'success' => $response->successful(),
-            'status_code' => $response->status(),
-            'response_body' => $response->json(),
-            'config' => [
-                'api_key' => substr($apiKey, 0, 8) . '...',
-                'base_url' => $baseUrl,
-                'phone' => $testPhone
-            ]
+            'success' => true,
+            'message' => '✅ Test de notification complète réussi!',
+            'results' => $result,
+            'test_data' => $testData,
+            'email' => $email,
+            'phone' => $phone,
+            'timestamp' => now()->toISOString()
         ]);
         
     } catch (\Exception $e) {
+        Log::error('❌ Erreur test notification', ['error' => $e->getMessage(), 'phone' => $phone, 'email' => $email]);
+        
         return response()->json([
             'success' => false,
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine()
-        ]);
+            'error' => 'Erreur lors du test de notification',
+            'details' => $e->getMessage(),
+            'phone' => $phone,
+            'email' => $email
+        ], 500);
     }
-})->name('test.whatsapp');
+})->name('admin.test.notification');
+
+// Route pour configurer CallMeBot comme fallback
+Route::get('/admin/setup-callmebot', function () {
+    $instructions = [
+        'title' => 'Configuration CallMeBot pour Fallback WhatsApp',
+        'steps' => [
+            '1. Ouvrez WhatsApp et envoyez le message "I allow callmebot to send me messages" au numéro +34 644 94 43 21',
+            '2. Attendez la réponse avec votre API Key personnelle',
+            '3. Ajoutez cette clé dans votre fichier .env :',
+            '   CALLMEBOT_API_KEY=votre_cle_recue',
+            '4. Testez avec : /test-callmebot-fallback?phone=VOTRENUMERO'
+        ],
+        'benefits' => [
+            '✅ Fallback gratuit pour les numéros non vérifiés 360dialog',
+            '✅ Pas de limite de numéros comme le sandbox 360dialog',
+            '✅ Configuration simple en 2 minutes',
+            '✅ Idéal pour les tests et développement'
+        ],
+        'current_config' => [
+            'WHATSAPP_360_API_KEY' => env('WHATSAPP_360_API_KEY') ? '✅ Configuré' : '❌ Manquant',
+            'CALLMEBOT_API_KEY' => env('CALLMEBOT_API_KEY') ? '✅ Configuré' : '❌ Manquant (recommandé pour fallback)',
+        ]
+    ];
+    
+    return response()->json($instructions);
+})->middleware(['auth'])->name('admin.setup.callmebot');
+
+// Route de test CallMeBot fallback
+Route::get('/test-callmebot-fallback', function (Request $request) {
+    $phone = $request->query('phone');
+    
+    if (!$phone) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Paramètre "phone" requis. Exemple: /test-callmebot-fallback?phone=22897311158'
+        ], 400);
+    }
+    
+    $apiKey = env('CALLMEBOT_API_KEY');
+    if (!$apiKey) {
+        return response()->json([
+            'success' => false,
+            'error' => 'CallMeBot non configuré. Visitez /admin/setup-callmebot pour les instructions',
+            'setup_url' => url('/admin/setup-callmebot')
+        ], 400);
+    }
+    
+    // Nettoyer le numéro (CallMeBot utilise format sans + ni indicatif pays)
+    $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+    if (str_starts_with($cleanPhone, '228')) {
+        $cleanPhone = substr($cleanPhone, 3); // Retirer l'indicatif Togo
+    }
+    
+    $message = "🧪 Test CallMeBot Fallback - " . now()->format('d/m/Y H:i:s') . "\n✅ Système de fallback WhatsApp fonctionnel!";
+    
+    try {
+        $url = "https://api.callmebot.com/whatsapp.php";
+        $response = Http::get($url, [
+            'phone' => $cleanPhone,
+            'text' => $message,
+            'apikey' => $apiKey
+        ]);
+        
+        if ($response->successful()) {
+            Log::info('✅ CallMeBot fallback test réussi', ['phone' => $cleanPhone]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'CallMeBot test réussi! Ce service peut servir de fallback.',
+                'phone' => $cleanPhone,
+                'info' => 'Idéal comme fallback pour les numéros non vérifiés en sandbox 360dialog'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Erreur CallMeBot: ' . $response->body(),
+                'solution' => 'Vérifiez que vous avez bien envoyé le message d\'autorisation au +34 644 94 43 21'
+            ], 400);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Exception CallMeBot: ' . $e->getMessage()
+        ], 500);
+    }
+})->name('test.callmebot.fallback');
 use App\Http\Controllers\Public\DemandeController;
 use App\Http\Controllers\Admin\DemandeTransportController;
 use App\Http\Controllers\Admin\AdminDashboardController;

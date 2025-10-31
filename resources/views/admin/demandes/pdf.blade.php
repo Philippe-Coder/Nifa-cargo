@@ -209,7 +209,7 @@
 <body>
     <!-- En-tête -->
     <div class="header">
-        <h1>📦 NIF CARGO</h1>
+        <h1> NIF CARGO</h1>
         <div class="subtitle">Demande de Transport & Logistique</div>
         <div style="margin-top: 10px;">
             <span class="tracking-code">{{ $demande->numero_tracking ?? 'TRK-' . $demande->id }}</span>
@@ -218,7 +218,7 @@
 
     <!-- Informations générales -->
     <div class="section">
-        <h2>📋 Informations Générales</h2>
+        <h2> Informations Générales</h2>
         <div class="info-grid">
             <div class="info-row">
                 <div class="info-label">Numéro de suivi</div>
@@ -252,7 +252,7 @@
 
     <!-- Informations Client -->
     <div class="section">
-        <h2>👤 Informations Client</h2>
+        <h2> Informations Client</h2>
         <div class="info-grid">
             <div class="info-row">
                 <div class="info-label">Nom complet</div>
@@ -273,7 +273,7 @@
 
     <!-- Détails du Transport -->
     <div class="section">
-        <h2>🚛 Détails du Transport</h2>
+        <h2>Détails du Transport</h2>
         <div class="two-column">
             <div class="column">
                 <div class="info-grid">
@@ -324,7 +324,7 @@
 
     <!-- Informations Colis -->
     <div class="section">
-        <h2>📦 Informations du Colis</h2>
+        <h2> Informations du Colis</h2>
         <div class="info-grid">
             <div class="info-row">
                 <div class="info-label">Nature du colis</div>
@@ -351,7 +351,7 @@
             @if($demande->fragile)
             <div class="info-row">
                 <div class="info-label">Fragile</div>
-                <div class="info-value"><span class="highlight">⚠️ OUI - Manipulation délicate requise</span></div>
+                <div class="info-value"><span class="highlight"> OUI - Manipulation délicate requise</span></div>
             </div>
             @endif
             @if($demande->description)
@@ -366,7 +366,7 @@
     <!-- Étapes Logistiques -->
     @if($demande->etapes && $demande->etapes->count() > 0)
     <div class="section">
-        <h2>🚀 Suivi Logistique</h2>
+        <h2> Suivi Logistique</h2>
         <div class="etapes-timeline">
             @foreach($demande->etapes as $etape)
                 <div class="etape-item {{ $etape->statut === 'terminee' ? 'completed' : ($etape->statut === 'en_cours' ? 'in-progress' : '') }}">
@@ -380,13 +380,13 @@
                     </div>
                     <div class="etape-description">{{ $etape->description }}</div>
                     @if($etape->agent)
-                        <div class="etape-description">👨‍💼 Agent: {{ $etape->agent->name }}</div>
+                        <div class="etape-description"> Agent: {{ $etape->agent->name }}</div>
                     @endif
                     @if($etape->date_debut)
-                        <div class="etape-description">📅 Début: {{ \Carbon\Carbon::parse($etape->date_debut)->format('d/m/Y H:i') }}</div>
+                        <div class="etape-description"> Début: {{ \Carbon\Carbon::parse($etape->date_debut)->format('d/m/Y H:i') }}</div>
                     @endif
                     @if($etape->date_fin)
-                        <div class="etape-description">✅ Fin: {{ \Carbon\Carbon::parse($etape->date_fin)->format('d/m/Y H:i') }}</div>
+                        <div class="etape-description"> Fin: {{ \Carbon\Carbon::parse($etape->date_fin)->format('d/m/Y H:i') }}</div>
                     @endif
                 </div>
             @endforeach
@@ -398,7 +398,7 @@
     <div class="footer">
         <div>
             <strong>NIF CARGO</strong> - Transport & Logistique en Afrique<br>
-            📧 contact@nifcargo.com | 📞 +228 XX XX XX XX | 🌐 www.nifgroupecargo.com
+            📧 contact@nifgroupecargo.com | 📞 +228 99 25 25 31 | 🌐 www.nifgroupecargo.com
         </div>
         <div style="margin-top: 5px;">
             Document généré le {{ now()->format('d/m/Y à H:i') }}

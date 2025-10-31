@@ -201,6 +201,7 @@ class AdminDemandeController extends Controller
         $url = $baseUrl . '/v1/messages';
 
         $payload = [
+            'messaging_product' => 'whatsapp',
             'to' => $phone,
             'type' => 'text',
             'text' => [
