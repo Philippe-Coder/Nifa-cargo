@@ -41,7 +41,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-2">Total Demandes</p>
-                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $demandes->total() }}</p>
+                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $totalDemandes }}</p>
             </div>
             <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
                 <i class="fas fa-boxes text-blue-600 text-xl"></i>
@@ -60,7 +60,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-2">En Attente</p>
-                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $demandes->filter(fn($d) => $d->statut === 'en attente')->count() }}</p>
+                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $enAttente }}</p>
             </div>
             <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
                 <i class="fas fa-clock text-yellow-600 text-xl"></i>
@@ -79,7 +79,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-2">En Cours</p>
-                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $demandes->filter(fn($d) => in_array($d->statut, ['en cours', 'en transit']))->count() }}</p>
+                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $enCours }}</p>
             </div>
             <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
                 <i class="fas fa-shipping-fast text-blue-600 text-xl"></i>
@@ -98,7 +98,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-2">Livrées</p>
-                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $demandes->filter(fn($d) => $d->statut === 'livrée')->count() }}</p>
+                <p class="text-2xl lg:text-3xl font-bold text-gray-900">{{ $livrees }}</p>
             </div>
             <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                 <i class="fas fa-check-circle text-green-600 text-xl"></i>
@@ -115,41 +115,108 @@
 
 <!-- Filtres et Actions -->
 <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8">
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <!-- Filtres par statut -->
-        <div class="flex flex-wrap gap-2">
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
-                <i class="fas fa-list mr-2"></i> Toutes ({{ $demandes->total() }})
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                <i class="fas fa-clock mr-2 text-yellow-500"></i> En attente
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                <i class="fas fa-truck mr-2 text-blue-500"></i> En cours
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                <i class="fas fa-check-circle mr-2 text-green-500"></i> Livrées
-            </button>
+    <form method="GET" action="{{ route('admin.demandes.index') }}" id="filterForm" class="space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <!-- Filtres par statut -->
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('admin.demandes.index') }}" 
+                   class="px-4 py-2 {{ request('statut') ? 'bg-gray-100 text-gray-700' : 'bg-blue-600 text-white' }} rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
+                    <i class="fas fa-list mr-2"></i> Toutes ({{ $totalDemandes }})
+                </a>
+                <a href="{{ route('admin.demandes.index', ['statut' => 'en_attente']) }}" 
+                   class="px-4 py-2 {{ request('statut') === 'en_attente' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center">
+                    <i class="fas fa-clock mr-2 text-yellow-500"></i> En attente ({{ $enAttente }})
+                </a>
+                <a href="{{ route('admin.demandes.index', ['statut' => 'en_cours']) }}" 
+                   class="px-4 py-2 {{ request('statut') === 'en_cours' ? 'bg-blue-100 text-blue-800 border border-blue-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center">
+                    <i class="fas fa-truck mr-2 text-blue-500"></i> En cours ({{ $enCours }})
+                </a>
+                <a href="{{ route('admin.demandes.index', ['statut' => 'livree']) }}" 
+                   class="px-4 py-2 {{ request('statut') === 'livree' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center">
+                    <i class="fas fa-check-circle mr-2 text-green-500"></i> Livrées ({{ $livrees }})
+                </a>
+            </div>
+            
+            <!-- Recherche et Actions -->
+            <div class="flex gap-3">
+                <div class="relative flex-1 lg:w-64">
+                    <input type="text" name="search" value="{{ request('search') }}" 
+                           placeholder="Référence, client, email, téléphone..." 
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                           onchange="document.getElementById('filterForm').submit()">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    @if(request('search'))
+                        <button type="button" onclick="clearSearch()" 
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    @endif
+                </div>
+                <button type="button" onclick="toggleAdvancedFilters()" 
+                        class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
+                    <i class="fas fa-filter mr-2"></i> Filtres avancés
+                </button>
+                <a href="{{ route('admin.demandes.create-admin') }}" 
+                   class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
+                    <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
+                </a>
+                <button type="button" onclick="exportDemandes()" 
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
+                    <i class="fas fa-file-export mr-2"></i> Exporter
+                </button>
+            </div>
         </div>
         
-        <!-- Recherche et Actions -->
-        <div class="flex gap-3">
-            <div class="relative flex-1 lg:w-64">
-                <input type="text" placeholder="Rechercher une demande..." 
-                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
-                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <!-- Filtres avancés (cachés par défaut) -->
+        <div id="advancedFilters" class="hidden border-t pt-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Date de début</label>
+                    <input type="date" name="date_debut" value="{{ request('date_debut') }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Date de fin</label>
+                    <input type="date" name="date_fin" value="{{ request('date_fin') }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i> Filtrer
+                    </button>
+                    <a href="{{ route('admin.demandes.index') }}" 
+                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-times mr-2"></i> Effacer
+                    </a>
+                </div>
             </div>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                <i class="fas fa-filter mr-2"></i> Filtres
-            </button>
-            <a href="{{ route('admin.demandes.create-admin') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
-                <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
-            </a>
-            <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
-                <i class="fas fa-file-export mr-2"></i> Exporter
-            </button>
         </div>
-    </div>
+    </form>
+    
+    @if(request()->hasAny(['search', 'statut', 'date_debut', 'date_fin']))
+        <div class="mt-4 flex items-center gap-2">
+            <span class="text-sm text-gray-600">Filtres actifs :</span>
+            @if(request('search'))
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Recherche: "{{ request('search') }}"
+                    <button type="button" onclick="removeFilter('search')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                </span>
+            @endif
+            @if(request('statut'))
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Statut: {{ ucfirst(str_replace('_', ' ', request('statut'))) }}
+                    <button type="button" onclick="removeFilter('statut')" class="ml-2 text-green-600 hover:text-green-800">×</button>
+                </span>
+            @endif
+            @if(request('date_debut') || request('date_fin'))
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                    Période: {{ request('date_debut') }} - {{ request('date_fin') }}
+                    <button type="button" onclick="removeFilter('dates')" class="ml-2 text-yellow-600 hover:text-yellow-800">×</button>
+                </span>
+            @endif
+        </div>
+    @endif
 </div>
 
 <!-- Liste des Demandes -->
@@ -378,6 +445,65 @@ document.addEventListener('click', function(event) {
     if (!event.target.closest('[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
         document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
             d.classList.add('hidden');
+        });
+    }
+});
+
+// Fonctions pour les filtres
+function toggleAdvancedFilters() {
+    const advancedFilters = document.getElementById('advancedFilters');
+    advancedFilters.classList.toggle('hidden');
+}
+
+function clearSearch() {
+    const searchInput = document.querySelector('input[name="search"]');
+    searchInput.value = '';
+    document.getElementById('filterForm').submit();
+}
+
+function removeFilter(filterType) {
+    const form = document.getElementById('filterForm');
+    const formData = new FormData(form);
+    
+    // Construire l'URL sans le filtre spécifié
+    let params = new URLSearchParams();
+    
+    for (let [key, value] of formData.entries()) {
+        if (filterType === 'search' && key === 'search') continue;
+        if (filterType === 'statut' && key === 'statut') continue;
+        if (filterType === 'dates' && (key === 'date_debut' || key === 'date_fin')) continue;
+        if (value) params.append(key, value);
+    }
+    
+    const baseUrl = "{{ route('admin.demandes.index') }}";
+    const url = baseUrl + (params.toString() ? '?' + params.toString() : '');
+    window.location.href = url;
+}
+
+function exportDemandes() {
+    // Récupérer les paramètres actuels de filtrage
+    const form = document.getElementById('filterForm');
+    const formData = new FormData(form);
+    let params = new URLSearchParams();
+    
+    for (let [key, value] of formData.entries()) {
+        if (value) params.append(key, value);
+    }
+    
+    // Redirection vers l'export avec les mêmes filtres
+    const exportUrl = "{{ route('admin.demandes.export') }}" + '?' + params.toString();
+    window.open(exportUrl, '_blank');
+}
+
+// Recherche en temps réel
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('input[name="search"]');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('filterForm').submit();
+            }
         });
     }
 });

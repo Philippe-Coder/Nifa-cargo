@@ -506,6 +506,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     
     // Routes générales pour les demandes (APRÈS les routes spécifiques)
     Route::get('/demandes', [DemandeTransportController::class, 'index'])->name('admin.demandes.index');
+    Route::get('/demandes/export', [DemandeTransportController::class, 'export'])->name('admin.demandes.export');
     Route::get('/demandes/{id}', [DemandeTransportController::class, 'show'])->name('admin.demandes.show');
     Route::get('/demandes/{id}/pdf', [DemandeTransportController::class, 'downloadPDF'])->name('admin.demandes.pdf');
     Route::post('/demandes/{id}/statut', [DemandeTransportController::class, 'updateStatut'])->name('admin.demandes.updateStatut');
