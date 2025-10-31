@@ -14,7 +14,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4 border border-white/30">
-                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span class="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
                     <span class="text-sm font-medium">Création de demande</span>
                 </div>
                 <h1 class="text-3xl lg:text-4xl font-bold mb-3">

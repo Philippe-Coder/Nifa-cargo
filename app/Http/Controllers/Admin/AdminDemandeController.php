@@ -341,8 +341,8 @@ class AdminDemandeController extends Controller
                 'created_by_admin' => true,
             ]);
 
-            // Créer les étapes par défaut
-            $demande->creerEtapesParDefaut();
+            // Les étapes par défaut sont créées automatiquement par l'Observer
+            // Pas besoin d'appeler creerEtapesParDefaut() ici
 
             // Envoyer notification de création de demande au client
             $this->sendDemandeCreationNotification($client, $demande);
