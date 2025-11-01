@@ -132,6 +132,27 @@ class DemandeTransportController extends Controller
     }
 
     /**
+     * Mettre à jour le numéro de suivi (7 chiffres max)
+     */
+    public function updateTracking(Request $request, $id)
+    {
+        $demande = DemandeTransport::findOrFail($id);
+
+        $validated = $request->validate([
+            'numero_tracking' => ['required', 'regex:/^\d{1,7}$/', 'unique:demande_transports,numero_tracking,' . $demande->id],
+        ], [
+            'numero_tracking.required' => 'Le numéro de suivi est obligatoire.',
+            'numero_tracking.regex' => 'Le numéro de suivi doit contenir uniquement des chiffres (max 7).',
+            'numero_tracking.unique' => 'Ce numéro de suivi est déjà utilisé.',
+        ]);
+
+        $demande->numero_tracking = $validated['numero_tracking'];
+        $demande->save();
+
+        return redirect()->back()->with('success', 'Numéro de suivi mis à jour avec succès.');
+    }
+
+    /**
      * Exporter les demandes en CSV
      */
     public function export(Request $request)
@@ -224,5 +245,41 @@ class DemandeTransportController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportPDF(Request $request)
+    {
+        $query = DemandeTransport::with('user');
+
+        // Appliquer les mêmes filtres que l'export CSV
+        if ($request->filled('statut') && $request->statut !== 'tous') {
+            $query->where('statut', $request->statut);
+        }
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('reference', 'like', "%{$searchTerm}%")
+                  ->orWhere('numero_tracking', 'like', "%{$searchTerm}%")
+                  ->orWhere('marchandise', 'like', "%{$searchTerm}%")
+                  ->orWhere('origine', 'like', "%{$searchTerm}%")
+                  ->orWhere('destination', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                      $userQuery->where('name', 'like', "%{$searchTerm}%")
+                               ->orWhere('email', 'like', "%{$searchTerm}%")
+                               ->orWhere('telephone', 'like', "%{$searchTerm}%");
+                  });
+            });
+        }
+        if ($request->filled('date_debut')) {
+            $query->whereDate('created_at', '>=', $request->date_debut);
+        }
+        if ($request->filled('date_fin')) {
+            $query->whereDate('created_at', '<=', $request->date_fin);
+        }
+
+        $demandes = $query->latest()->get();
+
+        $pdf = Pdf::loadView('admin.demandes.pdf', compact('demandes'));
+        return $pdf->download('demandes_' . now()->format('Y-m-d_H-i-s') . '.pdf');
     }
 }

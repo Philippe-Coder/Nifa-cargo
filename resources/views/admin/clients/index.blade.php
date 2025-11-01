@@ -32,7 +32,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-1">Total Clients</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $clients->total() }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $totalClients ?? 0 }}</p>
             </div>
             <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <i class="fas fa-users text-blue-600"></i>
@@ -40,45 +40,45 @@
         </div>
         <div class="mt-4 flex items-center text-sm">
             <span class="text-green-600 font-medium">
-                <i class="fas fa-arrow-up mr-1"></i> +5%
+                <i class="fas fa-arrow-up mr-1"></i> Active
             </span>
-            <span class="text-gray-500 ml-2">ce mois</span>
+            <span class="text-gray-500 ml-2">sur la plateforme</span>
         </div>
     </div>
     
     <div class="dashboard-card p-6 fade-in">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">Actifs</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $clients->filter(fn($client) => $client->email_verified_at !== null)->count() }}</p>
+                <p class="text-sm font-medium text-gray-600 mb-1">Clients Vérifiés</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $clientsVerifies ?? 0 }}</p>
             </div>
             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-check-circle text-green-600"></i>
+                <i class="fas fa-user-check text-green-600"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
             <span class="text-green-600 font-medium">
-                <i class="fas fa-thumbs-up mr-1"></i> 98%
+                <i class="fas fa-shield-alt mr-1"></i> Vérifiés
             </span>
-            <span class="text-gray-500 ml-2">vérifiés</span>
+            <span class="text-gray-500 ml-2">email confirmé</span>
         </div>
     </div>
     
     <div class="dashboard-card p-6 fade-in">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 mb-1">Nouveaux</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $clients->filter(fn($client) => $client->created_at >= now()->subDays(30))->count() }}</p>
+                <p class="text-sm font-medium text-gray-600 mb-1">Nouveaux (30j)</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $clientsRecents ?? 0 }}</p>
             </div>
-            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-user-plus text-purple-600"></i>
+            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-plus text-orange-600"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-purple-600 font-medium">
-                <i class="fas fa-calendar mr-1"></i> 30j
+            <span class="text-orange-600 font-medium">
+                <i class="fas fa-calendar mr-1"></i> Récents
             </span>
-            <span class="text-gray-500 ml-2">derniers</span>
+            <span class="text-gray-500 ml-2">derniers 30 jours</span>
         </div>
     </div>
     
@@ -86,53 +86,127 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-1">Avec Demandes</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $clients->filter(fn($client) => $client->demandes_count > 0)->count() }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $clientsAvecDemandes ?? 0 }}</p>
             </div>
-            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-box text-orange-600"></i>
+            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-shipping-fast text-purple-600"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
-            <span class="text-orange-600 font-medium">
-                <i class="fas fa-chart-line mr-1"></i> Actifs
+            <span class="text-purple-600 font-medium">
+                <i class="fas fa-box mr-1"></i> Actifs
             </span>
-            <span class="text-gray-500 ml-2">utilisateurs</span>
+            <span class="text-gray-500 ml-2">ont des demandes</span>
         </div>
     </div>
 </div>
 
-<!-- Filtres et Actions -->
-<div class="dashboard-card p-6 mb-8 fade-in">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div class="flex flex-wrap gap-2">
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                Tous ({{ $clients->total() }})
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                Vérifiés
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                Non vérifiés
-            </button>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                Récents
-            </button>
-        </div>
-        
-        <div class="flex gap-2">
-            <div class="relative">
-                <input type="text" placeholder="Rechercher un client..." 
-                       class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+<!-- Filtres et Recherche -->
+<div class="dashboard-card p-6 mb-8">
+    <form method="GET" action="{{ route('admin.clients.index') }}" id="filterForm">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 space-y-4 lg:space-y-0">
+            <h3 class="text-xl font-semibold text-gray-900">
+                <i class="fas fa-users mr-2 text-blue-600"></i>
+                Liste des Clients ({{ $clients->total() }})
+            </h3>
+            
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full lg:w-auto">
+                <!-- Recherche -->
+                <div class="relative">
+                    <input type="text" 
+                           name="search"
+                           value="{{ request('search') }}"
+                           placeholder="Rechercher par nom, email, téléphone..."
+                           class="w-full sm:w-80 pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    <i class="fas fa-search absolute left-3 top-4 text-gray-400"></i>
+                </div>
+                
+                <!-- Boutons d'actions -->
+                <div class="flex space-x-2">
+                    <button type="button" onclick="toggleFilters()" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-filter"></i>
+                        <span>Filtres</span>
+                        <i class="fas fa-chevron-down transition-transform" id="filterIcon"></i>
+                    </button>
+                    
+                    <div class="relative" id="exportDropdown">
+                        <button id="exportBtn" type="button" onclick="toggleExportMenu()" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-download"></i>
+                            <span>Exporter</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="exportMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 border border-gray-200">
+                            <a href="#" onclick="exportData('csv')" 
+                               class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-t-lg transition-colors">
+                                <i class="fas fa-file-csv mr-3 text-green-600"></i>
+                                Exporter en CSV
+                            </a>
+                            <a href="#" onclick="exportData('pdf')" 
+                               class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-b-lg transition-colors">
+                                <i class="fas fa-file-pdf mr-3 text-red-600"></i>
+                                Exporter en PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                <i class="fas fa-filter mr-2"></i> Filtrer
-            </button>
-            <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                <i class="fas fa-download mr-2"></i> Exporter
-            </button>
         </div>
-    </div>
+
+        <!-- Panneau de filtres (caché par défaut) -->
+        <div id="filtersPanel" class="hidden bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg mb-6 border border-blue-200">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Filtre par statut -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-user-shield mr-1 text-blue-600"></i>
+                        Statut de vérification
+                    </label>
+                    <select name="statut" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 bg-white">
+                        <option value="tous" {{ request('statut') == 'tous' ? 'selected' : '' }}>Tous les clients</option>
+                        <option value="verifies" {{ request('statut') == 'verifies' ? 'selected' : '' }}>Clients vérifiés</option>
+                        <option value="non_verifies" {{ request('statut') == 'non_verifies' ? 'selected' : '' }}>Non vérifiés</option>
+                        <option value="recents" {{ request('statut') == 'recents' ? 'selected' : '' }}>Récents (30 jours)</option>
+                        <option value="avec_demandes" {{ request('statut') == 'avec_demandes' ? 'selected' : '' }}>Avec demandes</option>
+                    </select>
+                </div>
+
+                <!-- Date de début -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-calendar-alt mr-1 text-green-600"></i>
+                        Date de début
+                    </label>
+                    <input type="date" name="date_debut" value="{{ request('date_debut') }}"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 bg-white">
+                </div>
+
+                <!-- Date de fin -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-calendar-check mr-1 text-red-600"></i>
+                        Date de fin
+                    </label>
+                    <input type="date" name="date_fin" value="{{ request('date_fin') }}"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 bg-white">
+                </div>
+
+                <!-- Boutons d'actions -->
+                <div class="flex items-end space-x-2">
+                    <button type="submit" 
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition duration-200 flex-1 flex items-center justify-center space-x-2 shadow-lg">
+                        <i class="fas fa-search"></i>
+                        <span>Filtrer</span>
+                    </button>
+                    <a href="{{ route('admin.clients.index') }}" 
+                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition duration-200 flex items-center justify-center shadow-lg">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 <!-- Liste des Clients -->
@@ -260,8 +334,95 @@
 </div>
 @endsection
 
-@push('scripts')
+@section('scripts')
 <script>
+// Gestion des filtres
+function toggleFilters() {
+    const panel = document.getElementById('filtersPanel');
+    const icon = document.getElementById('filterIcon');
+    
+    if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        panel.classList.add('animate-fade-in');
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        panel.classList.add('hidden');
+        panel.classList.remove('animate-fade-in');
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+// Gestion du menu d'exportation
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Fermer le menu d'exportation si on clique ailleurs
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('exportDropdown');
+    const menu = document.getElementById('exportMenu');
+    
+    if (!dropdown.contains(event.target)) {
+        menu.classList.add('hidden');
+    }
+});
+
+// Fonction d'exportation
+function exportData(format) {
+    const form = document.getElementById('filterForm');
+    const formData = new FormData(form);
+    
+    // Construire l'URL avec les paramètres de recherche
+    const params = new URLSearchParams();
+    for (let [key, value] of formData.entries()) {
+        if (value) {
+            params.append(key, value);
+        }
+    }
+    
+    let url;
+    if (format === 'csv') {
+        url = "{{ route('admin.clients.export.csv') }}";
+    } else if (format === 'pdf') {
+        url = "{{ route('admin.clients.export.pdf') }}";
+    }
+    
+    // Ajouter les paramètres à l'URL
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    
+    // Ouvrir dans une nouvelle fenêtre pour télécharger
+    window.open(url, '_blank');
+    
+    // Fermer le menu
+    document.getElementById('exportMenu').classList.add('hidden');
+}
+
+// Auto-submit du formulaire lors de la recherche (avec délai)
+let searchTimeout;
+document.querySelector('input[name="search"]').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        document.getElementById('filterForm').submit();
+    }, 1000);
+});
+
+// Animation pour les nouvelles données
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            row.style.transition = 'all 0.3s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+
 function toggleClientDropdown(id) {
     const dropdown = document.getElementById(`client-dropdown-${id}`);
     const allDropdowns = document.querySelectorAll('[id^="client-dropdown-"]');
@@ -286,4 +447,41 @@ document.addEventListener('click', function(event) {
     }
 });
 </script>
-@endpush
+
+<style>
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+.gradient-bg-dashboard {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.fade-in {
+    animation: fade-in 0.6s ease-out;
+}
+</style>
+@endsection

@@ -21,7 +21,8 @@ class AdminDemandeController extends Controller
      */
     public function create()
     {
-        return view('admin.demandes.create');
+        // Utiliser la vue existante de création simple
+        return view('admin.demandes.create-simple');
     }
 
     /**
@@ -50,14 +51,8 @@ class AdminDemandeController extends Controller
     /**
      * Génère un numéro de tracking unique
      */
-    private function generateTrackingNumber(): string
-    {
-        do {
-            $trackingNumber = 'TRK' . date('Ym') . str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
-        } while (DemandeTransport::where('numero_tracking', $trackingNumber)->exists());
-
-        return $trackingNumber;
-    }
+    // Génération auto non utilisée désormais: l'admin définit un code manuel (max 7 chiffres)
+    // private function generateTrackingNumber(): string { ... }
 
     /**
      * Génère un mot de passe temporaire
@@ -303,6 +298,12 @@ class AdminDemandeController extends Controller
             'date_souhaitee' => 'nullable|date|after_or_equal:today',
             'valeur' => 'nullable|numeric|min:0',
             'fragile' => 'boolean',
+            // Numéro de suivi: 1 à 7 chiffres, optionnel à la création admin
+            'numero_tracking' => [
+                'nullable',
+                'regex:/^\d{1,7}$/',
+                Rule::unique('demande_transports', 'numero_tracking'),
+            ],
         ]);
 
         try {
@@ -337,7 +338,7 @@ class AdminDemandeController extends Controller
                 'valeur' => $request->valeur,
                 'fragile' => $request->boolean('fragile'),
                 'frais_expedition' => $request->frais_expedition,
-                'numero_tracking' => $this->generateTrackingNumber(),
+                'numero_tracking' => $request->input('numero_tracking'),
                 'created_by_admin' => true,
             ]);
 

@@ -71,13 +71,13 @@
                 <div>
                     <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Type de transport *</label>
                     <select name="type" id="type" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
-                        <option value="">Sélectionner</option>
-                        <option value="maritime" {{ old('type') == 'maritime' ? 'selected' : '' }}>Maritime</option>
-                        <option value="aérien" {{ old('type') == 'aérien' ? 'selected' : '' }}>Aérien</option>
-                        <option value="routier" {{ old('type') == 'routier' ? 'selected' : '' }}>Routier</option>
-                    </select>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <label for="numero_tracking" class="block text-sm font-medium text-gray-700 mb-2">Numéro de suivi (max 7 chiffres)</label>
+                <input type="text" name="numero_tracking" id="numero_tracking" maxlength="7" pattern="\d{1,7}" value="{{ old('numero_tracking') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Saisir le numéro de suivi" autocomplete="off">
+                <span class="text-xs text-gray-500">Ce champ doit contenir uniquement des chiffres (max 7).</span>
+            </div>
+        </div>
 
                 <!-- Statut -->
                 <div>

@@ -72,7 +72,22 @@
                 <p class="mb-2"><span class="font-semibold">Client :</span> {{ $demande->user->name }}</p>
                 <p class="mb-2"><span class="font-semibold">Email :</span> {{ $demande->user->email }}</p>
                 <p class="mb-2"><span class="font-semibold">Téléphone :</span> {{ $demande->user->telephone ?? 'Non renseigné' }}</p>
-                <p class="mb-2"><span class="font-semibold">Numéro de suivi :</span> <code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ $demande->numero_tracking ?? 'Non généré' }}</code></p>
+                <div class="mb-3">
+                    <span class="font-semibold">Numéro de suivi :</span>
+                    <code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ $demande->numero_tracking ?? 'Non défini' }}</code>
+                    <details class="mt-2">
+                        <summary class="cursor-pointer text-sm text-blue-600 hover:underline">Définir / Modifier le numéro de suivi</summary>
+                        <form action="{{ route('admin.demandes.updateTracking', $demande->id) }}" method="POST" class="mt-2 flex items-center gap-2">
+                            @csrf
+                            <input type="text" name="numero_tracking" value="{{ old('numero_tracking', $demande->numero_tracking) }}" maxlength="7" pattern="\d{1,7}"
+                                   class="border rounded px-2 py-1 text-sm" placeholder="Ex: 1234567" required>
+                            <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">Enregistrer</button>
+                        </form>
+                        @error('numero_tracking')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </details>
+                </div>
                 <p class="mb-2"><span class="font-semibold">Date de création :</span> {{ $demande->created_at->format('d/m/Y H:i') }}</p>
                 @if($demande->date_souhaitee)
                 <p class="mb-2"><span class="font-semibold">Date souhaitée :</span> {{ \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') }}</p>

@@ -152,18 +152,32 @@
                         </button>
                     @endif
                 </div>
-                <button type="button" onclick="toggleAdvancedFilters()" 
-                        class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                    <i class="fas fa-filter mr-2"></i> Filtres avancés
-                </button>
-                <a href="{{ route('admin.demandes.create-admin') }}" 
-                   class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
-                    <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
-                </a>
-                <button type="button" onclick="exportDemandes()" 
-                        class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
-                    <i class="fas fa-file-export mr-2"></i> Exporter
-                </button>
+                        <button type="button" onclick="toggleAdvancedFilters()" 
+                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
+                            <i class="fas fa-filter mr-2"></i> Filtres avancés
+                        </button>
+                        <a href="{{ route('admin.demandes.create-admin') }}" 
+                           class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
+                            <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
+                        </a>
+                        <div class="relative flex-shrink-0" style="min-width:140px;">
+                            <button id="exportBtn" type="button" onclick="toggleExportMenu()" 
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center w-full justify-center">
+                                <i class="fas fa-file-export mr-2"></i> Exporter <i class="fas fa-chevron-down ml-2"></i>
+                            </button>
+                            <div id="exportMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-30 border border-gray-200">
+                                <a href="#" onclick="exportDemandes('csv');return false;" 
+                                   class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-t-lg transition-colors">
+                                    <i class="fas fa-file-csv mr-3 text-green-600"></i>
+                                    Exporter en CSV
+                                </a>
+                                <a href="#" onclick="exportDemandes('pdf');return false;" 
+                                   class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-b-lg transition-colors">
+                                    <i class="fas fa-file-pdf mr-3 text-red-600"></i>
+                                    Exporter en PDF
+                                </a>
+                            </div>
+                        </div>
             </div>
         </div>
         
@@ -227,6 +241,7 @@
                 <tr class="border-b border-gray-200">
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Client</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Référence</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Suivi</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Type</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Trajet</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Statut</th>
@@ -265,6 +280,17 @@
                                 <i class="fas fa-{{ $demande->type === 'maritime' ? 'ship' : ($demande->type === 'aérien' ? 'plane' : 'truck') }} mr-2"></i>
                                 {{ ucfirst($demande->type) }}
                             </span>
+                        </td>
+
+                        <!-- Numéro de suivi -->
+                        <td class="py-4 px-6">
+                            @if($demande->numero_tracking)
+                                <span class="font-mono text-sm font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded-lg">
+                                    {{ $demande->numero_tracking }}
+                                </span>
+                            @else
+                                <span class="text-gray-400 text-sm">—</span>
+                            @endif
                         </td>
                         
                         <!-- Trajet -->
@@ -356,7 +382,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-16 text-center">
+                        <td colspan="8" class="py-16 text-center">
                             <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-inbox text-gray-400 text-3xl"></i>
                             </div>
@@ -480,19 +506,37 @@ function removeFilter(filterType) {
     window.location.href = url;
 }
 
-function exportDemandes() {
-    // Récupérer les paramètres actuels de filtrage
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Fermer le menu d'exportation si on clique ailleurs
+document.addEventListener('click', function(event) {
+    const dropdown = document.querySelector('.relative');
+    const menu = document.getElementById('exportMenu');
+    if (menu && !dropdown.contains(event.target)) {
+        menu.classList.add('hidden');
+    }
+});
+
+function exportDemandes(format) {
     const form = document.getElementById('filterForm');
     const formData = new FormData(form);
     let params = new URLSearchParams();
-    
     for (let [key, value] of formData.entries()) {
         if (value) params.append(key, value);
     }
-    
-    // Redirection vers l'export avec les mêmes filtres
-    const exportUrl = "{{ route('admin.demandes.export') }}" + '?' + params.toString();
+    let exportUrl;
+    if (format === 'csv') {
+        exportUrl = "{{ route('admin.demandes.export') }}" + '?' + params.toString();
+    } else if (format === 'pdf') {
+        exportUrl = "{{ route('admin.demandes.export.pdf') }}" + '?' + params.toString();
+    } else {
+        exportUrl = "{{ route('admin.demandes.export') }}" + '?' + params.toString();
+    }
     window.open(exportUrl, '_blank');
+    document.getElementById('exportMenu').classList.add('hidden');
 }
 
 // Recherche en temps réel
