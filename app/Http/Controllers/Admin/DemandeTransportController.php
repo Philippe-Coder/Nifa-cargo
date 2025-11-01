@@ -149,7 +149,14 @@ class DemandeTransportController extends Controller
         $demande->numero_tracking = $validated['numero_tracking'];
         $demande->save();
 
-        return redirect()->back()->with('success', 'Numéro de suivi mis à jour avec succès.');
+        // Notifier le client par Email + WhatsApp
+        try {
+            \App\Services\NotificationService::notifyTrackingUpdated($demande);
+        } catch (\Throwable $e) {
+            // Ne pas bloquer le flux si l'envoi échoue
+        }
+
+        return redirect()->back()->with('success', 'Numéro de suivi mis à jour avec succès. Le client a été notifié.');
     }
 
     /**

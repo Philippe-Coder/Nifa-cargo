@@ -514,4 +514,34 @@ class NotificationService
             ]);
         }
     }
+
+    /**
+     * Notifier le client quand le numéro de suivi est défini ou modifié
+     */
+    public static function notifyTrackingUpdated(DemandeTransport $demande): void
+    {
+        $user = $demande->user;
+        if (!$user) {
+            Log::warning('notifyTrackingUpdated: aucun utilisateur lié à la demande', ['demande_id' => $demande->id]);
+            return;
+        }
+
+        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+        $tracking = $demande->numero_tracking ?: '—';
+
+        $titre = "Votre numéro de suivi a été mis à jour";
+        $message = "🔎 Numéro de suivi: {$tracking}\n" .
+                   "📦 Référence: {$reference}\n" .
+                   "📍 Trajet: " . ($demande->origine ?? 'N/A') . " → " . ($demande->destination ?? 'N/A') . "\n\n" .
+                   "Vous pouvez suivre votre colis depuis votre espace client.";
+
+        try {
+            self::envoyerNotification($user, $demande, $titre, $message);
+        } catch (\Throwable $e) {
+            Log::error('Erreur notifyTrackingUpdated: ' . $e->getMessage(), [
+                'demande_id' => $demande->id,
+                'user_id' => $user->id,
+            ]);
+        }
+    }
 }

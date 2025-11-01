@@ -41,68 +41,129 @@
         </div>
     </div>
 
-    @if($demandes->count() > 0)
+    <div class="header">
+        <h1>NIFA CARGO</h1>
+        @if(isset($demande))
+            <div class="subtitle">Demande de Transport - Détails</div>
+        @else
+            <div class="subtitle">Exportation des demandes de transport</div>
+        @endif
+                    <th>Référence</th>
+                    <th>Client</th>
+    @if(isset($demande))
+        <div class="info-section">
+            <div class="info-row">
+                <span class="info-label">Référence :</span>
+                <span class="info-value">{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Numéro de suivi :</span>
+                <span class="info-value">{{ $demande->numero_tracking ?? '—' }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Client :</span>
+                <span class="info-value">{{ $demande->user->name ?? '' }} ({{ $demande->user->email ?? '' }})</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Trajet :</span>
+                <span class="info-value">{{ $demande->origine ?? '' }} → {{ $demande->destination ?? '' }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Créée le :</span>
+                <span class="info-value">{{ $demande->created_at->format('d/m/Y H:i') }}</span>
+            </div>
+        </div>
+
         <table>
             <thead>
                 <tr>
-                    <th>Référence</th>
-                    <th>Client</th>
-                    <th>Email</th>
-                    <th>Téléphone</th>
-                    <th>Tracking</th>
                     <th>Type</th>
                     <th>Marchandise</th>
                     <th>Poids</th>
                     <th>Volume</th>
-                    <th>Origine</th>
-                    <th>Destination</th>
                     <th>Statut</th>
-                    <th>Créée le</th>
                     <th>Date souhaitée</th>
                     <th>Valeur</th>
                     <th>Fragile</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($demandes as $demande)
                 <tr>
-                    <td>{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</td>
-                    <td>{{ $demande->user->name ?? '' }}</td>
-                    <td>{{ $demande->user->email ?? '' }}</td>
-                    <td>{{ $demande->user->telephone ?? '' }}</td>
-                    <td>{{ $demande->numero_tracking ?? '' }}</td>
                     <td>{{ $demande->type ?? '' }}</td>
                     <td>{{ $demande->marchandise ?? '' }}</td>
                     <td>{{ $demande->poids ?? '' }}</td>
                     <td>{{ $demande->volume ?? '' }}</td>
-                    <td>{{ $demande->origine ?? '' }}</td>
-                    <td>{{ $demande->destination ?? '' }}</td>
-                    <td>
-                        <span class="statut-badge statut-{{ strtolower($demande->statut) }}">
-                            {{ ucfirst($demande->statut) }}
-                        </span>
-                    </td>
-                    <td>{{ $demande->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ ucfirst($demande->statut) }}</td>
                     <td>{{ $demande->date_souhaitee ? \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') : '' }}</td>
                     <td>{{ $demande->valeur ?? '' }}</td>
                     <td>{{ $demande->fragile ? 'Oui' : 'Non' }}</td>
                 </tr>
-                @endforeach
             </tbody>
         </table>
     @else
-        <div style="text-align: center; padding: 40px; color: #6b7280; font-style: italic;">
-            Aucune demande trouvée avec les critères sélectionnés
+        <div class="info-section">
+            <div class="info-row">
+                <span class="info-label">Date d'exportation :</span>
+                <span class="info-value">{{ now()->format('d/m/Y à H:i') }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Nombre total de demandes :</span>
+                <span class="info-value">{{ $demandes->count() }} demande(s)</span>
+            </div>
         </div>
+                    <th>Créée le</th>
+        @if($demandes->count() > 0)
+            <table>
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Tracking</th>
+                        <th>Type</th>
+                        <th>Marchandise</th>
+                        <th>Poids</th>
+                        <th>Volume</th>
+                        <th>Origine</th>
+                        <th>Destination</th>
+                        <th>Statut</th>
+                        <th>Créée le</th>
+                        <th>Date souhaitée</th>
+                        <th>Valeur</th>
+                        <th>Fragile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($demandes as $demande)
+                    <tr>
+                        <td>{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $demande->user->name ?? '' }}</td>
+                        <td>{{ $demande->user->email ?? '' }}</td>
+                        <td>{{ $demande->user->telephone ?? '' }}</td>
+                        <td>{{ $demande->numero_tracking ?? '' }}</td>
+                        <td>{{ $demande->type ?? '' }}</td>
+                        <td>{{ $demande->marchandise ?? '' }}</td>
+                        <td>{{ $demande->poids ?? '' }}</td>
+                        <td>{{ $demande->volume ?? '' }}</td>
+                        <td>{{ $demande->origine ?? '' }}</td>
+                        <td>{{ $demande->destination ?? '' }}</td>
+                        <td>
+                            <span class="statut-badge statut-{{ strtolower($demande->statut) }}">
+                                {{ ucfirst($demande->statut) }}
+                            </span>
+                        </td>
+                        <td>{{ $demande->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $demande->date_souhaitee ? \Carbon\Carbon::parse($demande->date_souhaitee)->format('d/m/Y') : '' }}</td>
+                        <td>{{ $demande->valeur ?? '' }}</td>
+                        <td>{{ $demande->fragile ? 'Oui' : 'Non' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div style="text-align: center; padding: 40px; color: #6b7280; font-style: italic;">
+                Aucune demande trouvée avec les critères sélectionnés
+            </div>
+        @endif
     @endif
-
-    <div class="footer">
-        <div><strong>NIFA CARGO</strong> - Système de Gestion des Demandes</div>
-        <div>Exporté le {{ now()->format('d/m/Y à H:i:s') }}</div>
-    </div>
-
-    <div class="page-number">
-        Page <span class="pagenum"></span>
-    </div>
-</body>
-</html>
