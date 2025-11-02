@@ -131,10 +131,83 @@ class DemandeTransportController extends Controller
         return $pdf->download($filename);
     }
 
+    /**
+     * Afficher le formulaire d'édition d'une demande
+     */
+    public function edit($id)
+    {
+        $demande = DemandeTransport::with('user')->findOrFail($id);
+        
+        return view('admin.demandes.edit', compact('demande'));
+    }
+
+    /**
+     * Mettre à jour une demande
+     */
+    public function update(Request $request, $id)
+    {
+        $demande = DemandeTransport::findOrFail($id);
+        
+        $validated = $request->validate([
+            'type_transport' => 'required|string',
+            'marchandise' => 'required|string|max:255',
+            'poids' => 'nullable|numeric|min:0',
+            'volume' => 'nullable|numeric|min:0',
+            'origine' => 'required|string|max:255',
+            'destination' => 'required|string|max:255',
+            'ville_depart' => 'nullable|string|max:255',
+            'ville_destination' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'date_souhaitee' => 'nullable|date',
+            'dimensions' => 'nullable|string|max:255',
+            'valeur' => 'nullable|numeric|min:0|max:999999999999.99',
+            'fragile' => 'nullable|boolean',
+            'statut' => 'required|string|in:en_attente,validee,en_cours,en_transit,livree,annulee'
+        ]);
+
+        // Stocker les anciennes valeurs pour la notification
+        $oldData = $demande->only(['type_transport', 'marchandise', 'origine', 'destination', 'statut']);
+        
+        // Mettre à jour la demande
+        $demande->update($validated);
+
+        // Notification au client si modification significative
+        if ($this->hasSignificantChanges($oldData, $validated)) {
+            NotificationService::notifyDemandeModified($demande, $oldData, $validated);
+        }
+
+        return redirect()->route('admin.demandes.show', $demande->id)
+            ->with('success', 'Demande mise à jour avec succès.');
+    }
+
     public function destroy($id)
     {
-        DemandeTransport::destroy($id);
-        return redirect()->back()->with('success', 'Demande supprimée.');
+        $demande = DemandeTransport::with('user')->findOrFail($id);
+        $user = $demande->user;
+        
+        // Notifier le client de la suppression
+        NotificationService::notifyDemandeSupprimee($demande);
+        
+        $demande->delete();
+        
+        return redirect()->route('admin.demandes.index')
+            ->with('success', 'Demande supprimée avec succès.');
+    }
+
+    /**
+     * Vérifier si les modifications sont significatives
+     */
+    private function hasSignificantChanges($oldData, $newData)
+    {
+        $significantFields = ['type_transport', 'origine', 'destination', 'statut'];
+        
+        foreach ($significantFields as $field) {
+            if ($oldData[$field] !== $newData[$field]) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**

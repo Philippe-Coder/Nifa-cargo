@@ -376,6 +376,9 @@ Route::middleware(['auth'])->group(function () {
     // Interface client de suivi
     Route::get('/mes-demandes', [SuiviController::class, 'index'])->name('mes-demandes.index');
     Route::get('/mes-demandes/{demande}', [SuiviController::class, 'show'])->name('mes-demandes.show');
+    Route::get('/mes-demandes/{demande}/edit', [SuiviController::class, 'edit'])->name('mes-demandes.edit');
+    Route::put('/mes-demandes/{demande}', [SuiviController::class, 'update'])->name('mes-demandes.update');
+    Route::post('/mes-demandes/{demande}/cancel', [SuiviController::class, 'cancel'])->name('mes-demandes.cancel');
     
     // Gestion des documents
     Route::get('/demandes/{demande}/documents', [DocumentController::class, 'index'])->name('documents.index');
@@ -507,16 +510,35 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/demandes/export', [DemandeTransportController::class, 'export'])->name('admin.demandes.export');
     Route::get('/demandes/export/pdf', [DemandeTransportController::class, 'exportPDF'])->name('admin.demandes.export.pdf');
     Route::get('/demandes/{id}', [DemandeTransportController::class, 'show'])->name('admin.demandes.show');
+    Route::get('/demandes/{id}/edit', [DemandeTransportController::class, 'edit'])->name('admin.demandes.edit');
+    Route::put('/demandes/{id}', [DemandeTransportController::class, 'update'])->name('admin.demandes.update');
     Route::get('/demandes/{id}/pdf', [DemandeTransportController::class, 'downloadPDF'])->name('admin.demandes.pdf');
     Route::post('/demandes/{id}/statut', [DemandeTransportController::class, 'updateStatut'])->name('admin.demandes.updateStatut');
     Route::post('/demandes/{id}/tracking', [DemandeTransportController::class, 'updateTracking'])->name('admin.demandes.updateTracking');
     Route::delete('/demandes/{id}', [DemandeTransportController::class, 'destroy'])->name('admin.demandes.destroy');
     
     Route::get('/clients', [ClientController::class, 'index'])->name('admin.clients.index');
+    
+    // Route de test temporaire
+    Route::get('/test-fonctionnalites', function() {
+        $clients = \App\Models\User::where('role', 'client')->latest()->take(5)->get();
+        $demandes = \App\Models\DemandeTransport::latest()->take(5)->get();
+        $totalClients = \App\Models\User::where('role', 'client')->count();
+        $clientsActifs = \App\Models\User::where('role', 'client')->whereNull('suspended_at')->count();
+        $clientsSuspendus = \App\Models\User::where('role', 'client')->whereNotNull('suspended_at')->count();
+        $totalDemandes = \App\Models\DemandeTransport::count();
+        
+        return view('admin.test-fonctionnalites', compact('clients', 'demandes', 'totalClients', 'clientsActifs', 'clientsSuspendus', 'totalDemandes'));
+    })->name('admin.test.fonctionnalites');
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('admin.clients.show');
+    Route::get('/clients/{id}/edit', [ClientController::class, 'edit'])->name('admin.clients.edit');
+    Route::put('/clients/{id}', [ClientController::class, 'update'])->name('admin.clients.update');
+    Route::post('/clients/{id}/suspend', [ClientController::class, 'suspend'])->name('admin.clients.suspend');
+    Route::post('/clients/{id}/activate', [ClientController::class, 'activate'])->name('admin.clients.activate');
     Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('admin.clients.destroy');
     Route::get('/clients/export/csv', [ClientController::class, 'exportCSV'])->name('admin.clients.export.csv');
     Route::get('/clients/export/pdf', [ClientController::class, 'exportPDF'])->name('admin.clients.export.pdf');
+    Route::post('/clients/send-notification', [ClientController::class, 'sendNotification'])->name('admin.clients.send-notification');
     
     // Gestion des étapes logistiques
     Route::post('/etapes/{id}/statut', [EtapeLogistiqueController::class, 'updateStatut'])->name('admin.etapes.updateStatut');

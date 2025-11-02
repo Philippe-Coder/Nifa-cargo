@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ClientController extends Controller
@@ -16,6 +18,12 @@ class ClientController extends Controller
         // Filtrage par statut de vérification
         if ($request->filled('statut') && $request->statut !== 'tous') {
             switch ($request->statut) {
+                case 'actifs':
+                    $query->whereNull('suspended_at');
+                    break;
+                case 'suspendus':
+                    $query->whereNotNull('suspended_at');
+                    break;
                 case 'verifies':
                     $query->whereNotNull('email_verified_at');
                     break;
@@ -56,13 +64,15 @@ class ClientController extends Controller
         $clientsVerifies = User::where('role', 'client')->whereNotNull('email_verified_at')->count();
         $clientsRecents = User::where('role', 'client')->where('created_at', '>=', now()->subDays(30))->count();
         $clientsAvecDemandes = User::where('role', 'client')->has('demandes')->count();
+        $clientsSuspendus = User::where('role', 'client')->whereNotNull('suspended_at')->count();
 
         return view('admin.clients.index', compact(
             'clients', 
             'totalClients', 
             'clientsVerifies', 
             'clientsRecents', 
-            'clientsAvecDemandes'
+            'clientsAvecDemandes',
+            'clientsSuspendus'
         ));
     }
 
@@ -74,11 +84,24 @@ class ClientController extends Controller
 
     public function destroy($id)
     {
-        $client = User::findOrFail($id);
-        $client->delete();
+        $client = User::where('role', 'client')->findOrFail($id);
         
+        // Vérifier s'il a des demandes en cours
+        $demandesEnCours = $client->demandes()->whereNotIn('statut', ['livree', 'annulee'])->count();
+        
+        if ($demandesEnCours > 0) {
+            return redirect()->back()
+                ->with('error', "Impossible de supprimer ce client car il a {$demandesEnCours} demande(s) en cours. Veuillez d'abord traiter ses demandes.");
+        }
+
+        // Notifier le client avant suppression
+        \App\Services\NotificationService::notifyClientAccountDeleted($client);
+        
+        // Supprimer le client
+        $client->delete();
+
         return redirect()->route('admin.clients.index')
-            ->with('success', 'Client supprimé avec succès');
+            ->with('success', 'Compte client supprimé avec succès.');
     }
 
     public function exportCSV(Request $request)
@@ -207,4 +230,146 @@ class ClientController extends Controller
         
         return $pdf->download('clients_' . now()->format('Y-m-d_H-i-s') . '.pdf');
     }
+
+    /**
+     * Afficher le formulaire d'édition d'un client
+     */
+    public function edit($id)
+    {
+        $client = User::where('role', 'client')->findOrFail($id);
+        
+        return view('admin.clients.edit', compact('client'));
+    }
+
+    /**
+     * Mettre à jour les informations d'un client
+     */
+    public function update(Request $request, $id)
+    {
+        $client = User::where('role', 'client')->findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $client->id,
+            'telephone' => 'nullable|string|max:20',
+            'role' => 'required|in:client,admin'
+        ]);
+
+        $oldData = $client->only(['name', 'email', 'telephone', 'role']);
+        $client->update($validated);
+
+        // Notifier le client s'il y a des changements significatifs
+        if ($oldData['email'] !== $validated['email'] || $oldData['name'] !== $validated['name']) {
+            \App\Services\NotificationService::notifyClientAccountModified($client, $oldData, $validated);
+        }
+
+        return redirect()->route('admin.clients.show', $client->id)
+            ->with('success', 'Informations du client mises à jour avec succès.');
+    }
+
+    /**
+     * Suspendre un compte client
+     */
+    public function suspend($id)
+    {
+        $client = User::where('role', 'client')->findOrFail($id);
+        
+        // Ajouter une colonne 'suspended' ou utiliser un système de statut
+        $client->update(['suspended_at' => now()]);
+
+        // Notifier le client
+        \App\Services\NotificationService::notifyClientAccountSuspended($client);
+
+        return redirect()->back()
+            ->with('success', 'Compte client suspendu avec succès.');
+    }
+
+    /**
+     * Activer un compte client suspendu
+     */
+    public function activate($id)
+    {
+        $client = User::where('role', 'client')->findOrFail($id);
+        
+        $client->update(['suspended_at' => null]);
+
+        // Notifier le client
+        \App\Services\NotificationService::notifyClientAccountActivated($client);
+
+        return redirect()->back()
+            ->with('success', 'Compte client activé avec succès.');
+    }
+
+    /**
+     * Envoyer une notification personnalisée à un client
+     */
+    public function sendNotification(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'type' => 'required|in:info,reminder,warning,promotion',
+            'title' => 'required|string|max:255',
+            'message' => 'required|string|max:1000',
+            'send_whatsapp' => 'boolean'
+        ]);
+
+        $client = User::findOrFail($request->client_id);
+        
+        // Vérifier que c'est bien un client
+        if ($client->role !== 'client') {
+            return response()->json([
+                'success' => false,
+                'message' => 'L\'utilisateur spécifié n\'est pas un client.'
+            ], 400);
+        }
+
+        try {
+            // Créer la notification en base
+            $notification = $client->notifications()->create([
+                'type' => 'admin_message',
+                'data' => [
+                    'type' => $request->type,
+                    'title' => $request->title,
+                    'message' => $request->message,
+                    'sent_by' => Auth::user()->name,
+                    'sent_at' => now()->toDateTimeString()
+                ]
+            ]);
+
+            // Envoyer par email si activé
+            if ($client->notify_email ?? true) {
+                \App\Services\NotificationService::sendNotificationEmail(
+                    $client->email,
+                    $request->title,
+                    $request->message,
+                    $request->type
+                );
+            }
+
+            // Envoyer par WhatsApp si demandé et activé
+            if ($request->send_whatsapp && ($client->notify_whatsapp ?? true) && $client->telephone) {
+                \App\Services\NotificationService::sendWhatsAppMessage(
+                    $client->telephone,
+                    "📢 *{$request->title}*\n\n{$request->message}\n\n_Message de l'équipe NIF Cargo_"
+                );
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification envoyée avec succès!'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Erreur envoi notification client', [
+                'client_id' => $request->client_id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de l\'envoi de la notification: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

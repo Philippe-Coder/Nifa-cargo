@@ -5,13 +5,13 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="gradient-bg-dashboard rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
+<div class="gradient-bg-dashboard rounded-2xl p-8 mb-8 text-blue relative overflow-hidden">
     <div class="absolute inset-0 bg-black bg-opacity-10"></div>
     <div class="relative z-10">
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold mb-2">
-                    👥 Gestion des Clients
+                     Gestion des Clients
                 </h1>
                 <p class="text-blue-100 text-lg">
                     Gérez tous les clients enregistrés sur la plateforme
@@ -82,7 +82,7 @@
         </div>
     </div>
     
-    <div class="dashboard-card p-6 fade-in">
+                    <div class="dashboard-card p-6 fade-in">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 mb-1">Avec Demandes</p>
@@ -97,6 +97,45 @@
                 <i class="fas fa-box mr-1"></i> Actifs
             </span>
             <span class="text-gray-500 ml-2">ont des demandes</span>
+        </div>
+    </div>
+</div>
+
+<!-- Statistiques supplémentaires -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="dashboard-card p-6 fade-in">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Comptes Suspendus</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $clientsSuspendus ?? 0 }}</p>
+            </div>
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-ban text-red-600"></i>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm">
+            <span class="text-red-600 font-medium">
+                <i class="fas fa-user-slash mr-1"></i> Suspendus
+            </span>
+            <span class="text-gray-500 ml-2">accès restreint</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-card p-6 fade-in">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Comptes Actifs</p>
+                <p class="text-2xl font-bold text-gray-900">{{ ($totalClients ?? 0) - ($clientsSuspendus ?? 0) }}</p>
+            </div>
+            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-check text-green-600"></i>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm">
+            <span class="text-green-600 font-medium">
+                <i class="fas fa-check-circle mr-1"></i> Fonctionnels
+            </span>
+            <span class="text-gray-500 ml-2">peuvent se connecter</span>
         </div>
     </div>
 </div>
@@ -165,6 +204,8 @@
                     </label>
                     <select name="statut" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 bg-white">
                         <option value="tous" {{ request('statut') == 'tous' ? 'selected' : '' }}>Tous les clients</option>
+                        <option value="actifs" {{ request('statut') == 'actifs' ? 'selected' : '' }}>Comptes actifs</option>
+                        <option value="suspendus" {{ request('statut') == 'suspendus' ? 'selected' : '' }}>Comptes suspendus</option>
                         <option value="verifies" {{ request('statut') == 'verifies' ? 'selected' : '' }}>Clients vérifiés</option>
                         <option value="non_verifies" {{ request('statut') == 'non_verifies' ? 'selected' : '' }}>Non vérifiés</option>
                         <option value="recents" {{ request('statut') == 'recents' ? 'selected' : '' }}>Récents (30 jours)</option>
@@ -209,6 +250,58 @@
     </form>
 </div>
 
+<!-- Légende des actions -->
+<div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-6 border border-blue-200">
+    <h4 class="text-sm font-semibold text-gray-800 mb-3">
+        <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+        Actions disponibles pour chaque client :
+    </h4>
+    <div class="flex flex-wrap gap-4 text-sm">
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded flex items-center justify-center">
+                <i class="fas fa-eye text-xs"></i>
+            </div>
+            <span class="text-gray-700">Voir le profil</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-green-100 text-green-600 rounded flex items-center justify-center">
+                <i class="fas fa-edit text-xs"></i>
+            </div>
+            <span class="text-gray-700">Modifier</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-purple-100 text-purple-600 rounded flex items-center justify-center">
+                <i class="fas fa-shipping-fast text-xs"></i>
+            </div>
+            <span class="text-gray-700">Demandes</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-orange-100 text-orange-600 rounded flex items-center justify-center">
+                <i class="fas fa-bell text-xs"></i>
+            </div>
+            <span class="text-gray-700">Notification</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-amber-100 text-amber-600 rounded flex items-center justify-center">
+                <i class="fas fa-ban text-xs"></i>
+            </div>
+            <span class="text-gray-700">Suspendre</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-cyan-100 text-cyan-600 rounded flex items-center justify-center">
+                <i class="fas fa-user-check text-xs"></i>
+            </div>
+            <span class="text-gray-700">Réactiver</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-red-100 text-red-600 rounded flex items-center justify-center">
+                <i class="fas fa-trash text-xs"></i>
+            </div>
+            <span class="text-gray-700">Supprimer</span>
+        </div>
+    </div>
+</div>
+
 <!-- Liste des Clients -->
 <div class="dashboard-card p-6 fade-in">
     @if($clients->count() > 0)
@@ -220,8 +313,8 @@
                         <th class="text-left py-3 px-4 font-medium text-gray-600">Contact</th>
                         <th class="text-left py-3 px-4 font-medium text-gray-600">Statut</th>
                         <th class="text-left py-3 px-4 font-medium text-gray-600">Demandes</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Inscription</th>
-                        <th class="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600 hidden sm:table-cell">Inscription</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600 min-w-[280px]">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -249,15 +342,27 @@
                                 </div>
                             </td>
                             <td class="py-3 px-4">
-                                @if($client->email_verified_at)
-                                    <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                                        <i class="fas fa-check-circle mr-1"></i> Vérifié
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                                        <i class="fas fa-clock mr-1"></i> En attente
-                                    </span>
-                                @endif
+                                <div class="flex flex-col space-y-1">
+                                    @if($client->email_verified_at)
+                                        <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium w-fit">
+                                            <i class="fas fa-check-circle mr-1"></i> Vérifié
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium w-fit">
+                                            <i class="fas fa-clock mr-1"></i> En attente
+                                        </span>
+                                    @endif
+                                    
+                                    @if($client->suspended_at)
+                                        <span class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium w-fit">
+                                            <i class="fas fa-ban mr-1"></i> Suspendu
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium w-fit">
+                                            <i class="fas fa-user-check mr-1"></i> Actif
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="py-3 px-4">
                                 <div class="text-sm">
@@ -267,48 +372,76 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="py-3 px-4 text-gray-600 text-sm">
+                            <td class="py-3 px-4 text-gray-600 text-sm hidden sm:table-cell">
                                 <div>
                                     <p>{{ $client->created_at->format('d/m/Y') }}</p>
                                     <p class="text-xs text-gray-500">{{ $client->created_at->diffForHumans() }}</p>
                                 </div>
                             </td>
                             <td class="py-3 px-4">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <!-- Voir le client -->
                                     <a href="{{ route('admin.clients.show', $client->id) }}" 
-                                       class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                        <i class="fas fa-eye mr-1"></i> Voir
+                                       class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                       title="Voir le profil du client">
+                                        <i class="fas fa-eye text-sm"></i>
                                     </a>
                                     
-                                    <div class="relative">
-                                        <button class="text-gray-400 hover:text-gray-600" onclick="toggleClientDropdown({{ $client->id }})">
-                                            <i class="fas fa-ellipsis-v"></i>
+                                    <!-- Modifier le client -->
+                                    <a href="{{ route('admin.clients.edit', $client->id) }}" 
+                                       class="inline-flex items-center justify-center w-8 h-8 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                       title="Modifier le profil du client">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </a>
+                                    
+                                    <!-- Voir les demandes -->
+                                    <a href="{{ route('admin.demandes.index', ['client_id' => $client->id]) }}" 
+                                       class="inline-flex items-center justify-center w-8 h-8 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                       title="Voir les demandes du client">
+                                        <i class="fas fa-shipping-fast text-sm"></i>
+                                    </a>
+                                    
+                                    <!-- Envoyer notification -->
+                                    <button onclick="openNotificationModal({{ $client->id }}, '{{ str_replace("'", "\'", $client->name) }}')"
+                                            class="inline-flex items-center justify-center w-8 h-8 bg-orange-100 hover:bg-orange-200 text-orange-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                            title="Envoyer une notification">
+                                        <i class="fas fa-bell text-sm"></i>
+                                    </button>
+                                    
+                                    <!-- Suspendre/Activer -->
+                                    @if($client->suspended_at)
+                                        <form action="{{ route('admin.clients.activate', $client->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <button type="submit" 
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir réactiver ce client ?')"
+                                                    class="inline-flex items-center justify-center w-8 h-8 bg-cyan-100 hover:bg-cyan-200 text-cyan-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                                    title="Réactiver le compte">
+                                                <i class="fas fa-user-check text-sm"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('admin.clients.suspend', $client->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <button type="submit" 
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir suspendre ce client ? Il ne pourra plus se connecter.')"
+                                                    class="inline-flex items-center justify-center w-8 h-8 bg-amber-100 hover:bg-amber-200 text-amber-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                                    title="Suspendre le compte">
+                                                <i class="fas fa-ban text-sm"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                    
+                                    <!-- Supprimer le client -->
+                                    <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                onclick="return confirm('⚠️ ATTENTION ⚠️\n\nÊtes-vous sûr de vouloir SUPPRIMER DÉFINITIVEMENT ce client ?\n\n• Toutes ses demandes seront supprimées\n• Toutes ses données seront perdues\n• Cette action est IRRÉVERSIBLE\n\nCliquez OK pour confirmer')"
+                                                class="inline-flex items-center justify-center w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                                title="Supprimer définitivement">
+                                            <i class="fas fa-trash text-sm"></i>
                                         </button>
-                                        <div id="client-dropdown-{{ $client->id }}" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-10">
-                                            <div class="py-2">
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="fas fa-edit mr-2"></i> Modifier
-                                                </button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="fas fa-envelope mr-2"></i> Envoyer email
-                                                </button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="fas fa-ban mr-2"></i> Suspendre
-                                                </button>
-                                                <div class="border-t border-gray-100 mt-2 pt-2">
-                                                    <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST" class="inline w-full">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')"
-                                                                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                                            <i class="fas fa-trash mr-2"></i> Supprimer
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -331,6 +464,84 @@
             <p class="text-gray-600">Les clients apparaîtront ici une fois qu'ils s'inscriront</p>
         </div>
     @endif
+</div>
+<!-- Modal de notification -->
+<div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-screen overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Envoyer une notification</h3>
+                <button onclick="closeNotificationModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <form id="notificationForm" class="p-6 space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-user mr-1 text-blue-600"></i>
+                    Client destinataire
+                </label>
+                <input type="text" id="clientName" readonly 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
+                <input type="hidden" id="clientId">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-tag mr-1 text-green-600"></i>
+                    Type de notification
+                </label>
+                <select id="notificationType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="info">Information générale</option>
+                    <option value="reminder">Rappel</option>
+                    <option value="warning">Avertissement</option>
+                    <option value="promotion">Promotion</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-heading mr-1 text-purple-600"></i>
+                    Titre de la notification
+                </label>
+                <input type="text" id="notificationTitle" required 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                       placeholder="Titre de votre notification...">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-comment mr-1 text-orange-600"></i>
+                    Message
+                </label>
+                <textarea id="notificationMessage" rows="4" required 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          placeholder="Tapez votre message ici..."></textarea>
+            </div>
+            
+            <div class="flex items-center">
+                <input type="checkbox" id="sendWhatsApp" class="mr-2">
+                <label for="sendWhatsApp" class="text-sm text-gray-700">
+                    <i class="fab fa-whatsapp mr-1 text-green-600"></i>
+                    Envoyer aussi par WhatsApp
+                </label>
+            </div>
+        </form>
+        
+        <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+            <button onclick="closeNotificationModal()" 
+                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                Annuler
+            </button>
+            <button onclick="sendNotification()" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i class="fas fa-paper-plane"></i>
+                <span>Envoyer</span>
+            </button>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -423,27 +634,85 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function toggleClientDropdown(id) {
-    const dropdown = document.getElementById(`client-dropdown-${id}`);
-    const allDropdowns = document.querySelectorAll('[id^="client-dropdown-"]');
-    
-    // Fermer tous les autres dropdowns
-    allDropdowns.forEach(d => {
-        if (d.id !== `client-dropdown-${id}`) {
-            d.classList.add('hidden');
-        }
+// Animation au survol des boutons d'action
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter des tooltips dynamiques si nécessaire
+    const actionButtons = document.querySelectorAll('[title]');
+    actionButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
     });
+});
+
+// Fonctions pour le modal de notification
+function openNotificationModal(clientId, clientName) {
+    document.getElementById('clientId').value = clientId;
+    document.getElementById('clientName').value = clientName;
+    document.getElementById('notificationModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
     
-    // Toggle le dropdown actuel
-    dropdown.classList.toggle('hidden');
+    // Fermer le dropdown
+    document.getElementById(`client-dropdown-${clientId}`).classList.add('hidden');
 }
 
-// Fermer les dropdowns en cliquant ailleurs
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('[onclick^="toggleClientDropdown"]') && !event.target.closest('[id^="client-dropdown-"]')) {
-        document.querySelectorAll('[id^="client-dropdown-"]').forEach(d => {
-            d.classList.add('hidden');
+function closeNotificationModal() {
+    document.getElementById('notificationModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    
+    // Reset du formulaire
+    document.getElementById('notificationForm').reset();
+}
+
+async function sendNotification() {
+    const clientId = document.getElementById('clientId').value;
+    const type = document.getElementById('notificationType').value;
+    const title = document.getElementById('notificationTitle').value;
+    const message = document.getElementById('notificationMessage').value;
+    const sendWhatsApp = document.getElementById('sendWhatsApp').checked;
+    
+    if (!title || !message) {
+        alert('Veuillez remplir tous les champs obligatoires.');
+        return;
+    }
+    
+    try {
+        const response = await fetch('{{ route("admin.clients.send-notification") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                client_id: clientId,
+                type: type,
+                title: title,
+                message: message,
+                send_whatsapp: sendWhatsApp
+            })
         });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Notification envoyée avec succès !');
+            closeNotificationModal();
+        } else {
+            alert('Erreur lors de l\'envoi : ' + (result.message || 'Erreur inconnue'));
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'envoi de la notification');
+    }
+}
+
+// Fermer le modal en cliquant à l'extérieur
+document.getElementById('notificationModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeNotificationModal();
     }
 });
 </script>
