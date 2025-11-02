@@ -112,8 +112,8 @@ class DemandeTransport extends Model
     {
         $etapesDefaut = [
             ['nom' => 'Enregistrement', 'description' => 'Réception et validation de la demande', 'ordre' => 1],
-            ['nom' => 'Dédouanement', 'description' => 'Procédures douanières', 'ordre' => 2],
-            ['nom' => 'Transit', 'description' => 'Transport en cours', 'ordre' => 3],
+            ['nom' => 'Transit', 'description' => 'Transport en cours', 'ordre' => 2],
+            ['nom' => 'Dédouanement', 'description' => 'Procédures douanières', 'ordre' => 3],
             ['nom' => 'Livraison', 'description' => 'Livraison finale', 'ordre' => 4],
         ];
 

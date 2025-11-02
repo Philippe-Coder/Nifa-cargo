@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('etape_logistiques', function (Blueprint $table) {
             $table->id();
             $table->foreignId('demande_transport_id')->constrained()->onDelete('cascade');
-            $table->string('nom'); // enregistrement, dédouanement, transit, livraison
+            $table->string('nom'); // enregistrement, transit, dédouanement, livraison
             $table->text('description')->nullable();
             $table->enum('statut', ['en_attente', 'en_cours', 'terminee'])->default('en_attente');
             $table->datetime('date_debut')->nullable();

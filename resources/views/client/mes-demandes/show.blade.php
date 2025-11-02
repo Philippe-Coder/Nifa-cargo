@@ -180,7 +180,7 @@
             
             @if($demande->etapes && $demande->etapes->count() > 0)
                 <div class="relative">
-                    @foreach($demande->etapes as $index => $etape)
+                    @foreach($demande->etapes->sortBy('ordre') as $index => $etape)
                         <div class="flex items-start mb-8 last:mb-0 group">
                             <!-- Timeline -->
                             <div class="flex flex-col items-center mr-6">

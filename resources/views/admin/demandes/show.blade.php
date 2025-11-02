@@ -123,7 +123,7 @@
         
         @if($demande->etapes->count() > 0)
             <div class="space-y-4">
-                @foreach($demande->etapes as $etape)
+                @foreach($demande->etapes->sortBy('ordre') as $etape)
                     <div class="border rounded-lg p-4 
                         @if($etape->statut == 'terminee') bg-green-50 border-green-200
                         @elseif($etape->statut == 'en_cours') bg-blue-50 border-blue-200
