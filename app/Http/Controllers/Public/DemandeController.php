@@ -8,6 +8,7 @@ use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class DemandeController extends Controller
 {
@@ -34,13 +35,9 @@ class DemandeController extends Controller
             'fragile' => 'nullable|boolean',
         ]);
 
-        // Générer une référence unique
-        $reference = 'NIF-' . date('Y') . '-' . str_pad(DemandeTransport::count() + 1, 3, '0', STR_PAD_LEFT);
-
-        // Créer la demande avec toutes les données nécessaires
+        // Créer la demande avec toutes les données nécessaires (sans référence; le numéro de suivi sera attribué par l'admin)
         $demande = DemandeTransport::create([
             'user_id' => Auth::id(),
-            'reference' => $reference,
             'type' => 'import', // Valeur par défaut, à adapter selon le type de transport
             'type_transport' => $validated['type_transport'],
             'marchandise' => $validated['marchandise'],
@@ -64,7 +61,7 @@ class DemandeController extends Controller
             Auth::user(),
             'demande_creer',
             $demande,
-            'Votre demande de transport #' . $demande->reference . ' a été créée avec succès.'
+            'Votre demande de transport a été créée avec succès. Vous recevrez votre numéro de suivi dès validation par un agent.'
         );
 
         // Envoi d'email de confirmation (optionnel)
@@ -73,12 +70,12 @@ class DemandeController extends Controller
                 "Nouvelle demande de transport : {$demande->marchandise} ({$demande->type_transport})",
                 function ($message) use ($demande) {
                     $message->to(Auth::user()->email)
-                            ->subject('Confirmation de votre demande N°' . $demande->reference);
+                            ->subject('Confirmation de votre demande de transport');
                 }
             );
         } catch (\Exception $e) {
             // Journaliser l'erreur mais ne pas interrompre le flux
-            \Log::error('Erreur lors de l\'envoi de l\'email de confirmation : ' . $e->getMessage());
+            Log::error('Erreur lors de l\'envoi de l\'email de confirmation : ' . $e->getMessage());
         }
 
         return redirect()->route('mes-demandes.show', $demande)

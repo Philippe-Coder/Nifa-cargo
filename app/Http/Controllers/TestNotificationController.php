@@ -25,7 +25,7 @@ class TestNotificationController extends Controller
                 'status' => 'success',
                 'message' => 'Test des notifications terminé',
                 'demande_id' => $demande->id,
-                'demande_reference' => $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT),
+                'numero_suivi' => $demande->numero_tracking ?? null,
                 'user' => [
                     'name' => $demande->user->name,
                     'email' => $demande->user->email,
@@ -53,7 +53,6 @@ class TestNotificationController extends Controller
         try {
             Log::info('📧 Test Email seul pour demande ID: ' . $demande->id);
             
-            $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
             $message = "🧪 Test de configuration email - Votre système de notifications fonctionne parfaitement !";
             
             $result = NotificationService::envoyerNotification(
@@ -68,7 +67,7 @@ class TestNotificationController extends Controller
                 'message' => 'Test email terminé',
                 'email_sent' => $result['email'],
                 'user_email' => $demande->user->email,
-                'reference' => $reference,
+                'numero_suivi' => $demande->numero_tracking ?? null,
                 'errors' => $result['errors']
             ]);
             
@@ -97,8 +96,7 @@ class TestNotificationController extends Controller
                 ], 400);
             }
             
-            $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
-            $message = "🧪 Test WhatsApp NIF CARGO: Configuration réussie ! Référence: {$reference}";
+            $message = "🧪 Test WhatsApp NIF CARGO: Configuration réussie ! Numéro de suivi: " . ($demande->numero_tracking ?? '—');
             
             $result = NotificationService::envoyerNotification(
                 $demande->user, 
@@ -112,7 +110,7 @@ class TestNotificationController extends Controller
                 'message' => 'Test WhatsApp terminé',
                 'whatsapp_sent' => $result['whatsapp'],
                 'user_phone' => $demande->user->telephone,
-                'reference' => $reference,
+                'numero_suivi' => $demande->numero_tracking ?? null,
                 'errors' => $result['errors']
             ]);
             

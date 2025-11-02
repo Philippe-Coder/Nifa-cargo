@@ -25,7 +25,7 @@
             <span class="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">colis</span>
         </h1>
         <p class="text-xl lg:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed animate-slide-up">
-            Entrez votre numéro de référence pour connaître la position exacte de votre envoi en temps réel
+            Entrez votre numéro de suivi pour connaître la position exacte de votre envoi en temps réel
         </p>
         
         <!-- Indicateurs de performance -->
@@ -93,7 +93,7 @@
                     <i class="fas fa-shipping-fast text-4xl text-blue-600 group-hover:scale-110 transition-transform"></i>
                 </div>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                    Saisissez votre numéro de référence pour suivre votre colis en temps réel avec une précision maximale
+                    Saisissez votre numéro de suivi pour suivre votre colis en temps réel avec une précision maximale
                 </p>
             </div>
             
@@ -103,15 +103,15 @@
                 <div class="flex flex-col sm:flex-row gap-4">
                     <div class="flex-1 relative">
                         <input type="text" 
-                               name="reference" 
-                               placeholder="Ex: NIFCARGO-2025-001" 
+                               name="tracking" 
+                               placeholder="Ex: 1234567" 
                                required
-                               value="{{ old('reference') }}"
-                               class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm @error('reference') border-red-500 @enderror">
+                               value="{{ old('tracking') }}"
+                               class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all durée-200 bg-white/50 backdrop-blur-sm @error('tracking') border-red-500 @enderror">
                         <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                             <i class="fas fa-barcode text-gray-400 text-xl"></i>
                         </div>
-                        @error('reference')
+                        @error('tracking')
                             <p class="text-red-500 text-sm mt-2 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-2"></i>{{ $message }}
                             </p>
@@ -129,7 +129,7 @@
             <div class="text-center mt-8">
                 <p class="text-sm text-gray-500 flex items-center justify-center">
                     <i class="fas fa-question-circle mr-2"></i>
-                    Vous ne trouvez pas votre numéro de référence ? 
+                    Vous ne trouvez pas votre numéro de suivi ? 
                     <a href="{{ route('contact') }}" class="text-blue-600 hover:text-blue-700 font-medium ml-1 transition-colors">
                         Contactez-nous
                     </a>
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Focus automatique sur le champ de recherche
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('input[name="reference"]');
+    const searchInput = document.querySelector('input[name="tracking"]');
     if (searchInput) {
         setTimeout(() => {
             searchInput.focus();

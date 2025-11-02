@@ -23,7 +23,7 @@ class DemandeTransportController extends Controller
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('reference', 'like', "%{$searchTerm}%")
+                    $q->where('numero_tracking', 'like', "%{$searchTerm}%")
                   ->orWhere('numero_tracking', 'like', "%{$searchTerm}%")
                   ->orWhere('marchandise', 'like', "%{$searchTerm}%")
                   ->orWhere('origine', 'like', "%{$searchTerm}%")
@@ -77,6 +77,12 @@ class DemandeTransportController extends Controller
         $demande = DemandeTransport::findOrFail($id);
         $ancienStatut = $demande->statut;
         
+        // Exiger un numéro de suivi pour traiter la demande (changer le statut hors "en attente")
+        $nouveauStatut = $request->statut;
+        if ($nouveauStatut !== 'en attente' && empty($demande->numero_tracking)) {
+            return redirect()->back()->with('error', "Vous devez d'abord définir le numéro de suivi (max 7 chiffres) avant de traiter la demande.");
+        }
+
         // Mettre à jour le statut
         $demande->update(['statut' => $request->statut]);
         
@@ -174,7 +180,7 @@ class DemandeTransportController extends Controller
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('reference', 'like', "%{$searchTerm}%")
+                    $q->where('numero_tracking', 'like', "%{$searchTerm}%")
                   ->orWhere('numero_tracking', 'like', "%{$searchTerm}%")
                   ->orWhere('marchandise', 'like', "%{$searchTerm}%")
                   ->orWhere('origine', 'like', "%{$searchTerm}%")
@@ -208,11 +214,10 @@ class DemandeTransportController extends Controller
             
             // En-têtes CSV
             fputcsv($file, [
-                'Référence',
+                'Numéro de suivi',
                 'Client',
                 'Email Client', 
                 'Téléphone Client',
-                'Numéro Tracking',
                 'Type',
                 'Marchandise',
                 'Poids (kg)',
@@ -229,11 +234,10 @@ class DemandeTransportController extends Controller
             // Données
             foreach ($demandes as $demande) {
                 fputcsv($file, [
-                    $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT),
+                    $demande->numero_tracking ?? '',
                     $demande->user->name ?? '',
                     $demande->user->email ?? '',
                     $demande->user->telephone ?? '',
-                    $demande->numero_tracking ?? '',
                     $demande->type ?? '',
                     $demande->marchandise ?? '',
                     $demande->poids ?? '',
@@ -265,8 +269,7 @@ class DemandeTransportController extends Controller
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('reference', 'like', "%{$searchTerm}%")
-                  ->orWhere('numero_tracking', 'like', "%{$searchTerm}%")
+                $q->where('numero_tracking', 'like', "%{$searchTerm}%")
                   ->orWhere('marchandise', 'like', "%{$searchTerm}%")
                   ->orWhere('origine', 'like', "%{$searchTerm}%")
                   ->orWhere('destination', 'like', "%{$searchTerm}%")

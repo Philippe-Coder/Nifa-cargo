@@ -253,7 +253,7 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-gray-200">
-                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Référence</th>
+                        <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Numéro de suivi</th>
                         <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Destination</th>
                         <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Statut</th>
                         <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm uppercase tracking-wider">Date</th>
@@ -265,7 +265,7 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="py-4 px-4">
                                 <span class="font-mono text-sm font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded">
-                                    {{ $demande->reference }}
+                                    {{ $demande->numero_tracking ?? '—' }}
                                 </span>
                             </td>
                             <td class="py-4 px-4">

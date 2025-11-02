@@ -48,14 +48,9 @@
         @else
             <div class="subtitle">Exportation des demandes de transport</div>
         @endif
-                    <th>Référence</th>
-                    <th>Client</th>
+        
     @if(isset($demande))
         <div class="info-section">
-            <div class="info-row">
-                <span class="info-label">Référence :</span>
-                <span class="info-value">{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</span>
-            </div>
             <div class="info-row">
                 <span class="info-label">Numéro de suivi :</span>
                 <span class="info-value">{{ $demande->numero_tracking ?? '—' }}</span>
@@ -111,16 +106,14 @@
                 <span class="info-value">{{ $demandes->count() }} demande(s)</span>
             </div>
         </div>
-                    <th>Créée le</th>
         @if($demandes->count() > 0)
             <table>
                 <thead>
                     <tr>
-                        <th>Référence</th>
+                        <th>Numéro de suivi</th>
                         <th>Client</th>
                         <th>Email</th>
                         <th>Téléphone</th>
-                        <th>Tracking</th>
                         <th>Type</th>
                         <th>Marchandise</th>
                         <th>Poids</th>
@@ -137,11 +130,10 @@
                 <tbody>
                     @foreach($demandes as $demande)
                     <tr>
-                        <td>{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $demande->numero_tracking ?? '' }}</td>
                         <td>{{ $demande->user->name ?? '' }}</td>
                         <td>{{ $demande->user->email ?? '' }}</td>
                         <td>{{ $demande->user->telephone ?? '' }}</td>
-                        <td>{{ $demande->numero_tracking ?? '' }}</td>
                         <td>{{ $demande->type ?? '' }}</td>
                         <td>{{ $demande->marchandise ?? '' }}</td>
                         <td>{{ $demande->poids ?? '' }}</td>
@@ -167,3 +159,5 @@
             </div>
         @endif
     @endif
+    </body>
+    </html>

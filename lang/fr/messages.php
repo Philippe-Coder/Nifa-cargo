@@ -255,7 +255,7 @@ return [
             'status' => 'Statut',
             'fees' => 'Frais',
             'track_shipment' => 'Suivez votre expédition',
-            'public_tracking' => 'Suivi public (sans connexion)',
+            'public_tracking' => 'Suivi public',
             'client_space' => 'Mon espace client',
             'notifications_info' => 'Vous recevrez automatiquement des notifications à chaque étape importante',
         ],

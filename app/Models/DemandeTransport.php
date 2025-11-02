@@ -23,7 +23,6 @@ class DemandeTransport extends Model
         'description',
         'statut',
         'document_path',
-        'reference',
         'numero_tracking',
         'date_souhaitee',
         'dimensions',
@@ -33,38 +32,7 @@ class DemandeTransport extends Model
         'created_by_admin'
     ];
 
-    /**
-     * The "booting" method of the model.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->reference)) {
-                $model->reference = static::generateReference();
-            }
-        });
-    }
-
-    /**
-     * Generate a unique reference for the demand
-     */
-    public static function generateReference(): string
-    {
-        $prefix = 'NIF-' . date('Ym') . '-';
-        $lastDemand = static::where('reference', 'like', $prefix . '%')
-            ->orderBy('reference', 'desc')
-            ->first();
-
-        $number = 1;
-        if ($lastDemand) {
-            $lastNumber = (int) substr($lastDemand->reference, strlen($prefix));
-            $number = $lastNumber + 1;
-        }
-
-        return $prefix . str_pad($number, 4, '0', STR_PAD_LEFT);
-    }
+    // Suppression de la logique 'reference' : le suivi est basé sur 'numero_tracking' exclusivement
 
     protected $casts = [
         'poids' => 'decimal:2',

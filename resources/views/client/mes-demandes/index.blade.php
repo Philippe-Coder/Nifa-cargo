@@ -76,12 +76,12 @@
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <!-- Informations principales -->
                     <div class="flex-1">
-                        <!-- En-tête avec référence et statut -->
+                        <!-- En-tête avec numéro de suivi et statut -->
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-3">
                             <div>
                                 <h3 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                                    <i class="fas fa-hashtag text-blue-500 mr-2"></i>
-                                    {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
+                                    <i class="fas fa-barcode text-blue-500 mr-2"></i>
+                                    {{ $demande->numero_tracking ?? '—' }}
                                 </h3>
                                 <div class="flex items-center text-gray-600 mb-3">
                                     <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>

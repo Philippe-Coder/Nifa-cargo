@@ -56,7 +56,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Référence</th>
+                                            <th>Numéro de suivi</th>
                                             <th>Client</th>
                                             <th>Email</th>
                                             <th>Téléphone</th>
@@ -70,7 +70,7 @@
                                             <td>{{ $demande->id }}</td>
                                             <td>
                                                 <span class="badge badge-info">
-                                                    {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
+                                                    {{ $demande->numero_tracking ?? '—' }}
                                                 </span>
                                             </td>
                                             <td>{{ $demande->user->name }}</td>

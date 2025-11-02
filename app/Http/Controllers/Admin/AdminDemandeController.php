@@ -21,8 +21,8 @@ class AdminDemandeController extends Controller
      */
     public function create()
     {
-        // Utiliser la vue existante de création simple
-        return view('admin.demandes.create-simple');
+        // Utiliser la vue améliorée avec recherche client et numéro de suivi obligatoire
+        return view('admin.demandes.create');
     }
 
     /**
@@ -292,18 +292,24 @@ class AdminDemandeController extends Controller
             'poids' => 'required|numeric|min:0',
             'volume' => 'nullable|numeric|min:0',
             'nature_colis' => 'required|string|max:500',
-            'frais_expedition' => 'nullable|numeric|min:0',
+            'frais_expedition' => 'nullable|numeric|between:0,9999999999999.99',
             'statut' => 'required|in:en attente,en cours,en transit,livrée,annulée',
             'description' => 'nullable|string|max:1000',
             'date_souhaitee' => 'nullable|date|after_or_equal:today',
-            'valeur' => 'nullable|numeric|min:0',
+            'valeur' => 'nullable|numeric|between:0,9999999999999.99',
             'fragile' => 'boolean',
-            // Numéro de suivi: 1 à 7 chiffres, optionnel à la création admin
+            // Numéro de suivi: OBLIGATOIRE 1 à 7 chiffres, unique
             'numero_tracking' => [
-                'nullable',
+                'required',
                 'regex:/^\d{1,7}$/',
                 Rule::unique('demande_transports', 'numero_tracking'),
             ],
+        ], [
+            'numero_tracking.required' => 'Le numéro de suivi est obligatoire pour créer une demande.',
+            'numero_tracking.regex' => 'Le numéro de suivi doit contenir uniquement des chiffres (max 7).',
+            'numero_tracking.unique' => 'Ce numéro de suivi est déjà utilisé.',
+            'valeur.between' => 'La valeur est trop élevée (max ≈ 9 999 999 999 999,99 FCFA).',
+            'frais_expedition.between' => "Les frais d'expédition sont trop élevés (max ≈ 9 999 999 999 999,99 FCFA).",
         ]);
 
         try {

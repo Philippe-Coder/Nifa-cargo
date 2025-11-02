@@ -140,8 +140,8 @@
             <!-- Recherche et Actions -->
             <div class="flex gap-3">
                 <div class="relative flex-1 lg:w-64">
-                    <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Référence, client, email, téléphone..." 
+              <input type="text" name="search" value="{{ request('search') }}" 
+                  placeholder="Numéro de suivi, client, email, téléphone..." 
                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                            onchange="document.getElementById('filterForm').submit()">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -240,8 +240,7 @@
             <thead class="bg-gray-50">
                 <tr class="border-b border-gray-200">
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Client</th>
-                    <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Référence</th>
-                    <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Suivi</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Numéro de suivi</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Type</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Trajet</th>
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Statut</th>
@@ -267,21 +266,6 @@
                             </div>
                         </td>
                         
-                        <!-- Référence -->
-                        <td class="py-4 px-6">
-                            <span class="font-mono text-sm font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg">
-                                {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
-                            </span>
-                        </td>
-                        
-                        <!-- Type -->
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
-                                <i class="fas fa-{{ $demande->type === 'maritime' ? 'ship' : ($demande->type === 'aérien' ? 'plane' : 'truck') }} mr-2"></i>
-                                {{ ucfirst($demande->type) }}
-                            </span>
-                        </td>
-
                         <!-- Numéro de suivi -->
                         <td class="py-4 px-6">
                             @if($demande->numero_tracking)
@@ -291,6 +275,14 @@
                             @else
                                 <span class="text-gray-400 text-sm">—</span>
                             @endif
+                        </td>
+                        
+                        <!-- Type -->
+                        <td class="py-4 px-6">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                                <i class="fas fa-{{ $demande->type === 'maritime' ? 'ship' : ($demande->type === 'aérien' ? 'plane' : 'truck') }} mr-2"></i>
+                                {{ ucfirst($demande->type) }}
+                            </span>
                         </td>
                         
                         <!-- Trajet -->

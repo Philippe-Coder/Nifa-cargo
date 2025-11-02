@@ -23,48 +23,48 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🚛 NIF CARGO</div>
+            <div class="logo"> NIF CARGO</div>
             <h2 style="margin: 10px 0 0 0;">Nouvelle demande de transport créée</h2>
         </div>
         
         <div class="content">
             <p>Bonjour <strong>{{ $client_name }}</strong>,</p>
             
-            <p>📦 Une nouvelle demande de transport a été créée pour vous par notre équipe. Voici les détails de votre expédition :</p>
+            <p> Une nouvelle demande de transport a été créée pour vous par notre équipe. Voici les détails de votre expédition :</p>
             
             <div class="tracking-box">
-                <h3 style="margin-top: 0; color: #92400e;">🔍 Numéro de suivi</h3>
+                <h3 style="margin-top: 0; color: #92400e;"> Numéro de suivi</h3>
                 <p style="font-size: 24px; font-weight: bold; color: #92400e; margin: 10px 0;">{{ $tracking_number }}</p>
                 <p style="font-size: 14px; margin: 0;">Conservez ce numéro pour suivre votre colis</p>
             </div>
             
             <div class="info-box">
-                <h3 style="margin-top: 0; color: #1e40af;">📋 Détails de la demande</h3>
+                <h3 style="margin-top: 0; color: #1e40af;"> Détails de la demande</h3>
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold; width: 40%;">📍 Trajet :</td>
+                        <td style="padding: 8px 0; font-weight: bold; width: 40%;"> Trajet :</td>
                         <td style="padding: 8px 0;">{{ $demande->ville_depart }} → {{ $demande->ville_destination }}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">📦 Nature du colis :</td>
+                        <td style="padding: 8px 0; font-weight: bold;"> Nature du colis :</td>
                         <td style="padding: 8px 0;">{{ $demande->nature_colis }}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">⚖️ Poids :</td>
+                        <td style="padding: 8px 0; font-weight: bold;"> Poids :</td>
                         <td style="padding: 8px 0;">{{ $demande->poids }} kg</td>
                     </tr>
                     @if($demande->volume)
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">📏 Volume :</td>
+                        <td style="padding: 8px 0; font-weight: bold;"> Volume :</td>
                         <td style="padding: 8px 0;">{{ $demande->volume }} m³</td>
                     </tr>
                     @endif
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">🚛 Type transport :</td>
+                        <td style="padding: 8px 0; font-weight: bold;"> Type transport :</td>
                         <td style="padding: 8px 0;">{{ ucfirst($demande->type) }}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">📊 Statut :</td>
+                        <td style="padding: 8px 0; font-weight: bold;"> Statut :</td>
                         <td style="padding: 8px 0;">
                             @php
                                 $statusClass = 'status-pending';
@@ -77,41 +77,41 @@
                     </tr>
                     @if($demande->frais_expedition)
                     <tr>
-                        <td style="padding: 8px 0; font-weight: bold;">💰 Frais :</td>
+                        <td style="padding: 8px 0; font-weight: bold;">Frais :</td>
                         <td style="padding: 8px 0;">{{ number_format($demande->frais_expedition, 0, ',', ' ') }} FCFA</td>
                     </tr>
                     @endif
                 </table>
             </div>
             
-            <h3>🌐 Suivez votre expédition</h3>
+            <h3>Suivez votre expédition</h3>
             <p>Vous pouvez suivre l'évolution de votre colis en temps réel grâce à nos outils de suivi :</p>
             
             <div style="text-align: center;">
                 <a href="{{ $suivi_url }}" class="button">
-                    🔍 Suivi public (sans connexion)
+                    Suivi public
                 </a>
                 <a href="{{ $login_url }}" class="button">
-                    👤 Mon espace client
+                    Mon espace client
                 </a>
             </div>
             
-            <h3>📱 Notifications</h3>
+            <h3>Notifications</h3>
             <p>Vous recevrez automatiquement des notifications par email et WhatsApp à chaque étape importante de votre expédition :</p>
             <ul>
-                <li>✅ Validation et prise en charge</li>
-                <li>🛂 Dédouanement (si international)</li>
-                <li>🚛 Départ en transit</li>
-                <li>📦 Livraison finale</li>
+                <li> Validation et prise en charge</li>
+                <li> Dédouanement (si international)</li>
+                <li> Départ en transit</li>
+                <li> Livraison finale</li>
             </ul>
             
             <p>Notre équipe reste à votre disposition pour toute question concernant votre expédition.</p>
         </div>
         
         <div class="footer">
-            <p>📞 <strong>Support client :</strong> +228 99 25 25 31/ +229 96 36 46 07/ +226 05 79 13 10</p>
-            <p>📧 <strong>Email :</strong> contact@nifgroupecargo.com</p>
-            <p>🏢 <strong>Adresse :</strong> Totsi, Lomé - Togo</p>
+            <p> <strong>Support client :</strong> +228 99 25 25 31/ +229 96 36 46 07/ +226 05 79 13 10</p>
+            <p><strong>Email :</strong> contact@nifgroupecargo.com</p>
+            <p><strong>Adresse :</strong> Totsi, Lomé - Togo</p>
             <p style="font-size: 12px; color: #999; margin-top: 20px;">© {{ date('Y') }} NIF CARGO - Transport et Logistique</p>
         </div>
     </div>

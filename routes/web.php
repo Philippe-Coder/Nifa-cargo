@@ -119,7 +119,6 @@ Route::middleware(['auth'])->get('/admin/test-notification', function (Request $
     
     $testData = [
         'client_nom' => 'Test Client',
-        'reference' => 'TEST-' . now()->format('Ymd-His'),
         'statut' => 'En transit',
         'destination' => 'Lomé, Togo',
         'date_creation' => now()->format('d/m/Y'),
@@ -127,11 +126,10 @@ Route::middleware(['auth'])->get('/admin/test-notification', function (Request $
     ];
     
     $message = "🚛 *NIF CARGO* - Test Notification\n\n" .
-               "📋 **Référence**: {$testData['reference']}\n" .
-               "👤 **Client**: {$testData['client_nom']}\n" .
+               " **Client**: {$testData['client_nom']}\n" .
                "📍 **Destination**: {$testData['destination']}\n" .
                "📅 **Date**: {$testData['date_creation']}\n" .
-               "🔍 **Suivi**: {$testData['tracking_number']}\n" .
+               "🔍 **Numéro de suivi**: {$testData['tracking_number']}\n" .
                "📊 **Statut**: {$testData['statut']}\n\n" .
                "✅ Système de notification fonctionnel!";
     

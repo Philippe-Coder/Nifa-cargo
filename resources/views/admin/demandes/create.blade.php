@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="bg-gradient-to-r from-green-600 via-green-700 to-green-800 rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
+<div class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-black bg-opacity-10"></div>
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"1\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -20,7 +20,7 @@
                 <h1 class="text-3xl lg:text-4xl font-bold mb-3">
                     Créer une Demande pour un Client
                 </h1>
-                <p class="text-green-100 text-lg max-w-2xl">
+                <p class="text-blue-100 text-lg max-w-2xl">
                     Enregistrez une nouvelle demande de transport et créez automatiquement le compte client
                 </p>
             </div>
@@ -156,15 +156,9 @@
                             required
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all">
                         <option value="">Sélectionner un type</option>
-                        <option value="maritime" {{ old('type') == 'maritime' ? 'selected' : '' }}>
-                            <i class="fas fa-ship"></i> Maritime
-                        </option>
-                        <option value="aérien" {{ old('type') == 'aérien' ? 'selected' : '' }}>
-                            <i class="fas fa-plane"></i> Aérien
-                        </option>
-                        <option value="routier" {{ old('type') == 'routier' ? 'selected' : '' }}>
-                            <i class="fas fa-truck"></i> Routier
-                        </option>
+                        <option value="maritime" {{ old('type') == 'maritime' ? 'selected' : '' }}>Maritime</option>
+                        <option value="aérien" {{ old('type') == 'aérien' ? 'selected' : '' }}>Aérien</option>
+                        <option value="routier" {{ old('type') == 'routier' ? 'selected' : '' }}>Routier</option>
                     </select>
                 </div>
 
@@ -198,6 +192,27 @@
                         <option value="annulée" {{ old('statut') == 'annulée' ? 'selected' : '' }}>Annulée</option>
                     </select>
                 </div>
+
+                <!-- Numéro de suivi (tracking) -->
+                <div>
+                    <label for="numero_tracking" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-hashtag mr-2 text-purple-500"></i>Numéro de suivi (1 à 7 chiffres) *
+                    </label>
+                    <input type="text"
+                           name="numero_tracking"
+                           id="numero_tracking"
+                           value="{{ old('numero_tracking') }}"
+                           required
+                           maxlength="7"
+                           inputmode="numeric"
+                           pattern="^[0-9]{1,7}$"
+                           title="Entrez uniquement des chiffres (1 à 7)"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                           placeholder="Ex: 1234567">
+                    <p class="text-xs text-gray-500 mt-1">
+                        Ce numéro est obligatoire pour les demandes créées par l'administrateur. Il doit contenir uniquement des chiffres (maximum 7).
+                    </p>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -218,7 +233,7 @@
                 <!-- Destination -->
                 <div>
                     <label for="destination" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-map-marker-alt mr-2 text-green-500"></i>Lieu de destination *
+                        <i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>Lieu de destination *
                     </label>
                     <input type="text" 
                            name="destination" 
@@ -248,7 +263,7 @@
                 <!-- Ville de destination -->
                 <div>
                     <label for="ville_destination" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-city mr-2 text-green-500"></i>Ville de destination *
+                        <i class="fas fa-city mr-2 text-blue-500"></i>Ville de destination *
                     </label>
                     <input type="text" 
                            name="ville_destination" 
@@ -321,11 +336,12 @@
                     <label for="valeur" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-dollar-sign mr-2 text-orange-500"></i>Valeur (FCFA)
                     </label>
-                    <input type="number" 
+              <input type="number" 
                            name="valeur" 
                            id="valeur"
                            step="0.01"
                            min="0"
+                  max="9999999999999.99"
                            value="{{ old('valeur') }}" 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                            placeholder="Ex: 50000">
@@ -336,11 +352,12 @@
                     <label for="frais_expedition" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-money-bill-wave mr-2 text-orange-500"></i>Frais (FCFA)
                     </label>
-                    <input type="number" 
+              <input type="number" 
                            name="frais_expedition" 
                            id="frais_expedition"
                            step="0.01"
                            min="0"
+                  max="9999999999999.99"
                            value="{{ old('frais_expedition') }}" 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                            placeholder="Ex: 15000">
@@ -403,7 +420,7 @@
                 </a>
                 
                 <button type="submit" 
-                        class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-sm font-medium hover:from-green-700 hover:to-green-800 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+                        class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
                     <i class="fas fa-plus-circle mr-2"></i>
                     Créer la Demande et le Compte Client
                 </button>
@@ -448,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (type === 'existing') {
             clientStatus.innerHTML = `
-                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                     <i class="fas fa-check-circle mr-1"></i>Client existant
                 </span>
             `;
@@ -488,9 +505,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Animation de confirmation
         [clientName, clientEmail, clientTelephone].forEach(field => {
-            field.classList.add('bg-green-50', 'border-green-300');
+            field.classList.add('bg-blue-50', 'border-blue-300');
             setTimeout(() => {
-                field.classList.remove('bg-green-50', 'border-green-300');
+                field.classList.remove('bg-blue-50', 'border-blue-300');
             }, 1500);
         });
     }
@@ -553,6 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         data.forEach((client, index) => {
                             const div = document.createElement('div');
                             div.className = 'p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-150';
+                            div.setAttribute('role', 'option');
                             
                             // Mise en évidence du terme recherché
                             const highlightText = (text, query) => {
@@ -686,15 +704,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const requiredFields = this.querySelectorAll('[required]');
         
         requiredFields.forEach(field => {
-            field.classList.remove('border-red-500', 'border-green-500');
+            field.classList.remove('border-red-500', 'border-blue-500');
             
             if (!field.value.trim()) {
                 field.classList.add('border-red-500');
                 isValid = false;
             } else {
-                field.classList.add('border-green-500');
+                field.classList.add('border-blue-500');
             }
         });
+
+        // Validation stricte du numéro de suivi (1 à 7 chiffres)
+        const tracking = document.getElementById('numero_tracking');
+        if (tracking) {
+            tracking.value = tracking.value.replace(/\D/g, '').slice(0, 7);
+            if (!/^\d{1,7}$/.test(tracking.value)) {
+                tracking.classList.add('border-red-500');
+                isValid = false;
+            }
+        }
 
         if (!isValid) {
             e.preventDefault();
@@ -712,12 +740,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction toast pour les notifications
     function showToast(title, message, type = 'info') {
         const toast = document.createElement('div');
-        const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-        
-        toast.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+        const bgColor = type === 'success' ? 'bg-blue-500' : (type === 'error' ? 'bg-red-500' : 'bg-blue-500');
+        const iconClass = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+
+        toast.className = 'fixed top-4 right-4 ' + bgColor + ' text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
         toast.innerHTML = `
             <div class="flex items-center">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-3"></i>
+                <i class="fas ${iconClass} mr-3"></i>
                 <div>
                     <p class="font-semibold">${title}</p>
                     <p class="text-sm opacity-90">${message}</p>
@@ -743,6 +772,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialisation
     setClientStatus('new');
+
+    // Sanitation en temps réel du numéro de suivi
+    const trackingInput = document.getElementById('numero_tracking');
+    if (trackingInput) {
+        trackingInput.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 7);
+        });
+    }
 });
 </script>
 @endpush

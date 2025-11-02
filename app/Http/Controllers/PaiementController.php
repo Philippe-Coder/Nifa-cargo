@@ -134,16 +134,19 @@ class PaiementController extends Controller
     public function historique(Request $request)
     {
         // Récupérer les paramètres de filtrage
-        $reference = $request->input('reference');
+    $reference = $request->input('reference');
         $statut = $request->input('statut');
         $dateDebut = $request->input('date_debut');
         $dateFin = $request->input('date_fin');
         
         // Construire la requête avec les filtres
-        $query = Paiement::with(['facture', 'demandeTransport'])
+        $query = Paiement::with(['facture.demandeTransport'])
             ->where('user_id', Auth::id())
             ->when($reference, function($q) use ($reference) {
-                return $q->where('reference', 'like', "%{$reference}%");
+                return $q->where(function ($sub) use ($reference) {
+                    $sub->where('reference_paiement', 'like', "%{$reference}%")
+                        ->orWhere('gateway_reference', 'like', "%{$reference}%");
+                });
             })
             ->when($statut, function($q) use ($statut) {
                 return $q->where('statut', $statut);

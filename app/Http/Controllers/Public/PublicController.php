@@ -4,266 +4,196 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DemandeTransport;
-use App\Models\User;
 use App\Models\Annonce;
+use App\Models\DemandeTransport;
 use App\Models\Galerie;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class PublicController extends Controller
 {
-    /**
-     * Page d'accueil
-     */
+    // Page d'accueil
     public function accueil()
     {
-        // Statistiques pour la page d'accueil
+        // Préparer les statistiques attendues par la vue
+        try {
+            $demandesTraitees = DemandeTransport::where('statut', 'livrée')->count();
+        } catch (\Throwable $e) {
+            // Si la table n'existe pas encore (migrations non exécutées), fallback à 0
+            $demandesTraitees = 0;
+        }
+
         $stats = [
-            'demandes_traitees' => DemandeTransport::count(),
-            'clients_satisfaits' => User::where('role', 'client')->count(),
-            'pays_desservis' => 15, // Nombre fixe pour l'exemple
-            'annees_experience' => 10 // Nombre fixe pour l'exemple
+            'demandes_traitees'   => $demandesTraitees,
+            'clients_satisfaits'  => 98,  // Valeur marketing par défaut
+            'pays_desservis'      => 12,  // Ajuster si vous avez un calcul réel
+            'annees_experience'   => 5,
         ];
-        
-        // Récupérer les annonces actives 
-        $annonces = Annonce::active()
-            ->ordered()
-            ->take(5)
-            ->get();
-            
-        // Récupérer les photos mises en avant pour la galerie
-        $photosGalerie = Galerie::active()
-            ->miseEnAvant()
-            ->ordered()
-            ->take(8)
-            ->get();
-        
+
+        // Annonces actives et valides (limite 6)
+        try {
+            $annonces = Annonce::active()->valide()->ordered()->take(6)->get();
+        } catch (\Throwable $e) {
+            $annonces = collect();
+        }
+
+        // Galerie: photos actives mises en avant/ordonnées (limite 8)
+        try {
+            $photosGalerie = Galerie::active()->ordered()->take(8)->get()->map(function ($g) {
+                return (object) [
+                    'image_url' => $g->image_url,
+                    'alt' => $g->alt,
+                    'categorie_formate' => $g->categorie_formate,
+                    'titre' => $g->titre,
+                    'description' => $g->description,
+                ];
+            });
+        } catch (\Throwable $e) {
+            $photosGalerie = collect();
+        }
+
         return view('public.accueil', compact('stats', 'annonces', 'photosGalerie'));
     }
 
-    /**
-     * Page des services
-     */
+    // Page Services (construit la liste attendue par la vue)
     public function services()
     {
         $services = [
             [
                 'titre' => 'Transport Maritime',
-                'description' => 'Transport de marchandises par voie maritime vers l\'Afrique et l\'Europe',
                 'icon' => '<i class="fas fa-ship"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'description' => 'Expéditions par conteneur complet (FCL) ou groupage (LCL) avec formalités douanières.',
                 'features' => [
-                    'Conteneurs 20 et 40 pieds',
-                    'Groupage et dédouanement',
-                    'Assurance marchandises',
-                    'Suivi en temps réel'
-                ]
+                    'Conteneurs 20/40 pieds',
+                    'Groupage hebdomadaire',
+                    'Suivi en temps réel',
+                    'Assurance marchandise'
+                ],
             ],
             [
                 'titre' => 'Transport Aérien',
-                'description' => 'Transport rapide par voie aérienne pour vos marchandises urgentes',
                 'icon' => '<i class="fas fa-plane"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1436491865333-7b9af8f9b6b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'description' => 'Solutions express et prioritaires pour vos envois urgents à l’international.',
                 'features' => [
-                    'Livraison express',
-                    'Marchandises fragiles',
-                    'Documents et colis',
-                    'Réseau mondial'
-                ]
+                    'Express et standard',
+                    'Door to Door',
+                    'Délais garantis',
+                    'Déclaration douanière'
+                ],
             ],
             [
                 'titre' => 'Transport Terrestre',
-                'description' => 'Transport routier en Afrique de l\'Ouest avec notre flotte moderne',
                 'icon' => '<i class="fas fa-truck"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'description' => 'Transport routier inter-États avec réseau fiable et sécurisé.',
                 'features' => [
-                    'Camions réfrigérés',
-                    'Transport de véhicules',
-                    'Livraison domicile',
-                    'Couverture régionale'
-                ]
+                    'Camions bâchés et fourgons',
+                    'Messagerie et lots partiels',
+                    'Suivi GPS',
+                    'Réseau régional'
+                ],
             ],
             [
                 'titre' => 'Dédouanement',
-                'description' => 'Service complet de dédouanement et formalités administratives',
-                'icon' => '<i class="fas fa-file-alt"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1454165804606-c3da57b4f6e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'icon' => '<i class="fas fa-clipboard-check"></i>',
+                'description' => 'Prise en charge complète des formalités douanières import/export.',
                 'features' => [
-                    'Déclaration en douane',
-                    'Certificats d\'origine',
-                    'Inspection marchandises',
-                    'Conseil réglementaire'
-                ]
+                    'Formalités import/export',
+                    'Accompagnement administratif',
+                    'Conseil réglementaire',
+                    'Optimisation des coûts'
+                ],
             ],
             [
                 'titre' => 'Entreposage',
-                'description' => 'Solutions d\'entreposage sécurisé dans nos entrepôts modernes',
                 'icon' => '<i class="fas fa-warehouse"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'description' => 'Stockage sécurisé et préparation de commandes près des hubs logistiques.',
                 'features' => [
-                    'Entrepôts sécurisés',
-                    'Gestion des stocks',
-                    'Conditionnement',
-                    'Distribution'
-                ]
+                    'Stockage sécurisé',
+                    'Préparation de commandes',
+                    'Contrôle qualité',
+                    'Inventaires'
+                ],
             ],
             [
                 'titre' => 'Assurance',
-                'description' => 'Protection complète de vos marchandises pendant le transport',
                 'icon' => '<i class="fas fa-shield-alt"></i>',
-                'image_url' => 'https://images.unsplash.com/photo-1554224155-3a58922a22c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+                'description' => 'Couverture adaptée pour garantir la sécurité financière de vos expéditions.',
                 'features' => [
                     'Couverture tous risques',
-                    'Indemnisation rapide',
-                    'Expertise sinistres',
-                    'Conseil en assurance'
-                ]
-            ]
-        ];
-        
-        // Images par défaut pour chaque type de service
-        $serviceImages = [
-            'Transport Maritime' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            'Transport Aérien' => 'https://images.unsplash.com/photo-1436491865333-7b9af8f9b6b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            'Transport Terrestre' => 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            'Dédouanement' => 'https://images.unsplash.com/photo-1454165804606-c3da57b4f6e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            'Entreposage' => 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            'Assurance' => 'https://images.unsplash.com/photo-1554224155-3a58922a22c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
-        ];
-        
-        return view('public.services', compact('services', 'serviceImages'));
-    }
-
-    /**
-     * Page de contact
-     */
-    public function contact()
-    {
-        $contacts = [
-            'togo' => [
-                'pays' => 'Togo',
-                'ville' => 'Lomé',
-                'adresse' => 'Totsi à 100m non loin de l\'eglise catholique, Lomé',
-                'telephone' => '+228 99 25 25 31',
-                'mobile' => '+228 99 25 25 31',
-                'email' => 'contact@nifgroupecargo.com',
-                'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
+                    'Assurance à la demande',
+                    'Gestion des sinistres',
+                    'Partenaires certifiés'
+                ],
             ],
-            'benin' => [
-                'pays' => 'Bénin',
-                'ville' => 'Cotonou',
-                'adresse' => '456 Avenue Clozel, Cotonou',
-                'telephone' => '+229 96 36 46 07',
-                'mobile' => '+229 96 36 46 07',
-                'email' => 'contact@nifgroupecargo.com',
-                'horaires' => 'Lun-Ven: 8h-18h, Sam: 8h-12h'
-            ]
         ];
-        
-        return view('public.contact', compact('contacts'));
+
+        return view('public.services', compact('services'));
     }
 
-    /**
-     * Traiter le formulaire de contact
-     */
-    public function envoyerContact(Request $request)
-    {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'telephone' => 'nullable|string|max:20',
-            'sujet' => 'required|string|max:255',
-            'message' => 'required|string|max:2000'
-        ]);
-
-        // Ici, vous pouvez envoyer l'email ou sauvegarder en base
-        // Pour l'exemple, on simule l'envoi
-        
-        try {
-            // Mail::to('contact@nif.com')->send(new ContactMail($request->all()));
-            
-            return back()->with('success', 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Une erreur est survenue lors de l\'envoi de votre message. Veuillez réessayer.');
-        }
-    }
-
-    /**
-     * Page À propos
-     */
+    // À propos
     public function apropos()
     {
-        return view('public.apropos');
+        // Si la vue dédiée n'existe pas encore, fallback vers l'accueil
+        return view()->exists('public.apropos') ? view('public.apropos') : view('public.accueil');
     }
 
-    /**
-     * Page du blog/actualités
-     */
+    // Contact (GET)
+    public function contact()
+    {
+        return view()->exists('public.contact') ? view('public.contact') : view('public.accueil');
+    }
+
+    // Contact (POST)
+    public function envoyerContact(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string|max:5000',
+        ]);
+
+        // TODO: Envoi d'email de contact (facultatif)
+        return back()->with('success', 'Votre message a bien été envoyé.');
+    }
+
+    // Suivi public (GET)
+    public function suiviPublic(Request $request)
+    {
+        $tracking = $request->query('tracking');
+        if ($tracking) {
+            $demande = DemandeTransport::where('numero_tracking', $tracking)->first();
+            if ($demande) {
+                // Si une vue de suivi dédiée existe
+                if (view()->exists('public.suivi')) {
+                    return view('public.suivi', compact('demande', 'tracking'));
+                }
+                return redirect()->route('accueil')->with('success', 'Demande trouvée: ' . $tracking);
+            }
+            return redirect()->route('accueil')->with('error', 'Aucune demande trouvée pour ce numéro de suivi.');
+        }
+        return view()->exists('public.suivi') ? view('public.suivi') : view('public.accueil');
+    }
+
+    // Suivi public (POST)
+    public function rechercherDemande(Request $request)
+    {
+        $request->validate(['tracking' => 'required|string|max:20']);
+        return redirect()->route('suivi.public', ['tracking' => $request->tracking]);
+    }
+
+    // Blog
     public function blog(Request $request)
     {
-        $type = $request->get('type', 'all');
-
-        $query = Annonce::active()->ordered();
-
-        // Filtrer par type si spécifié
-        if ($type !== 'all') {
+        $type = $request->query('type');
+        $query = Annonce::query()->latest();
+        if ($type && $type !== 'all') {
             $query->where('type', $type);
         }
-
-        $annonces = $query->paginate(9);
-
+        $annonces = $query->paginate(10);
         return view('public.blog.index', compact('annonces'));
     }
 
-    /**
-     * Afficher un article du blog
-     */
     public function showArticle($id)
     {
-        $article = Annonce::where('id', $id)
-            ->active()
-            ->firstOrFail();
-
-        // Articles similaires (même type, limité à 3)
-        $articlesSimilaires = Annonce::where('id', '!=', $id)
-            ->where('type', $article->type)
-            ->active()
-            ->ordered()
-            ->take(3)
-            ->get();
-
-        // Récupérer les commentaires approuvés pour cet article
-        $comments = $article->comments()->with(['user', 'replies.user'])->get();
-
-        return view('public.blog.show', compact('article', 'articlesSimilaires', 'comments'));
-    }
-
-    /**
-     * Page de suivi public (avec numéro de référence)
-     */
-    public function suiviPublic()
-    {
-        return view('public.suivi');
-    }
-
-    /**
-     * Rechercher une demande par référence
-     */
-    public function rechercherDemande(Request $request)
-    {
-        $request->validate([
-            'reference' => 'required|string'
-        ]);
-
-        $demande = DemandeTransport::with(['etapes', 'user'])
-            ->where('reference', $request->reference)
-            ->first();
-
-        if (!$demande) {
-            return back()->with('error', 'Aucune demande trouvée avec cette référence.');
-        }
-
-        return view('public.suivi-resultat', compact('demande'));
+        $article = Annonce::findOrFail($id);
+        return view('public.blog.show', compact('article'));
     }
 }

@@ -11,7 +11,7 @@
         <li><i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i></li>
         <li><a href="{{ route('mes-demandes.index') }}" class="hover:text-blue-600 transition-colors">Mes Demandes</a></li>
         <li><i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i></li>
-        <li class="text-gray-900 font-medium">{{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}</li>
+    <li class="text-gray-900 font-medium">{{ $demande->numero_tracking ?? '—' }}</li>
     </ol>
 </nav>
 
@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-                        {{ $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT) }}
+                        {{ $demande->numero_tracking ?? '—' }}
                     </h1>
                     <div class="flex flex-wrap gap-4 text-sm text-gray-600">
                         <span class="flex items-center">

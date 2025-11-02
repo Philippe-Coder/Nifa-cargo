@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Résultat du suivi - ' . $demande->reference)
+@section('title', 'Résultat du suivi - ' . ($demande->numero_tracking ?? 'Sans suivi'))
 
 @section('hero')
 <div class="hero-bg-contact relative overflow-hidden">
@@ -12,7 +12,7 @@
                 Suivi de Demande
             </h1>
             <p class="text-xl md:text-2xl opacity-90 animate-slide-up">
-                Référence : {{ $demande->reference }}
+                Numéro de suivi : {{ $demande->numero_tracking ?? '—' }}
             </p>
         </div>
     </div>
@@ -35,9 +35,9 @@
                 <div class="bg-gray-50 rounded-lg p-4">
                     <div class="flex items-center mb-2">
                         <i class="fas fa-hashtag text-blue-600 mr-2"></i>
-                        <span class="font-semibold text-gray-700">Référence</span>
+                        <span class="font-semibold text-gray-700">Numéro de suivi</span>
                     </div>
-                    <p class="text-lg font-bold text-gray-900">{{ $demande->reference }}</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $demande->numero_tracking ?? '—' }}</p>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4">

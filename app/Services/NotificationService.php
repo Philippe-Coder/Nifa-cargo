@@ -175,7 +175,7 @@ class NotificationService
                 // Si on souhaite injecter le message dans le body (si le template attend des variables)
                 $components[] = [
                     'type' => 'body',
-                    'parameters' => [ ['type' => 'text', 'text' => $demande->reference ?? ('REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT)) ],
+                    'parameters' => [ ['type' => 'text', 'text' => ($demande->numero_tracking ?: ('TRK-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT))) ],
                                       ['type' => 'text', 'text' => $demande->marchandise ?? 'Marchandise' ],
                                       ['type' => 'text', 'text' => $message ] ]
                 ];
@@ -363,7 +363,7 @@ class NotificationService
      */
     private static function creerTemplateEmail(User $user, DemandeTransport $demande, string $titre, string $message): string
     {
-        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+    $tracking = $demande->numero_tracking ?: ('TRK-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT));
         
         return "
         <!DOCTYPE html>
@@ -393,7 +393,7 @@ class NotificationService
                     <p>{$message}</p>
                     
                     <div class='info-box'>
-                        <strong>📦 Référence :</strong> {$reference}<br>
+                        <strong>� Numéro de suivi :</strong> {$tracking}<br>
                         <strong>📋 Marchandise :</strong> {$demande->marchandise}<br>
                         <strong>📍 Origine :</strong> {$demande->origine}<br>
                         <strong>🎯 Destination :</strong> {$demande->destination}
@@ -424,22 +424,22 @@ class NotificationService
     public function envoyerNotificationEtape(DemandeTransport $demande, string $nomEtape, string $statut = 'en_cours')
     {
         $user = $demande->user;
-        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+        $tracking = $demande->numero_tracking ?: ('TRK-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT));
 
         // Messages selon le statut
         $messagesStatut = [
-            'en_attente' => "🔄 L'étape '{nomEtape}' de votre demande {reference} est en attente de traitement.",
-            'en_cours' => "🚀 Bonne nouvelle ! Votre demande {reference} pour {marchandise} est maintenant à l'étape: {nomEtape}.",
-            'terminee' => "✅ Excellente nouvelle ! L'étape '{nomEtape}' de votre demande {reference} a été complétée avec succès."
+            'en_attente' => "🔄 L'étape '{nomEtape}' de votre envoi {tracking} est en attente de traitement.",
+            'en_cours' => "🚀 Bonne nouvelle ! Votre envoi {tracking} pour {marchandise} est maintenant à l'étape: {nomEtape}.",
+            'terminee' => "✅ Excellente nouvelle ! L'étape '{nomEtape}' de votre envoi {tracking} a été complétée avec succès."
         ];
 
         $titre = "Mise à jour NIF Cargo - Étape: {$nomEtape}";
-        $message = $messagesStatut[$statut] ?? "📦 Votre demande {reference} pour {marchandise} vient de passer à l'étape: {nomEtape}.";
+        $message = $messagesStatut[$statut] ?? "📦 Votre envoi {tracking} pour {marchandise} vient de passer à l'étape: {nomEtape}.";
 
         // Remplacer les variables
         $message = str_replace(
-            ['{nomEtape}', '{marchandise}', '{reference}', '{origine}', '{destination}'],
-            [$nomEtape, $demande->marchandise ?? 'votre marchandise', $reference, $demande->origine ?? 'N/A', $demande->destination ?? 'N/A'],
+            ['{nomEtape}', '{marchandise}', '{tracking}', '{origine}', '{destination}'],
+            [$nomEtape, $demande->marchandise ?? 'votre marchandise', $tracking, $demande->origine ?? 'N/A', $demande->destination ?? 'N/A'],
             $message
         );
 
@@ -452,20 +452,20 @@ class NotificationService
     public static function notifyStatusChange(DemandeTransport $demande, string $oldStatus, string $newStatus): void
     {
         $user = $demande->user;
-        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+        $tracking = $demande->numero_tracking ?: ('TRK-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT));
         
         $messages = [
-            'en_attente' => "🔄 Votre demande {$reference} est en attente de traitement.",
-            'validee' => "✅ Excellente nouvelle ! Votre demande {$reference} a été validée.",
-            'en_cours' => "🚀 Votre demande {$reference} est maintenant en cours de traitement.",
+            'en_attente' => "🔄 Votre envoi {$tracking} est en attente de traitement.",
+            'validee' => "✅ Excellente nouvelle ! Votre envoi {$tracking} a été validé.",
+            'en_cours' => "🚀 Votre envoi {$tracking} est maintenant en cours de traitement.",
             'en_transit' => "🚛 Votre marchandise {$demande->marchandise} est en transit vers {$demande->destination}.",
             'livree' => "🎉 Félicitations ! Votre marchandise {$demande->marchandise} a été livrée avec succès.",
-            'terminee' => "✅ Votre demande {$reference} a été traitée avec succès.",
-            'annulee' => "❌ Votre demande {$reference} a été annulée.",
-            'refusee' => "❌ Nous regrettons, votre demande {$reference} n'a pas pu être acceptée."
+            'terminee' => "✅ Votre envoi {$tracking} a été traité avec succès.",
+            'annulee' => "❌ Votre envoi {$tracking} a été annulé.",
+            'refusee' => "❌ Nous regrettons, votre envoi {$tracking} n'a pas pu être accepté."
         ];
 
-        $message = $messages[$newStatus] ?? "📦 Le statut de votre demande {$reference} a été mis à jour vers: {$newStatus}.";
+        $message = $messages[$newStatus] ?? "📦 Le statut de votre envoi {$tracking} a été mis à jour vers: {$newStatus}.";
         $titre = "Mise à jour NIF Cargo - Statut: " . ucfirst($newStatus);
 
         self::envoyerNotification($user, $demande, $titre, $message);
@@ -487,10 +487,10 @@ class NotificationService
                 return;
             }
 
-            $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
+            $tracking = $demande->numero_tracking ?: ('TRK-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT));
             $client = $demande->user;
 
-            $titre = "Nouvelle demande de transport créée ({$reference})";
+            $titre = "Nouvelle demande de transport créée (Suivi: {$tracking})";
             $message = "🆕 Une nouvelle demande de transport vient d'être créée.\n" .
                 "👤 Client: " . ($client->name ?? 'N/A') . " (" . ($client->email ?? 'N/A') . ")\n" .
                 "📞 Téléphone: " . ($client->telephone ?? 'N/A') . "\n" .
@@ -526,12 +526,10 @@ class NotificationService
             return;
         }
 
-        $reference = $demande->reference ?? 'REF-' . str_pad($demande->id, 6, '0', STR_PAD_LEFT);
         $tracking = $demande->numero_tracking ?: '—';
 
         $titre = "Votre numéro de suivi a été mis à jour";
         $message = "🔎 Numéro de suivi: {$tracking}\n" .
-                   "📦 Référence: {$reference}\n" .
                    "📍 Trajet: " . ($demande->origine ?? 'N/A') . " → " . ($demande->destination ?? 'N/A') . "\n\n" .
                    "Vous pouvez suivre votre colis depuis votre espace client.";
 
