@@ -37,7 +37,15 @@
         </div>
         <div class="info-row">
             <span class="info-label">Nombre total de demandes :</span>
-            <span class="info-value">{{ $demandes->count() }} demande(s)</span>
+            <span class="info-value">
+                @if(isset($demandes))
+                    {{ $demandes->count() }} demande(s)
+                @elseif(isset($demande))
+                    1 demande
+                @else
+                    0 demande
+                @endif
+            </span>
         </div>
     </div>
 
@@ -103,10 +111,16 @@
             </div>
             <div class="info-row">
                 <span class="info-label">Nombre total de demandes :</span>
-                <span class="info-value">{{ $demandes->count() }} demande(s)</span>
+                <span class="info-value">
+                    @if(isset($demandes))
+                        {{ $demandes->count() }} demande(s)
+                    @else
+                        0 demande
+                    @endif
+                </span>
             </div>
         </div>
-        @if($demandes->count() > 0)
+        @if(isset($demandes) && $demandes->count() > 0)
             <table>
                 <thead>
                     <tr>

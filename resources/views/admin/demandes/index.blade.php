@@ -116,32 +116,32 @@
 <!-- Filtres et Actions -->
 <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8">
     <form method="GET" action="{{ route('admin.demandes.index') }}" id="filterForm" class="space-y-4">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="space-y-4">
             <!-- Filtres par statut -->
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-col sm:flex-row gap-2">
                 <a href="{{ route('admin.demandes.index') }}" 
-                   class="px-4 py-2 {{ request('statut') ? 'bg-gray-100 text-gray-700' : 'bg-blue-600 text-white' }} rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
+                   class="px-4 py-2 {{ request('statut') ? 'bg-gray-100 text-gray-700' : 'bg-blue-600 text-white' }} rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center sm:justify-start whitespace-nowrap">
                     <i class="fas fa-list mr-2"></i> Toutes ({{ $totalDemandes }})
                 </a>
                 <a href="{{ route('admin.demandes.index', ['statut' => 'en_attente']) }}" 
-                   class="px-4 py-2 {{ request('statut') === 'en_attente' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center">
+                   class="px-4 py-2 {{ request('statut') === 'en_attente' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center justify-center sm:justify-start whitespace-nowrap">
                     <i class="fas fa-clock mr-2 text-yellow-500"></i> En attente ({{ $enAttente }})
                 </a>
                 <a href="{{ route('admin.demandes.index', ['statut' => 'en_cours']) }}" 
-                   class="px-4 py-2 {{ request('statut') === 'en_cours' ? 'bg-blue-100 text-blue-800 border border-blue-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center">
+                   class="px-4 py-2 {{ request('statut') === 'en_cours' ? 'bg-blue-100 text-blue-800 border border-blue-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center sm:justify-start whitespace-nowrap">
                     <i class="fas fa-truck mr-2 text-blue-500"></i> En cours ({{ $enCours }})
                 </a>
                 <a href="{{ route('admin.demandes.index', ['statut' => 'livree']) }}" 
-                   class="px-4 py-2 {{ request('statut') === 'livree' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center">
+                   class="px-4 py-2 {{ request('statut') === 'livree' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-100 text-gray-700' }} rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center justify-center sm:justify-start whitespace-nowrap">
                     <i class="fas fa-check-circle mr-2 text-green-500"></i> Livrées ({{ $livrees }})
                 </a>
             </div>
             
             <!-- Recherche et Actions -->
-            <div class="flex gap-3">
-                <div class="relative flex-1 lg:w-64">
-              <input type="text" name="search" value="{{ request('search') }}" 
-                  placeholder="Numéro de suivi, client, email, téléphone..." 
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1 sm:max-w-xs">
+                    <input type="text" name="search" value="{{ request('search') }}" 
+                           placeholder="Numéro de suivi, client, email..." 
                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                            onchange="document.getElementById('filterForm').submit()">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -152,32 +152,32 @@
                         </button>
                     @endif
                 </div>
-                        <button type="button" onclick="toggleAdvancedFilters()" 
-                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center">
-                            <i class="fas fa-filter mr-2"></i> Filtres avancés
-                        </button>
-                        <a href="{{ route('admin.demandes.create-admin') }}" 
-                           class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center">
-                            <i class="fas fa-plus-circle mr-2"></i> Créer une Demande
-                        </a>
-                        <div class="relative flex-shrink-0" style="min-width:140px;">
-                            <button id="exportBtn" type="button" onclick="toggleExportMenu()" 
-                                class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center w-full justify-center">
-                                <i class="fas fa-file-export mr-2"></i> Exporter <i class="fas fa-chevron-down ml-2"></i>
-                            </button>
-                            <div id="exportMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-30 border border-gray-200">
-                                <a href="#" onclick="exportDemandes('csv');return false;" 
-                                   class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-t-lg transition-colors">
-                                    <i class="fas fa-file-csv mr-3 text-green-600"></i>
-                                    Exporter en CSV
-                                </a>
-                                <a href="#" onclick="exportDemandes('pdf');return false;" 
-                                   class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center rounded-b-lg transition-colors">
-                                    <i class="fas fa-file-pdf mr-3 text-red-600"></i>
-                                    Exporter en PDF
-                                </a>
-                            </div>
-                        </div>
+                
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="toggleAdvancedFilters()" 
+                            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center whitespace-nowrap">
+                        <i class="fas fa-filter mr-2"></i> Filtres
+                    </button>
+                    
+                    <a href="{{ route('admin.demandes.create-admin') }}" 
+                       class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center whitespace-nowrap">
+                        <i class="fas fa-plus-circle mr-2"></i> Créer
+                    </a>
+                    
+                    <!-- Bouton CSV -->
+                    <button type="button" onclick="exportDemandes('csv')" 
+                            class="export-button px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center whitespace-nowrap hover:shadow-lg">
+                        <i class="fas fa-file-csv mr-2"></i> 
+                        <span class="hidden sm:inline">Exporter </span>CSV
+                    </button>
+                    
+                    <!-- Bouton PDF -->
+                    <button type="button" onclick="exportDemandes('pdf')" 
+                            class="export-button px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center whitespace-nowrap hover:shadow-lg">
+                        <i class="fas fa-file-pdf mr-2"></i> 
+                        <span class="hidden sm:inline">Exporter </span>PDF
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -236,7 +236,7 @@
 <!-- Liste des Demandes -->
 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full table-mobile">
             <thead class="bg-gray-50">
                 <tr class="border-b border-gray-200">
                     <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Client</th>
@@ -441,6 +441,79 @@
 </div>
 @endsection
 
+@push('styles')
+<style>
+/* Amélioration du responsive pour les filtres et boutons */
+@media (max-width: 640px) {
+    .flex.flex-col.sm\:flex-row {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .flex.flex-col.sm\:flex-row > * {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .flex.flex-col.sm\:flex-row {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+    
+    .flex.flex-col.sm\:flex-row > * {
+        flex: 1 1 auto !important;
+        min-width: fit-content !important;
+    }
+}
+
+/* Animation pour les boutons d'export */
+.export-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.export-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.export-button:active {
+    transform: translateY(0);
+}
+
+/* Style pour les badges de statut */
+.status-badge {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Responsive pour le tableau */
+@media (max-width: 768px) {
+    .table-mobile {
+        font-size: 0.875rem;
+    }
+    
+    .table-mobile td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .table-mobile .truncate {
+        max-width: 120px;
+    }
+}
+</style>
+@endpush
+
 @push('scripts')
 <script>
 function toggleDropdown(id) {
@@ -498,20 +571,6 @@ function removeFilter(filterType) {
     window.location.href = url;
 }
 
-function toggleExportMenu() {
-    const menu = document.getElementById('exportMenu');
-    menu.classList.toggle('hidden');
-}
-
-// Fermer le menu d'exportation si on clique ailleurs
-document.addEventListener('click', function(event) {
-    const dropdown = document.querySelector('.relative');
-    const menu = document.getElementById('exportMenu');
-    if (menu && !dropdown.contains(event.target)) {
-        menu.classList.add('hidden');
-    }
-});
-
 function exportDemandes(format) {
     const form = document.getElementById('filterForm');
     const formData = new FormData(form);
@@ -527,8 +586,21 @@ function exportDemandes(format) {
     } else {
         exportUrl = "{{ route('admin.demandes.export') }}" + '?' + params.toString();
     }
+    
+    // Feedback visuel pour l'utilisateur
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Génération...';
+    button.disabled = true;
+    
+    // Ouvrir l'export
     window.open(exportUrl, '_blank');
-    document.getElementById('exportMenu').classList.add('hidden');
+    
+    // Remettre le bouton à l'état normal après un délai
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }, 2000);
 }
 
 // Recherche en temps réel

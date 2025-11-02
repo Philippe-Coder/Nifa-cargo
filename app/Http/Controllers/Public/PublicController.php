@@ -159,17 +159,21 @@ class PublicController extends Controller
     {
         $tracking = $request->query('tracking');
         if ($tracking) {
-            $demande = DemandeTransport::where('numero_tracking', $tracking)->first();
+            $demande = DemandeTransport::with(['etapes' => function($query) {
+                $query->orderBy('ordre');
+            }])->where('numero_tracking', $tracking)->first();
+            
             if ($demande) {
-                // Si une vue de suivi dédiée existe
-                if (view()->exists('public.suivi')) {
-                    return view('public.suivi', compact('demande', 'tracking'));
-                }
-                return redirect()->route('accueil')->with('success', 'Demande trouvée: ' . $tracking);
+                // Retourner la vue de résultats avec la demande trouvée
+                return view('public.suivi-resultat', compact('demande', 'tracking'));
             }
-            return redirect()->route('accueil')->with('error', 'Aucune demande trouvée pour ce numéro de suivi.');
+            
+            // Si aucune demande trouvée, retourner la vue de recherche avec erreur
+            return view('public.suivi')->with('error', 'Aucune demande trouvée pour le numéro de suivi: ' . $tracking);
         }
-        return view()->exists('public.suivi') ? view('public.suivi') : view('public.accueil');
+        
+        // Si pas de paramètre tracking, afficher le formulaire de recherche
+        return view('public.suivi');
     }
 
     // Suivi public (POST)

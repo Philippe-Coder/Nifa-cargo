@@ -626,3 +626,40 @@ Route::get('/test-middleware', function() {
         'timestamp' => now()->toDateTimeString()
     ]);
 });
+
+// Route de test pour créer une demande avec numéro de tracking
+Route::get('/test-create-demande', function() {
+    // Créer un utilisateur de test s'il n'existe pas
+    $user = App\Models\User::firstOrCreate([
+        'email' => 'test@example.com'
+    ], [
+        'name' => 'Utilisateur Test',
+        'password' => bcrypt('password'),
+        'telephone' => '+22897311158'
+    ]);
+
+    // Créer une demande de test avec un numéro de tracking
+    $demande = App\Models\DemandeTransport::create([
+        'user_id' => $user->id,
+        'type' => 'export',
+        'type_transport' => 'maritime',
+        'marchandise' => 'Matériel informatique',
+        'poids' => 25.5,
+        'origine' => 'Lomé, Togo',
+        'destination' => 'Paris, France',
+        'statut' => 'en_transit',
+        'numero_tracking' => '1234567',
+        'description' => 'Test de suivi - Matériel informatique pour bureau',
+        'valeur' => 500000,
+        'created_by_admin' => true
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Demande de test créée avec succès',
+        'demande_id' => $demande->id,
+        'numero_tracking' => $demande->numero_tracking,
+        'suivi_url' => route('suivi.public', ['tracking' => $demande->numero_tracking]),
+        'test_url' => 'Visitez: ' . url('/suivi?tracking=' . $demande->numero_tracking)
+    ]);
+});
