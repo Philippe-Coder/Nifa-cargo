@@ -82,6 +82,12 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
                                     <i class="fas fa-barcode text-blue-500 mr-2"></i>
                                     {{ $demande->numero_tracking ?? '—' }}
+                                    @if($demande->created_by_admin)
+                                        <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                                            <i class="fas fa-user-shield mr-1"></i>
+                                            Créée par l'équipe
+                                        </span>
+                                    @endif
                                 </h3>
                                 <div class="flex items-center text-gray-600 mb-3">
                                     <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>

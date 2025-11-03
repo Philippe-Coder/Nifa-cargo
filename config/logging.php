@@ -127,6 +127,63 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        // Canaux personnalisés pour NIF CARGO
+        'database' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/database.log'),
+            'level' => env('LOG_LEVEL', 'error'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
+        'validation' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/validation.log'),
+            'level' => env('LOG_LEVEL', 'warning'),
+            'days' => 14,
+            'replace_placeholders' => true,
+        ],
+
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => env('LOG_LEVEL', 'warning'),
+            'days' => 90,
+            'replace_placeholders' => true,
+        ],
+
+        'access' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/access.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 7,
+            'replace_placeholders' => true,
+        ],
+
+        'auth' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/auth.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
+        'application' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/application.log'),
+            'level' => env('LOG_LEVEL', 'error'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
+        'demandes' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/demandes.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 60,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

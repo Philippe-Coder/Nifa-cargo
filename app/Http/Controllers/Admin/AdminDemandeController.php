@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\DemandeTransport;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\DemandeLoggingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class AdminDemandeController extends Controller
 {
@@ -279,7 +282,8 @@ class AdminDemandeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        try {
+            $request->validate([
             'client_name' => 'required|string|max:255',
             'client_email' => 'required|email|max:255',
             'client_telephone' => 'required|string|max:20',
@@ -313,8 +317,7 @@ class AdminDemandeController extends Controller
             'frais_expedition.between' => "Les frais d'expédition sont trop élevés (max ≈ 9 999 999 999 999,99 FCFA).",
         ]);
 
-        try {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
             // Créer ou trouver le client
             $clientData = $this->findOrCreateClient([
@@ -353,6 +356,9 @@ class AdminDemandeController extends Controller
             // Les étapes par défaut sont créées automatiquement par l'Observer
             // Pas besoin d'appeler creerEtapesParDefaut() ici
 
+            // Logger la création réussie
+            DemandeLoggingService::logCreation($request->all(), $client->id, true);
+
             // Envoyer notification de création de demande au client
             $this->sendDemandeCreationNotification($client, $demande);
 
@@ -362,13 +368,29 @@ class AdminDemandeController extends Controller
                 ->route('admin.demandes.show', $demande->id)
                 ->with('success', 'Demande créée avec succès! Le client a été notifié par email et WhatsApp.');
 
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            // Logger les erreurs de validation
+            DemandeLoggingService::logValidationError($e->errors(), $request->all(), 'CREATION_ADMIN');
+            
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput();
+                
+        } catch (Throwable $e) {
             DB::rollback();
+            
+            // Logger l'erreur avec un ID unique
+            $errorId = DemandeLoggingService::logDatabaseError($e, $request->all(), 'CREATION_ADMIN');
+            
+            // Message convivial pour l'utilisateur
+            $userMessage = DemandeLoggingService::getUserFriendlyMessage($e);
+            $userMessage .= " (Code erreur: {$errorId})";
             
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Erreur lors de la création de la demande: ' . $e->getMessage());
+                ->with('error', $userMessage);
         }
     }
 

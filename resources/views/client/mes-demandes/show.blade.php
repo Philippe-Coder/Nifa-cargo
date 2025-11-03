@@ -24,8 +24,14 @@
                     <i class="fas fa-file-invoice text-white text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-1 flex items-center flex-wrap">
                         {{ $demande->numero_tracking ?? '—' }}
+                        @if($demande->created_by_admin)
+                            <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                                <i class="fas fa-user-shield mr-2"></i>
+                                Créée par notre équipe
+                            </span>
+                        @endif
                     </h1>
                     <div class="flex flex-wrap gap-4 text-sm text-gray-600">
                         <span class="flex items-center">
@@ -36,6 +42,12 @@
                             <i class="fas fa-clock mr-2 text-green-500"></i>
                             {{ $demande->created_at->diffForHumans() }}
                         </span>
+                        @if($demande->created_by_admin)
+                        <span class="flex items-center text-purple-600">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Cette demande a été créée par notre équipe administrative pour vous
+                        </span>
+                        @endif
                     </div>
                 </div>
             </div>
