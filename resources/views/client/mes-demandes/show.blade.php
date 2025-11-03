@@ -121,6 +121,16 @@
                 <div class="space-y-6">
                     <h3 class="font-semibold text-gray-900 text-lg border-b border-gray-200 pb-2">Informations Colis</h3>
                     <div class="space-y-4">
+                        @if($demande->nombre_cartons)
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-boxes text-blue-500 mr-3"></i>
+                                <span class="text-gray-600">Nombre de cartons</span>
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $demande->nombre_cartons }}</span>
+                        </div>
+                        @endif
+
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fas fa-weight text-orange-500 mr-3"></i>

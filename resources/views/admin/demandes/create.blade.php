@@ -299,7 +299,22 @@
                           placeholder="Décrivez la nature et le contenu du colis...">{{ old('nature_colis') }}</textarea>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Nombre de cartons -->
+                <div>
+                    <label for="nombre_cartons" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-boxes mr-2 text-orange-500"></i>Nombre de cartons
+                        <span class="text-xs text-gray-500">(optionnel)</span>
+                    </label>
+                    <input type="number" 
+                           name="nombre_cartons" 
+                           id="nombre_cartons"
+                           min="0"
+                           value="{{ old('nombre_cartons') }}" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                           placeholder="À préciser si connu">
+                </div>
+
                 <!-- Poids -->
                 <div>
                     <label for="poids" class="block text-sm font-medium text-gray-700 mb-2">

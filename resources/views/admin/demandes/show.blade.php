@@ -62,6 +62,7 @@
                 <p class="mb-2"><span class="font-semibold">Type de transport :</span> {{ ucfirst($demande->type) }}</p>
                 <p class="mb-2"><span class="font-semibold">Mode de transport :</span> {{ $demande->type_transport ?? 'Non spécifié' }}</p>
                 <p class="mb-2"><span class="font-semibold">Marchandise :</span> {{ $demande->marchandise ?? 'Non spécifiée' }}</p>
+                <p class="mb-2"><span class="font-semibold">Nombre de cartons :</span> {{ $demande->nombre_cartons ?: 'Non précisé' }}</p>
                 <p class="mb-2"><span class="font-semibold">Poids :</span> {{ $demande->poids ? $demande->poids . ' kg' : 'Non spécifié' }}</p>
                 <p class="mb-2"><span class="font-semibold">Volume :</span> {{ $demande->volume ? $demande->volume . ' m³' : 'Non spécifié' }}</p>
                 <p class="mb-2"><span class="font-semibold">Origine :</span> {{ $demande->origine ?? 'Non spécifiée' }}</p>

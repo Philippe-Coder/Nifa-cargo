@@ -12,6 +12,7 @@ class DemandeTransport extends Model
         'type',
         'type_transport',
         'marchandise',
+        'nombre_cartons',
         'poids',
         'volume',
         'nature_colis',
@@ -35,6 +36,7 @@ class DemandeTransport extends Model
     // Suppression de la logique 'reference' : le suivi est basé sur 'numero_tracking' exclusivement
 
     protected $casts = [
+        'nombre_cartons' => 'integer',
         'poids' => 'decimal:2',
         'volume' => 'decimal:2',
         'valeur' => 'decimal:2',

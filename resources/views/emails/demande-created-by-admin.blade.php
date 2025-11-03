@@ -49,6 +49,12 @@
                         <td style="padding: 8px 0; font-weight: bold;"> Nature du colis :</td>
                         <td style="padding: 8px 0;">{{ $demande->nature_colis }}</td>
                     </tr>
+                    @if($demande->nombre_cartons)
+                    <tr>
+                        <td style="padding: 8px 0; font-weight: bold;">Nombre de cartons :</td>
+                        <td style="padding: 8px 0;">{{ $demande->nombre_cartons }}</td>
+                    </tr>
+                    @endif
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;"> Poids :</td>
                         <td style="padding: 8px 0;">{{ $demande->poids }} kg</td>

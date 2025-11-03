@@ -107,8 +107,16 @@
                 </div>
             @endif
 
-            @if($demande->poids || $demande->dimensions || $demande->valeur)
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            @if($demande->nombre_cartons || $demande->poids || $demande->dimensions || $demande->valeur)
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                    @if($demande->nombre_cartons)
+                        <div class="bg-purple-50 rounded-lg p-4 text-center">
+                            <i class="fas fa-boxes text-purple-600 text-2xl mb-2"></i>
+                            <p class="text-sm text-gray-600">Cartons</p>
+                            <p class="text-lg font-bold text-purple-900">{{ $demande->nombre_cartons }}</p>
+                        </div>
+                    @endif
+                    
                     @if($demande->poids)
                         <div class="bg-blue-50 rounded-lg p-4 text-center">
                             <i class="fas fa-weight text-blue-600 text-2xl mb-2"></i>

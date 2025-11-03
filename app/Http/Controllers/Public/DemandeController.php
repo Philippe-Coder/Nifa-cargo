@@ -23,6 +23,7 @@ class DemandeController extends Controller
         $validated = $request->validate([
             'type_transport' => 'required|string',
             'marchandise' => 'required|string|max:255',
+            'nombre_cartons' => 'nullable|integer|min:0|max:9999',
             'poids' => 'nullable|numeric',
             'origine' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
@@ -41,6 +42,7 @@ class DemandeController extends Controller
             'type' => 'import', // Valeur par défaut, à adapter selon le type de transport
             'type_transport' => $validated['type_transport'],
             'marchandise' => $validated['marchandise'],
+            'nombre_cartons' => $validated['nombre_cartons'] ?? null,
             'poids' => $validated['poids'] ?? null,
             'origine' => $validated['origine'],
             'destination' => $validated['destination'],

@@ -14,9 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         // Créer quelques galeries de test si elles n'existent pas
-        if (Galerie::count() === 0) {
+        if (Galerie::count() === 0 && User::count() > 0) {
             $admin = User::where('role', 'admin')->first();
-            $userId = $admin ? $admin->id : 1;
+            $userId = $admin ? $admin->id : User::first()->id;
             
             $galeries = [
                 [

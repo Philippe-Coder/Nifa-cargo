@@ -135,37 +135,6 @@
                 </div>
             </form>
             
-            <!-- Comptes de test (environnement de développement) -->
-            @if(app()->environment('local'))
-                <div class="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-vial text-amber-600 mr-2"></i>
-                        <h3 class="text-sm font-semibold text-amber-800">Comptes de test (environnement de développement)</h3>
-                    </div>
-                    <div class="space-y-2 text-xs text-amber-700">
-                        <div class="flex justify-between items-center p-2 bg-amber-100 rounded-lg">
-                            <span class="font-medium">Administrateur</span>
-                            <div>
-                                <span class="font-mono">admin@nif.com</span>
-                                <span class="mx-2">•</span>
-                                <span class="font-mono">admin123</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center p-2 bg-amber-100 rounded-lg">
-                            <span class="font-medium">Client</span>
-                            <div>
-                                <span class="font-mono">client@nif.com</span>
-                                <span class="mx-2">•</span>
-                                <span class="font-mono">client123</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-xs text-amber-600 mt-2 text-center">
-                        <i class="fas fa-exclamation-triangle mr-1"></i>
-                        Ces comptes ne fonctionnent qu'en environnement de développement
-                    </p>
-                </div>
-            @endif
 
             <!-- Garanties de sécurité -->
             <div class="mt-6 grid grid-cols-3 gap-3 text-center">

@@ -81,7 +81,7 @@
         @endif
 
         <!-- Formulaire de modification -->
-        <form action="{{ route('client.demandes.update', $demande->id) }}" method="POST" enctype="multipart/form-data" id="demandeForm" class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <form action="{{ route('mes-demandes.update', $demande->id) }}" method="POST" enctype="multipart/form-data" id="demandeForm" class="bg-white rounded-lg shadow-sm border border-gray-200">
             @csrf
             @method('PUT')
 
@@ -169,7 +169,7 @@
                         @endif
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <!-- Type de colis -->
                         <div>
                             <label for="type_colis" class="block text-sm font-medium text-gray-700 mb-2">
@@ -202,6 +202,22 @@
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('poids') border-red-500 @enderror"
                                    placeholder="0.0">
                             @error('poids')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Nombre de cartons -->
+                        <div>
+                            <label for="nombre_cartons" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-boxes mr-1 text-orange-600"></i>
+                                Nombre de cartons (optionnel)
+                            </label>
+                            <input type="number" id="nombre_cartons" name="nombre_cartons" min="0" max="9999" 
+                                   value="{{ old('nombre_cartons', $demande->nombre_cartons) }}"
+                                   {{ !in_array($demande->statut, ['en_attente', 'confirmee']) ? 'readonly' : '' }}
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nombre_cartons') border-red-500 @enderror"
+                                   placeholder="À préciser si connu">
+                            @error('nombre_cartons')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -363,7 +379,7 @@
                             </button>
                         @endif
                         
-                        <a href="{{ route('client.demandes.index') }}" 
+                        <a href="{{ route('mes-demandes.index') }}" 
                            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-200 flex items-center space-x-2">
                             <i class="fas fa-arrow-left"></i>
                             <span>Retour à mes demandes</span>
@@ -404,7 +420,7 @@
                 </div>
             </div>
             
-            <form action="{{ route('client.demandes.cancel', $demande->id) }}" method="POST" class="space-y-4">
+            <form action="{{ route('mes-demandes.cancel', $demande->id) }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Raison de l'annulation</label>

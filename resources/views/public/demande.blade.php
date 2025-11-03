@@ -73,7 +73,18 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-boxes mr-2 text-blue-600"></i>
+                            Nombre de cartons
+                            <span class="text-xs text-gray-500">(optionnel)</span>
+                        </label>
+                        <input type="number" name="nombre_cartons" value="{{ old('nombre_cartons') }}" min="0"
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                               placeholder="À préciser si connu">
+                    </div>
+
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             <i class="fas fa-weight mr-2 text-blue-600"></i>

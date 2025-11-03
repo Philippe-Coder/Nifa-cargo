@@ -105,7 +105,7 @@ class AdminDemandeController extends Controller
     private function sendWelcomeNotifications(User $client, string $password)
     {
         try {
-            \Illuminate\Support\Facades\Log::info("🚀 Début envoi notifications de bienvenue pour {$client->email}");
+            \Illuminate\Support\Facades\Log::info(" Début envoi notifications de bienvenue pour {$client->email}");
             
             // Envoi d'email de bienvenue avec template Blade
             \Illuminate\Support\Facades\Mail::send('emails.welcome-client', [
@@ -118,31 +118,31 @@ class AdminDemandeController extends Controller
                      ->subject('🎉 Bienvenue chez NIF CARGO - Vos identifiants de connexion')
                      ->from(config('mail.from.address'), config('mail.from.name'));
             });
-            \Illuminate\Support\Facades\Log::info("📧 Email envoyé à {$client->email}");
+            \Illuminate\Support\Facades\Log::info(" Email envoyé à {$client->email}");
 
             // Envoyer aussi par WhatsApp si numéro disponible
             if ($client->telephone) {
-                \Illuminate\Support\Facades\Log::info("📱 Tentative WhatsApp pour {$client->telephone}");
-                
+                \Illuminate\Support\Facades\Log::info(" Tentative WhatsApp pour {$client->telephone}");
+
                 $whatsappMessage = "🎉 Bienvenue chez NIF CARGO!\n\n" .
                                  "Votre compte a été créé avec succès par notre équipe.\n\n" .
-                                 "📧 Email de connexion: {$client->email}\n" .
-                                 "🔐 Mot de passe temporaire: {$password}\n\n" .
-                                 "🌐 Connectez-vous sur: " . route('login') . "\n\n" .
+                                 " Email de connexion: {$client->email}\n" .
+                                 " Mot de passe temporaire: {$password}\n\n" .
+                                 " Connectez-vous sur: " . route('login') . "\n\n" .
                                  "Vous pouvez modifier votre mot de passe après votre première connexion.\n\n" .
                                  "Merci de nous faire confiance pour vos expéditions! 🚚📦";
 
                 $this->sendWhatsAppMessage($client, $whatsappMessage);
-                \Illuminate\Support\Facades\Log::info("📱 WhatsApp traité pour {$client->telephone}");
+                \Illuminate\Support\Facades\Log::info(" WhatsApp traité pour {$client->telephone}");
             } else {
-                \Illuminate\Support\Facades\Log::info("📱 Pas de numéro WhatsApp pour {$client->email}");
+                \Illuminate\Support\Facades\Log::info(" Pas de numéro WhatsApp pour {$client->email}");
             }
             
-            \Illuminate\Support\Facades\Log::info("✅ Notifications de bienvenue envoyées à {$client->email}");
+            \Illuminate\Support\Facades\Log::info("Notifications de bienvenue envoyées à {$client->email}");
             
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("❌ Erreur notifications de bienvenue pour {$client->email}: " . $e->getMessage());
-            \Illuminate\Support\Facades\Log::error("❌ Stack trace: " . $e->getTraceAsString());
+            \Illuminate\Support\Facades\Log::error(" Erreur notifications de bienvenue pour {$client->email}: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error(" Stack trace: " . $e->getTraceAsString());
         }
     }
 
@@ -157,22 +157,22 @@ class AdminDemandeController extends Controller
             // Priorité: 360dialog > Meta WhatsApp > Twilio > CallMeBot
             if (env('WHATSAPP_360_API_KEY')) {
                 // Méthode 360dialog (Recommandée)
-                \Illuminate\Support\Facades\Log::info("📱 Utilisation 360dialog pour WhatsApp");
+                \Illuminate\Support\Facades\Log::info(" Utilisation 360dialog pour WhatsApp");
                 $this->sendWhatsAppMeta($client, $message);
             } elseif (env('WHATSAPP_ACCESS_TOKEN') && env('WHATSAPP_PHONE_NUMBER_ID')) {
                 // Méthode Meta WhatsApp Cloud API
-                \Illuminate\Support\Facades\Log::info("📱 Utilisation Meta WhatsApp Cloud API");
+                \Illuminate\Support\Facades\Log::info(" Utilisation Meta WhatsApp Cloud API");
                 $this->sendWhatsAppMeta($client, $message);
             } elseif (env('TWILIO_SID') && env('TWILIO_AUTH_TOKEN')) {
                 // Méthode Twilio
-                \Illuminate\Support\Facades\Log::info("📱 Utilisation Twilio WhatsApp");
+                \Illuminate\Support\Facades\Log::info(" Utilisation Twilio WhatsApp");
                 $this->sendWhatsAppTwilio($client, $message);
             } elseif (env('CALLMEBOT_API_KEY')) {
                 // Méthode CallMeBot
-                \Illuminate\Support\Facades\Log::info("📱 Utilisation CallMeBot WhatsApp");
+                \Illuminate\Support\Facades\Log::info(" Utilisation CallMeBot WhatsApp");
                 $this->sendWhatsAppCallMeBot($client, $message);
             } else {
-                \Illuminate\Support\Facades\Log::warning("📱 Aucune configuration WhatsApp trouvée");
+                \Illuminate\Support\Facades\Log::warning(" Aucune configuration WhatsApp trouvée");
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("❌ Erreur WhatsApp pour {$client->telephone}: " . $e->getMessage());
@@ -211,7 +211,7 @@ class AdminDemandeController extends Controller
             ])->post($url, $payload);
 
             if ($response->successful()) {
-                \Illuminate\Support\Facades\Log::info("📱 WhatsApp envoyé via 360dialog à {$phone}");
+                \Illuminate\Support\Facades\Log::info("✅ WhatsApp envoyé via 360dialog à {$phone}");
             } else {
                 \Illuminate\Support\Facades\Log::error("❌ Erreur 360dialog: " . $response->body());
             }
@@ -289,6 +289,7 @@ class AdminDemandeController extends Controller
             'destination' => 'required|string|max:255',
             'ville_depart' => 'required|string|max:255',
             'ville_destination' => 'required|string|max:255',
+            'nombre_cartons' => 'nullable|integer|min:0|max:9999',
             'poids' => 'required|numeric|min:0',
             'volume' => 'nullable|numeric|min:0',
             'nature_colis' => 'required|string|max:500',
@@ -331,6 +332,7 @@ class AdminDemandeController extends Controller
                 'type' => $request->type,
                 'type_transport' => $request->type_transport,
                 'marchandise' => $request->nature_colis, // On utilise nature_colis pour marchandise
+                'nombre_cartons' => $request->nombre_cartons,
                 'poids' => $request->poids,
                 'volume' => $request->volume,
                 'nature_colis' => $request->nature_colis,
@@ -376,7 +378,7 @@ class AdminDemandeController extends Controller
     private function sendDemandeCreationNotification(User $client, DemandeTransport $demande)
     {
         try {
-            \Illuminate\Support\Facades\Log::info("🚀 Envoi notification demande créée pour {$client->email} - Tracking: {$demande->numero_tracking}");
+            \Illuminate\Support\Facades\Log::info(" Envoi notification demande créée pour {$client->email} - Tracking: {$demande->numero_tracking}");
             
             // Envoi d'email avec template Blade  
             \Illuminate\Support\Facades\Mail::send('emails.demande-created-by-admin', [
@@ -387,22 +389,25 @@ class AdminDemandeController extends Controller
                 'login_url' => route('login')
             ], function ($mail) use ($client, $demande) {
                 $mail->to($client->email, $client->name)
-                     ->subject('📦 Nouvelle demande de transport créée - ' . $demande->numero_tracking)
+                     ->subject(' Nouvelle demande de transport créée - ' . $demande->numero_tracking)
                      ->from(config('mail.from.address'), config('mail.from.name'));
             });
             
             // Message WhatsApp
-            $whatsappMessage = "📦 Nouvelle expédition créée!\n\n" .
+            $cartonsInfo = $demande->nombre_cartons ? " Nombre de cartons: {$demande->nombre_cartons}\n" : "";
+            
+            $whatsappMessage = " Nouvelle expédition créée!\n\n" .
                               "Bonjour {$client->name},\n\n" .
                               "Une nouvelle demande de transport a été créée pour vous:\n\n" .
-                              "🔍 N° de suivi: {$demande->numero_tracking}\n" .
-                              "📍 Trajet: {$demande->ville_depart} → {$demande->ville_destination}\n" .
-                              "📦 Nature: {$demande->nature_colis}\n" .
-                              "⚖️ Poids: {$demande->poids} kg\n" .
-                              "📊 Statut: " . ucfirst($demande->statut) . "\n\n" .
+                              " N° de suivi: {$demande->numero_tracking}\n" .
+                              " Trajet: {$demande->ville_depart} → {$demande->ville_destination}\n" .
+                              " Nature: {$demande->nature_colis}\n" .
+                              $cartonsInfo .
+                              " Poids: {$demande->poids} kg\n" .
+                              " Statut: " . ucfirst($demande->statut) . "\n\n" .
                               "Suivez votre colis sur: " . route('suivi.public') . "\n" .
                               "Ou connectez-vous à votre espace: " . route('login') . "\n\n" .
-                              "NIF CARGO - Transport & Logistique 🚚";
+                              "NIF CARGO - Transport & Logistique ";
 
             // Envoyer WhatsApp si numéro disponible
             if ($client->telephone) {
