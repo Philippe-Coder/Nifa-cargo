@@ -19,9 +19,7 @@
                 </p>
             </div>
             <div class="hidden md:block">
-                <div class="text-6xl opacity-20">
-                    ✏️
-                </div>
+               
             </div>
         </div>
     </div>

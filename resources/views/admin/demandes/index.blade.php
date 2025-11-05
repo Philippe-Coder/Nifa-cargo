@@ -343,18 +343,22 @@
                                     <div id="dropdown-{{ $demande->id }}" 
                                          class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 hidden z-50 transition-all duration-200">
                                         <div class="py-2">
-                                            <button class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href="{{ route('admin.demandes.edit', $demande->id) }}" 
+                                               class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <i class="fas fa-edit mr-3 text-blue-500"></i>
                                                 Modifier la demande
-                                            </button>
-                                            <button class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            </a>
+                                            <button onclick="openStatusModal({{ $demande->id }}, '{{ $demande->statut }}')"
+                                                    class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <i class="fas fa-exchange-alt mr-3 text-green-500"></i>
                                                 Changer le statut
                                             </button>
-                                            <button class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href="{{ route('admin.demandes.pdf', $demande->id) }}" 
+                                               target="_blank"
+                                               class="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <i class="fas fa-file-pdf mr-3 text-red-500"></i>
                                                 Télécharger PDF
-                                            </button>
+                                            </a>
                                             <div class="border-t border-gray-100 my-2"></div>
                                             <form action="{{ route('admin.demandes.destroy', $demande->id) }}" method="POST" class="w-full">
                                                 @csrf
@@ -438,6 +442,49 @@
             </div>
         </div>
     @endif
+</div>
+
+<!-- Modal Changement de Statut -->
+<div id="statusModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-exchange-alt mr-3"></i>
+                Changer le statut
+            </h3>
+        </div>
+        
+        <form id="statusForm" method="POST" class="p-6">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nouveau statut</label>
+                <select id="newStatus" name="statut" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="en_attente">En attente</option>
+                    <option value="validee">Validée</option>
+                    <option value="en_cours">En cours</option>
+                    <option value="en_transit">En transit</option>
+                    <option value="livree">Livrée</option>
+                    <option value="terminee">Terminée</option>
+                    <option value="annulee">Annulée</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeStatusModal()"
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit"
+                        class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                    <i class="fas fa-check mr-2"></i>
+                    Confirmer
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
 
@@ -536,6 +583,39 @@ document.addEventListener('click', function(event) {
     if (!event.target.closest('[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
         document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
             d.classList.add('hidden');
+        });
+    }
+});
+
+// Fonctions pour le modal de changement de statut
+function openStatusModal(demandeId, currentStatus) {
+    const modal = document.getElementById('statusModal');
+    const form = document.getElementById('statusForm');
+    const statusSelect = document.getElementById('newStatus');
+    
+    // Définir l'action du formulaire
+    form.action = `/admin/demandes/${demandeId}/update-status`;
+    
+    // Sélectionner le statut actuel
+    statusSelect.value = currentStatus;
+    
+    // Afficher le modal
+    modal.classList.remove('hidden');
+}
+
+function closeStatusModal() {
+    const modal = document.getElementById('statusModal');
+    modal.classList.add('hidden');
+}
+
+// Fermer le modal en cliquant en dehors
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('statusModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeStatusModal();
+            }
         });
     }
 });

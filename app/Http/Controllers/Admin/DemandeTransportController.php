@@ -108,6 +108,37 @@ class DemandeTransportController extends Controller
     }
 
     /**
+     * Mettre à jour le statut d'une demande depuis le modal
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'statut' => 'required|in:en_attente,validee,en_cours,en_transit,livree,terminee,annulee'
+        ]);
+
+        $demande = DemandeTransport::findOrFail($id);
+        $ancienStatut = $demande->statut;
+        $nouveauStatut = $request->statut;
+        
+        // Exiger un numéro de suivi pour certains statuts
+        if (in_array($nouveauStatut, ['validee', 'en_cours', 'en_transit', 'livree']) && empty($demande->numero_tracking)) {
+            return redirect()->route('admin.demandes.index')
+                ->with('error', "Vous devez d'abord définir le numéro de suivi avant de changer le statut.");
+        }
+
+        // Mettre à jour le statut
+        $demande->update(['statut' => $nouveauStatut]);
+        
+        // Envoyer une notification à l'utilisateur
+        if ($demande->user) {
+            NotificationService::notifyStatusChange($demande, $ancienStatut, $nouveauStatut);
+        }
+
+        return redirect()->route('admin.demandes.index')
+            ->with('success', "Le statut de la demande #{$demande->numero_tracking} a été mis à jour avec succès.");
+    }
+
+    /**
      * Télécharger la demande en PDF
      */
     public function downloadPDF($id)

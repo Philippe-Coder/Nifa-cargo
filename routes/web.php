@@ -514,6 +514,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::put('/demandes/{id}', [DemandeTransportController::class, 'update'])->name('admin.demandes.update');
     Route::get('/demandes/{id}/pdf', [DemandeTransportController::class, 'downloadPDF'])->name('admin.demandes.pdf');
     Route::post('/demandes/{id}/statut', [DemandeTransportController::class, 'updateStatut'])->name('admin.demandes.updateStatut');
+    Route::put('/demandes/{id}/update-status', [DemandeTransportController::class, 'updateStatus'])->name('admin.demandes.updateStatus');
     Route::post('/demandes/{id}/tracking', [DemandeTransportController::class, 'updateTracking'])->name('admin.demandes.updateTracking');
     Route::delete('/demandes/{id}', [DemandeTransportController::class, 'destroy'])->name('admin.demandes.destroy');
     
