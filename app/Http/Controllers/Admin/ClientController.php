@@ -82,26 +82,41 @@ class ClientController extends Controller
         return view('admin.clients.show', compact('client'));
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        // Valider la confirmation de suppression
+        $request->validate([
+            'confirmation' => 'required|string|in:SUPPRIMER'
+        ], [
+            'confirmation.required' => 'Vous devez taper SUPPRIMER pour confirmer la suppression.',
+            'confirmation.in' => 'Vous devez taper exactement SUPPRIMER en majuscules.'
+        ]);
+
         $client = User::where('role', 'client')->findOrFail($id);
         
         // Vérifier s'il a des demandes en cours
-        $demandesEnCours = $client->demandes()->whereNotIn('statut', ['livree', 'annulee'])->count();
+        $demandesEnCours = $client->demandes()->whereNotIn('statut', ['livree', 'annulee', 'terminee'])->count();
         
         if ($demandesEnCours > 0) {
             return redirect()->back()
                 ->with('error', "Impossible de supprimer ce client car il a {$demandesEnCours} demande(s) en cours. Veuillez d'abord traiter ses demandes.");
         }
 
-        // Notifier le client avant suppression
-        \App\Services\NotificationService::notifyClientAccountDeleted($client);
+        $clientName = $client->name;
+        $clientEmail = $client->email;
+
+        try {
+            // Notifier le client avant suppression
+            \App\Services\NotificationService::notifyClientAccountDeleted($client);
+        } catch (\Exception $e) {
+            Log::warning("Erreur lors de l'envoi de la notification de suppression: " . $e->getMessage());
+        }
         
-        // Supprimer le client
+        // Supprimer le client et toutes ses données associées
         $client->delete();
 
         return redirect()->route('admin.clients.index')
-            ->with('success', 'Compte client supprimé avec succès.');
+            ->with('success', "Le compte de {$clientName} ({$clientEmail}) a été supprimé définitivement.");
     }
 
     public function exportCSV(Request $request)
@@ -270,18 +285,35 @@ class ClientController extends Controller
     /**
      * Suspendre un compte client
      */
-    public function suspend($id)
+    public function suspend(Request $request, $id)
     {
+        $request->validate([
+            'suspension_reason' => 'required|string',
+            'suspension_comment' => 'nullable|string|max:1000'
+        ], [
+            'suspension_reason.required' => 'Vous devez sélectionner une raison de suspension.'
+        ]);
+
         $client = User::where('role', 'client')->findOrFail($id);
         
-        // Ajouter une colonne 'suspended' ou utiliser un système de statut
-        $client->update(['suspended_at' => now()]);
+        // Enregistrer les informations de suspension
+        $client->update([
+            'suspended_at' => now(),
+            'suspension_reason' => $request->suspension_reason,
+            'suspension_comment' => $request->suspension_comment
+        ]);
 
-        // Notifier le client
-        \App\Services\NotificationService::notifyClientAccountSuspended($client);
+        $clientName = $client->name;
+
+        try {
+            // Notifier le client
+            \App\Services\NotificationService::notifyClientAccountSuspended($client);
+        } catch (\Exception $e) {
+            Log::warning("Erreur lors de l'envoi de la notification de suspension: " . $e->getMessage());
+        }
 
         return redirect()->back()
-            ->with('success', 'Compte client suspendu avec succès.');
+            ->with('success', "Le compte de {$clientName} a été suspendu avec succès.");
     }
 
     /**
