@@ -420,28 +420,21 @@
                                             </button>
                                         </form>
                                     @else
-                                        <form action="{{ route('admin.clients.suspend', $client->id) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            <button type="submit" 
-                                                    onclick="return confirm('Êtes-vous sûr de vouloir suspendre ce client ? Il ne pourra plus se connecter.')"
-                                                    class="inline-flex items-center justify-center w-8 h-8 bg-amber-100 hover:bg-amber-200 text-amber-600 rounded-lg transition-all duration-200 hover:scale-105"
-                                                    title="Suspendre le compte">
-                                                <i class="fas fa-ban text-sm"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button"
+                                                onclick="showSuspendModal({{ $client->id }}, '{{ $client->name }}')"
+                                                class="inline-flex items-center justify-center w-8 h-8 bg-amber-100 hover:bg-amber-200 text-amber-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                                title="Suspendre le compte">
+                                            <i class="fas fa-ban text-sm"></i>
+                                        </button>
                                     @endif
                                     
                                     <!-- Supprimer le client -->
-                                    <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                onclick="return confirm('⚠️ ATTENTION ⚠️\n\nÊtes-vous sûr de vouloir SUPPRIMER DÉFINITIVEMENT ce client ?\n\n• Toutes ses demandes seront supprimées\n• Toutes ses données seront perdues\n• Cette action est IRRÉVERSIBLE\n\nCliquez OK pour confirmer')"
-                                                class="inline-flex items-center justify-center w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all duration-200 hover:scale-105"
-                                                title="Supprimer définitivement">
-                                            <i class="fas fa-trash text-sm"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            onclick="showDeleteModal({{ $client->id }}, '{{ $client->name }}')"
+                                            class="inline-flex items-center justify-center w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all duration-200 hover:scale-105"
+                                            title="Supprimer définitivement">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -541,6 +534,104 @@
                 <span>Envoyer</span>
             </button>
         </div>
+    </div>
+</div>
+
+<!-- Modal de suspension -->
+<div id="suspendModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+        <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-ban mr-3"></i>
+                Suspendre le compte
+            </h3>
+        </div>
+        
+        <form id="suspendForm" method="POST" class="p-6">
+            @csrf
+            <p class="text-gray-700 mb-4">Client : <strong id="suspendClientName"></strong></p>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Raison de la suspension *</label>
+                <select name="suspension_reason" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    <option value="">Sélectionner une raison...</option>
+                    <option value="violation_terms">Violation des conditions d'utilisation</option>
+                    <option value="suspicious_activity">Activité suspecte</option>
+                    <option value="payment_issues">Problèmes de paiement</option>
+                    <option value="admin_request">Demande administrative</option>
+                    <option value="other">Autre</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire (optionnel)</label>
+                <textarea name="suspension_comment" rows="3" 
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                          placeholder="Détails supplémentaires..."></textarea>
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeSuspendModal()" 
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium">
+                    <i class="fas fa-ban mr-2"></i>
+                    Suspendre
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de suppression -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-trash mr-3"></i>
+                Supprimer définitivement
+            </h3>
+        </div>
+        
+        <form id="deleteForm" method="POST" class="p-6">
+            @csrf
+            @method('DELETE')
+            <p class="text-gray-700 mb-4">Client : <strong id="deleteClientName"></strong></p>
+            
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-red-800 mb-2">⚠️ ATTENTION - Action irréversible !</h4>
+                <ul class="text-sm text-red-700 space-y-1">
+                    <li>• Toutes les demandes du client seront supprimées</li>
+                    <li>• Tous les documents associés seront supprimés</li>
+                    <li>• L'historique des paiements sera supprimé</li>
+                    <li>• Cette action ne peut pas être annulée</li>
+                </ul>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Pour confirmer, tapez : <strong>SUPPRIMER</strong>
+                </label>
+                <input type="text" name="confirmation" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                       placeholder="Tapez SUPPRIMER en majuscules">
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeDeleteModal()" 
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+                    <i class="fas fa-trash mr-2"></i>
+                    Supprimer définitivement
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
@@ -715,6 +806,59 @@ document.getElementById('notificationModal').addEventListener('click', function(
         closeNotificationModal();
     }
 });
+
+// Gestion du modal de suspension
+function showSuspendModal(clientId, clientName) {
+    const modal = document.getElementById('suspendModal');
+    const form = document.getElementById('suspendForm');
+    const nameElement = document.getElementById('suspendClientName');
+    
+    form.action = `/admin/clients/${clientId}/suspend`;
+    nameElement.textContent = clientName;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSuspendModal() {
+    const modal = document.getElementById('suspendModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Gestion du modal de suppression
+function showDeleteModal(clientId, clientName) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteForm');
+    const nameElement = document.getElementById('deleteClientName');
+    
+    form.action = `/admin/clients/${clientId}`;
+    nameElement.textContent = clientName;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Fermer les modals avec Echap
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeSuspendModal();
+        closeDeleteModal();
+    }
+});
+
+// Fermer en cliquant en dehors
+document.getElementById('suspendModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeSuspendModal();
+});
+
+document.getElementById('deleteModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+});
 </script>
 
 <style>
@@ -753,4 +897,3 @@ document.getElementById('notificationModal').addEventListener('click', function(
     animation: fade-in 0.6s ease-out;
 }
 </style>
-@endsection
