@@ -45,7 +45,24 @@
             <p><strong>Inscription :</strong> {{ $client->created_at->format('d/m/Y à H:i') }}</p>
             <p><strong>Dernière connexion :</strong> {{ $client->last_login_at ? $client->last_login_at->diffForHumans() : 'Jamais' }}</p>
             @if($client->suspended_at)
-                <p><strong>Suspendu le :</strong> {{ $client->suspended_at->format('d/m/Y à H:i') }}</p>
+                <div class="mt-3 pt-3 border-t border-red-200">
+                    <p class="text-red-700"><strong>Suspendu le :</strong> {{ $client->suspended_at->format('d/m/Y à H:i') }}</p>
+                    @if($client->suspension_reason)
+                        <p class="text-red-700 mt-1"><strong>Raison :</strong> 
+                            @switch($client->suspension_reason)
+                                @case('violation_terms') Violation des conditions @break
+                                @case('suspicious_activity') Activité suspecte @break
+                                @case('payment_issues') Problèmes de paiement @break
+                                @case('admin_request') Demande administrative @break
+                                @case('other') Autre @break
+                                @default {{ $client->suspension_reason }}
+                            @endswitch
+                        </p>
+                    @endif
+                    @if($client->suspension_comment)
+                        <p class="text-red-700 mt-1 text-xs italic">{{ $client->suspension_comment }}</p>
+                    @endif
+                </div>
             @endif
         </div>
     </div>
@@ -100,6 +117,47 @@
         </div>
     </div>
 </div>
+
+<!-- Alerte de suspension -->
+@if($client->suspended_at)
+<div class="bg-red-50 border-l-4 border-red-500 p-6 mb-6 rounded-lg">
+    <div class="flex items-start">
+        <div class="flex-shrink-0">
+            <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+        </div>
+        <div class="ml-4 flex-1">
+            <h3 class="text-lg font-semibold text-red-800 mb-2">
+                ⚠️ Compte suspendu depuis le {{ $client->suspended_at->format('d/m/Y à H:i') }}
+            </h3>
+            @if($client->suspension_reason)
+                <p class="text-red-700 mb-2">
+                    <strong>Raison :</strong> 
+                    @switch($client->suspension_reason)
+                        @case('violation_terms') Violation des conditions d'utilisation @break
+                        @case('suspicious_activity') Activité suspecte @break
+                        @case('payment_issues') Problèmes de paiement @break
+                        @case('admin_request') Demande administrative @break
+                        @case('other') Autre @break
+                        @default {{ $client->suspension_reason }}
+                    @endswitch
+                </p>
+            @endif
+            @if($client->suspension_comment)
+                <p class="text-red-700 text-sm">
+                    <strong>Commentaire :</strong> {{ $client->suspension_comment }}
+                </p>
+            @endif
+            <div class="mt-4">
+                <button type="button" onclick="showReactivateModal()" 
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition duration-200 inline-flex items-center space-x-2">
+                    <i class="fas fa-user-check"></i>
+                    <span>Réactiver le compte maintenant</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 <!-- Formulaire de modification -->
 <div class="dashboard-card p-8">
@@ -321,98 +379,103 @@
 <!-- Modals -->
 <!-- Modal de suspension -->
 <div id="suspendModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                    <i class="fas fa-ban text-orange-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Suspendre le compte</h3>
-                    <p class="text-sm text-gray-600">{{ $client->name }}</p>
-                </div>
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+        <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-ban mr-3"></i>
+                Suspendre le compte
+            </h3>
+        </div>
+        
+        <form action="{{ route('admin.clients.suspend', $client->id) }}" method="POST" class="p-6">
+            @csrf
+            <p class="text-gray-700 mb-4">Client : <strong>{{ $client->name }}</strong></p>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Raison de la suspension *</label>
+                <select name="suspension_reason" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    <option value="">Sélectionner une raison...</option>
+                    <option value="violation_terms">Violation des conditions d'utilisation</option>
+                    <option value="suspicious_activity">Activité suspecte</option>
+                    <option value="payment_issues">Problèmes de paiement</option>
+                    <option value="admin_request">Demande administrative</option>
+                    <option value="other">Autre</option>
+                </select>
             </div>
             
-            <form action="{{ route('admin.clients.suspend', $client->id) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Raison de la suspension</label>
-                    <select name="suspension_reason" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500" required>
-                        <option value="">Sélectionner une raison...</option>
-                        <option value="violation_terms">Violation des conditions d'utilisation</option>
-                        <option value="suspicious_activity">Activité suspecte</option>
-                        <option value="payment_issues">Problèmes de paiement</option>
-                        <option value="admin_request">Demande administrative</option>
-                        <option value="other">Autre</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire (optionnel)</label>
-                    <textarea name="suspension_comment" rows="3" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              placeholder="Détails supplémentaires..."></textarea>
-                </div>
-                
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeSuspendModal()" 
-                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Annuler</button>
-                    <button type="submit" 
-                            class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg">
-                        Suspendre
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire (optionnel)</label>
+                <textarea name="suspension_comment" rows="3" 
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                          placeholder="Détails supplémentaires..."></textarea>
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeSuspendModal()" 
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium">
+                    <i class="fas fa-ban mr-2"></i>
+                    Suspendre
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <!-- Modal de réactivation -->
 <div id="reactivateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                    <i class="fas fa-user-check text-green-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Réactiver le compte</h3>
-                    <p class="text-sm text-gray-600">{{ $client->name }}</p>
-                </div>
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+        <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-user-check mr-3"></i>
+                Réactiver le compte
+            </h3>
+        </div>
+        
+        <form action="{{ route('admin.clients.activate', $client->id) }}" method="POST" class="p-6">
+            @csrf
+            <p class="text-gray-700 mb-4">Client : <strong>{{ $client->name }}</strong></p>
+            
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <p class="text-green-800 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Le client pourra à nouveau se connecter et utiliser la plateforme. Les restrictions de suspension seront levées immédiatement.
+                </p>
             </div>
             
-            <p class="text-gray-700 mb-6">
-                Êtes-vous sûr de vouloir réactiver ce compte ? Le client pourra à nouveau se connecter et utiliser la plateforme.
-            </p>
-            
-            <form action="{{ route('admin.clients.activate', $client->id) }}" method="POST">
-                @csrf
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeReactivateModal()" 
-                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Annuler</button>
-                    <button type="submit" 
-                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg">
-                        Réactiver
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeReactivateModal()" 
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+                    <i class="fas fa-user-check mr-2"></i>
+                    Réactiver
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <!-- Modal de suppression -->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                    <i class="fas fa-trash text-red-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Supprimer définitivement</h3>
-                    <p class="text-sm text-gray-600">{{ $client->name }}</p>
-                </div>
-            </div>
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-trash mr-3"></i>
+                Supprimer définitivement
+            </h3>
+        </div>
+        
+        <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST" class="p-6">
+            @csrf
+            @method('DELETE')
+            <p class="text-gray-700 mb-4">Client : <strong>{{ $client->name }}</strong></p>
             
             <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <h4 class="font-semibold text-red-800 mb-2">⚠️ ATTENTION - Action irréversible !</h4>
@@ -424,28 +487,27 @@
                 </ul>
             </div>
             
-            <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Pour confirmer, tapez : <strong>SUPPRIMER</strong>
-                    </label>
-                    <input type="text" name="confirmation" required
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-                           placeholder="Tapez SUPPRIMER en majuscules">
-                </div>
-                
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeDeleteModal()" 
-                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Annuler</button>
-                    <button type="submit" 
-                            class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg">
-                        Supprimer définitivement
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Pour confirmer, tapez : <strong>SUPPRIMER</strong>
+                </label>
+                <input type="text" name="confirmation" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                       placeholder="Tapez SUPPRIMER en majuscules">
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeDeleteModal()" 
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                    Annuler
+                </button>
+                <button type="submit" 
+                        class="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+                    <i class="fas fa-trash mr-2"></i>
+                    Supprimer définitivement
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
@@ -534,6 +596,19 @@ document.addEventListener('keydown', function(event) {
         closeReactivateModal();
         closeDeleteModal();
     }
+});
+
+// Fermer en cliquant en dehors
+document.getElementById('suspendModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeSuspendModal();
+});
+
+document.getElementById('reactivateModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeReactivateModal();
+});
+
+document.getElementById('deleteModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
 });
 </script>
 

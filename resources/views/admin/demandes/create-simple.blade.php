@@ -54,7 +54,7 @@
                     <label for="client_telephone" class="block text-sm font-medium text-gray-700 mb-2">Téléphone *</label>
                     <input type="tel" name="client_telephone" id="client_telephone" value="{{ old('client_telephone') }}" required
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                           placeholder="+228 97 31 11 58">
+                           placeholder="+228 99 25 25 31">
                 </div>
             </div>
         </div>

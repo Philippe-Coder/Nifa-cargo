@@ -219,7 +219,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <div class="mb-4 md:mb-0">
                     <p class="text-gray-400 text-sm">
-                        &copy; {{ date('Y') }} NIF Cargo - OGOUBI KOMIVI Philippe. Tous droits réservés.
+                        &copy; {{ date('Y') }} NIF Cargo - Philippe Dev & FONGENS COMMUNICATIONS. Tous droits réservés.
                     </p>
                 </div>
                 

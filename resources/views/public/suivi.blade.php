@@ -223,8 +223,8 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Appelez-nous</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">Service client disponible 7j/7 pour vous accompagner</p>
-                    <a href="tel:+22897311158" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-lg inline-flex items-center group/link">
-                        +228 97 31 11 58
+                    <a href="tel:+22899252531" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-lg inline-flex items-center group/link">
+                        +228 99 25 25 31
                         <i class="fas fa-arrow-right ml-2 group-hover/link:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -236,7 +236,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-4">WhatsApp</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">Chat direct et instantané avec nos agents</p>
-                    <a href="https://wa.me/22897311158" target="_blank" class="text-green-600 font-semibold hover:text-green-700 transition-colors text-lg inline-flex items-center group/link">
+                    <a href="https://wa.me/22899252531" target="_blank" class="text-green-600 font-semibold hover:text-green-700 transition-colors text-lg inline-flex items-center group/link">
                         Ouvrir WhatsApp
                         <i class="fas fa-external-link-alt ml-2 group-hover/link:scale-110 transition-transform"></i>
                     </a>

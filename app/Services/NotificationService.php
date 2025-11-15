@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotificationService
 {
     /**
-     * Normaliser un numéro en E.164 (ex: +22897311158)
+     * Normaliser un numéro en E.164 (ex: +22899252531)
      */
     private static function formatPhoneE164(string $phone): string
     {
